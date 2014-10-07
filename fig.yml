@@ -1,0 +1,11 @@
+db:
+    image: helmi03/docker-postgis
+web:
+    build: .
+    command: python run.py
+    volumes:
+        - .:/code
+    ports:
+        - "5000:5000"
+    links:
+        - db

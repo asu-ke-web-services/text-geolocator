@@ -3,7 +3,14 @@ text-geolocator
 
 Fall 2014/Spring 2015 CS Capstone - Generating heatmaps from and searching for geolocation data from text documents
 
-
+## Install Instructions
+- Install docker. http://docker.com Follow the directions provided for the target system.
+- Install Python. (If it hasn't been already)
+- Install pip.
+- Install fig with `sudo pip install -U fig`
+- Clone the repo. `git clone https://github.com/gios-asu/text-geolocator.git`
+- Start the docker containers and development environment. `sudo fig up -d`
+- Verify that everything started up ok. `sudo fig ps`
 
 ## Example request and response
 

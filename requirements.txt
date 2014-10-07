@@ -1,0 +1,17 @@
+Flask==0.10.1
+Flask-RESTful==0.2.12
+Jinja2==2.7.3
+MarkupSafe==0.23
+PyYAML==3.10
+Werkzeug==0.9.6
+aniso8601==0.83
+dockerpty==0.2.3
+docopt==0.6.1
+fig==0.5.2
+itsdangerous==0.24
+pytz==2014.7
+requests==2.2.1
+six==1.8.0
+texttable==0.8.1
+websocket-client==0.11.0
+wsgiref==0.1.2
