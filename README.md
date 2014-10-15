@@ -12,7 +12,7 @@ Fall 2014/Spring 2015 CS Capstone - Generating heatmaps from and searching for g
 - Start the docker containers and development environment. `sudo fig up -d`
 - Verify that everything started up ok. `sudo fig ps`
 
-## Example request and response
+## Example 1 request and response
 
 HTTP Request
 ```
@@ -50,3 +50,40 @@ RESPONSE (in [geojson](http://geojson.org/)):
     }
 }]
 ```
+
+## Example 2 request and response
+
+This example should work during Semester 2 of the workload when a higher level of detail is added to the system, other than just cities, states, and countries.
+
+HTTP Request
+```
+POST /geocode
+Content: "During this study that we conducted on A Mountain, we found that the number of overall species has decreased significantly from 2010 to 2014." 
+```
+
+RESPONSE:
+```javascript
+[{
+  "type": "Feature",
+  "properties": {
+    "weight": 0.5,
+    "name": "Tempe Butte"
+    },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [33.428372, -111.935905]
+  }
+},{
+  "type": "Feature",
+  "properties": {
+    "weight": 0.5,
+    "name": "Sentinel Peak"
+    },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [32.210484, -110.992475]
+  }
+}]
+```
+
+## 
