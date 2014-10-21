@@ -2,7 +2,7 @@ db:
     image: helmi03/docker-postgis
 web:
     build: .
-    command: python run.py
+    command: python geolocator/run.py
     volumes:
         - .:/code
     ports:

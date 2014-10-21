@@ -5,3 +5,10 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+.input_file {
+	float: left;
+}
+form {
+	display:inline-block;
+	text-align: center;
+}
