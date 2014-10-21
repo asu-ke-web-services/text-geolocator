@@ -3,6 +3,7 @@ from werkzeug import secure_filename
 from app import app
 
 import os
+import nltk
 
 
 # add homepage handle
@@ -30,7 +31,10 @@ def upload_file():
 			# with open(uploadedfile_path, 'wb') as f:
 			# 	f.write(uploadedfile.read())
 			# return redirect(url_for('uploaded_file', filename=filename)) 
-			return uploadedfile.read()
+			text = uploadedfile.read()
+			# tokens = nltk.word_tokenize(text)
+			# return tokens
+			return text
 	return '''
 	<!doctype html>
 	<title>Upload new File</title>
