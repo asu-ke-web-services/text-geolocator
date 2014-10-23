@@ -12,6 +12,13 @@ Fall 2014/Spring 2015 CS Capstone - Generating heatmaps from and searching for g
 - Start the docker containers and development environment. `sudo fig up -d`
 - Verify that everything started up ok. `sudo fig ps`
 
+## Useful Commands
+- sudo fig build -> rebuilds docker instance from Dockerfile
+- sudo fig run web python -> launches docker environment and python interactive shell
+- sudo docker rm $(sudo docker ps -a -q) -> removes all stopped old docker containers
+- sudo docker rmi $(sudo docker images -q --filter "dangling=true") -> removes all untagged docker images
+- sudo fig run --rm web -> removes container after run
+
 ## Example 1 request and response
 
 HTTP Request

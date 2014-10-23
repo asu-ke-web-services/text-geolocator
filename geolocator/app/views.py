@@ -3,7 +3,7 @@ from werkzeug import secure_filename
 from app import app
 
 import os
-import nltk
+import nlp_magic
 
 
 # add homepage handle
@@ -20,7 +20,6 @@ def allowed_file(filename):
 # handle for uploading files
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-	print "Do something!!!\n\n\n"
 	if request.method == 'POST':
 		uploadedfile = request.files['file']
 		if uploadedfile and allowed_file(uploadedfile.filename):
@@ -34,7 +33,9 @@ def upload_file():
 			text = uploadedfile.read()
 			# tokens = nltk.word_tokenize(text)
 			# return tokens
-			return text
+			# nlp_results = nlp_magic.nlp_geo_magic(text)
+			nlp_results = nlp_magic.stanford_nlp_location_magic(text)
+			return nlp_results
 	return '''
 	<!doctype html>
 	<title>Upload new File</title>
