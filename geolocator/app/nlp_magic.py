@@ -17,7 +17,7 @@ def stanford_nlp_location_magic(file_text):
 	# return os.getcwd()
 
 	# --- attempt to configure java with python
-	# os.environ["JAVA_HOME"] = '/usr/lib/jvm/default-java' 
+	os.environ["JAVAHOME"] = '/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin' 
 	# return str(os.environ)
 
 	# --- attempt to configure java with nltk
@@ -26,7 +26,6 @@ def stanford_nlp_location_magic(file_text):
 
 	# --- example found here: www.nltk.org/api/nltk.tag.html#module-nltk.tag.stanford
 	# --- does not currently work
-	st = NERTagger('geolocator/app/static/stanford-ner-2014-08-27/classifiers/english.all.3class.distsim.crf.ser.gz', 
-		'geolocator/app/static/stanford-ner-2014-08-27/stanford-ner.jar')
+	st = NERTagger('geolocator/app/static/stanford-ner-2014-08-27/classifiers/english.all.3class.distsim.crf.ser.gz', 'geolocator/app/static/stanford-ner-2014-08-27/stanford-ner.jar')
 	stanford_magic = st.tag(file_text.split())
 	return str(stanford_magic)
