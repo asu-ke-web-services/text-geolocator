@@ -1,11 +1,23 @@
+dbdata:
+    image: busybox:latest
+    command: echo dbdata
+    volumes:
+        - /tmp/app:/var/lib/postgresql/data
 db:
-    image: helmi03/docker-postgis
+    build: db
+    ports:
+        - "5432:5432"
+    volumes_from:
+        - dbdata
 web:
     build: .
-    command: python geolocator/run.py
+    command: python geolocator/run.py runserver -h 0.0.0.0 -p 5000
     volumes:
         - .:/code
     ports:
         - "5000:5000"
     links:
         - db
+    environment:
+        DEBUG: True
+        SECRET_KEY: 'you-will-never-guess'
