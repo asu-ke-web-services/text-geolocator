@@ -1,28 +1,29 @@
-from flask import render_template, request, redirect, url_for, send_from_directory
+from flask import render_template, request, redirect, url_for, send_from_directory, jsonify
 from werkzeug import secure_filename
 from app import app
 
 import os
 import nlp_magic
+import geojson_maker
 
 
 # add homepage handle
 @app.route('/')
 @app.route('/home')
-def index():
+def Index():
 	return render_template('index.html', title='GeoCoding Magic')
 
 # For a given file, return whether it's an allowed type or not
-def allowed_file(filename):
+def AllowedFile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 # handle for uploading files
 @app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
+def UploadFile():
 	if request.method == 'POST':
 		uploadedfile = request.files['file']
-		if uploadedfile and allowed_file(uploadedfile.filename):
+		if uploadedfile and AllowedFile(uploadedfile.filename):
 			# this is supposed to save file to /tmp/uploads
 			# ---------------------------------------------------------------
 			# filename = secure_filename(uploadedfile.filename)
@@ -34,9 +35,11 @@ def upload_file():
 			# tokens = nltk.word_tokenize(text)
 			# return tokens
 			# nlp_results = nlp_magic.nlp_geo_magic(text)
-			nlp_results = nlp_magic.stanford_nlp_location_magic(text)
-			return nlp_results
+			locations = nlp_magic.FindLocations(text)
+			geojson_collection = geojson_maker.MakeGeoJsonCollection(locations)
+			return jsonify(**geojson_collection)
 	return '''
 	<!doctype html>
 	<title>Upload new File</title>
+	<body><p>No uploaded file detected.</p></body>
 	'''
