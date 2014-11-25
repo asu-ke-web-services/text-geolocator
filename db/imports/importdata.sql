@@ -54,9 +54,9 @@ CREATE TABLE raw_locations (
 
 
 /* Import the data */
-\COPY raw_country_info FROM '/tmp/geodata/countryInfo.txt';
-\COPY raw_feature_codes FROM '/tmp/geodata/featureCodes_en.txt';
-\COPY raw_locations FROM '/tmp/geodata/allCountries.txt';
+\COPY raw_country_info FROM '~/geodata/countryInfo.txt';
+\COPY raw_feature_codes FROM '~/geodata/featureCodes_en.txt';
+\COPY raw_locations FROM '~/geodata/allCountries.txt';
 
 /* Put the data into the new tables */
 INSERT INTO location

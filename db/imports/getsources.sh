@@ -16,6 +16,3 @@ rm allCountries.zip
 
 # Create the tables
 psql -h localhost -p 5432 -d app -U postgres -a -f ~/geodata/importdata.sql
-
-# clean up
-rm -rf ~/geodata
