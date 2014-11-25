@@ -1,5 +1,4 @@
-text-geolocator
-===============
+#text-geolocator [![Build Status](https://travis-ci.org/gios-asu/text-geolocator.svg?branch=master)](https://travis-ci.org/gios-asu/text-geolocator)
 
 Fall 2014/Spring 2015 CS Capstone - Generating heatmaps from and searching for geolocation data from text documents
 
