@@ -19,4 +19,3 @@ UPLOAD_FOLDER = 'tmp/uploads'
 
 # These are the extension that we are accepting to be uploaded
 ALLOWED_EXTENSIONS = set(['txt'])
-

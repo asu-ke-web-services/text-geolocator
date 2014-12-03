@@ -5,6 +5,7 @@ from app import app
 
 api = restful.Api(app)
 
+
 # add service handle
 class HelloWorld(Resource):
     def get(self):

@@ -1,8 +1,6 @@
-from flask import render_template, request, redirect, url_for, send_from_directory, jsonify
-from werkzeug import secure_filename
+from flask import render_template, request, jsonify
 from app import app
 
-import os
 import nlp_magic
 import geojson_maker
 
@@ -13,10 +11,12 @@ import geojson_maker
 def Index():
 	return render_template('index.html', title='GeoCoding Magic')
 
+
 # For a given file, return whether it's an allowed type or not
 def AllowedFile(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
 
 # handle for uploading files
 @app.route('/upload', methods=['GET', 'POST'])
