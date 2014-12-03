@@ -16,6 +16,15 @@ def FeaturePoint(lon, lat, weight, name):
 	return feature
 
 
+def RemoveDuplicatesFromList(l):
+	#unicode to string, assuming there will be no characters that lie outside of ascii range
+	stringlist = [str(x) for x in l] 
+	nodublicate_array = []
+	list(set(stringlist))
+	[nodublicate_array.append(item) for item in stringlist if item not in nodublicate_array]
+	return nodublicate_array
+
+
 def MakeGeoJsonElement(location, existing_locations):
 	#lookup x in database
 	lon = 0.00
@@ -26,16 +35,17 @@ def MakeGeoJsonElement(location, existing_locations):
 	for y in existing_locations:
 		if location == y:
 			weight = weight + 1
-			print weight
 	name = location
 
 	return FeaturePoint(lon, lat, weight, name) 
 
 
 def MakeGeoJsonCollection(locations):
+	# --- remove duplicates
+	noduplicates = RemoveDuplicatesFromList(locations)
 	# --- turn locations into FeaturePoints
 	feature_array = []
-	for l in locations:
+	for l in noduplicates:
 		feature_array.append(MakeGeoJsonElement(l, locations)) 
 	# --- Convert FeaturePoints List to FeatureCollection
-	return geojson.FeatureCollection(feature_array )
+	return geojson.FeatureCollection(feature_array)

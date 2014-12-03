@@ -8,7 +8,7 @@ def InitStanfordModule():
 
 	# --- example found here: www.nltk.org/api/nltk.tag.html#module-nltk.tag.stanford
 	return NERTagger('geolocator/app/static/stanford-ner-2014-08-27/classifiers/english.all.3class.distsim.crf.ser.gz', 
-		'geolocator/app/static/stanford-ner-2014-08-27/stanford-ner.jar')
+			'geolocator/app/static/stanford-ner-2014-08-27/stanford-ner.jar')
 
 
 def FormatInput(file_text):
@@ -29,15 +29,6 @@ def IsolateLocations(stanford_list):
 	return locations
 
 
-def RemoveDuplicatesFromList(l):
-	#unicode to string, assuming there will be no characters that lie outside of ascii range
-	stringlist = [str(x) for x in l] 
-	nodublicate_array = []
-	list(set(stringlist))
-	[nodublicate_array.append(item) for item in stringlist if item not in nodublicate_array]
-	return nodublicate_array
-
-
 def FindLocations(file_text):
 
 	# --- remove punctuations for stanford
@@ -47,6 +38,5 @@ def FindLocations(file_text):
 
 	stanford_tagged_entities = stanford_ner.tag(file_text.split())
 	stanford_tagged_locations = IsolateLocations(stanford_tagged_entities)
-	stanford_tagged_locations = RemoveDuplicatesFromList(stanford_tagged_locations)
 
 	return stanford_tagged_locations
