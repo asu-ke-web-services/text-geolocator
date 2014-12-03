@@ -9,9 +9,9 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# from app import views
-# from app import services
-# from app import models
+from app import views
+from app import services
+from app import models
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
