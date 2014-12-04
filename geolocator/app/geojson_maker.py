@@ -32,7 +32,13 @@ def MakeGeoJsonElement(location, existing_locations):
     Also because of first hit, the accuracy is not very good.
     Will need to add additional logic for checking"""
 
-    loc = Location.query.filter_by(name=location).first()
+    """
+    Right now these values are hard coded until the results can be improved.
+    """
+    # P.PPL a populated place like a city, town or village
+    ft = 'P.PPL'
+    loc = Location.query.filter_by(name=location, featuretype=ft, countrycode='US') \
+                        .order_by('id').first()
     lon = 0.00
     lat = 0.00
 

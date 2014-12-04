@@ -33,6 +33,6 @@ ALLOWED_EXTENSIONS = set(['txt'])
 # Stanford NER Configuration
 
 SNER_CLASSIFIERS = \
-    'geolocator/app/static/stanford-ner-2014-08-27/classifiers/english.all.3class.distsim.crf.ser.gz'
+    BASE_DIR + '/app/static/stanford-ner-2014-08-27/classifiers/english.all.3class.distsim.crf.ser.gz'
 SNER_JARFILE = \
-    'geolocator/app/static/stanford-ner-2014-08-27/stanford-ner.jar'
+    BASE_DIR + '/app/static/stanford-ner-2014-08-27/stanford-ner.jar'
