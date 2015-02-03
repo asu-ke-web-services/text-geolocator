@@ -30,7 +30,7 @@ def MakeGeoJsonElement(location, existing_locations):
     """Gets the first hit that it gets with the given location name.
     It only searches the name instead of the other parameters.
     Also because of first hit, the accuracy is not very good.
-    Will need to add additional logic for checking""" 
+    Will need to add additional logic for checking"""
 
     """
     Right now these values are hard coded until the results can be improved.
