@@ -4,9 +4,9 @@ from geoalchemy2 import Geometry
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    location = db.Column(Geometry('POINT'))
+    location = db.Column(Geometry('POINT'), index=True)
     geonameid = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(250), nullable=False)
+    name = db.Column(db.String(250), nullable=False, index=True)
     countrycode = db.Column(db.String(80), nullable=False)
     featureclass = db.Column(db.String(80), nullable=False)
     featurecode = db.Column(db.String(80), nullable=False)
