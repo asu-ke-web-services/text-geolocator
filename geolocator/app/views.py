@@ -22,6 +22,16 @@ def AllowedFile(filename):
         in app.config['ALLOWED_EXTENSIONS']
 
 
+@app.route('/test')
+def test():
+    latlngs = geojson_maker.MakeGeoJsonCollection(None)
+    return render_template(
+        'heatmap_test.html',
+        latlngs=latlngs,
+        center=latlngs[0]
+    )
+
+
 # handle for uploading files
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -49,5 +59,28 @@ def UploadFile():
             geojson_collection = \
                 geojson_maker.MakeGeoJsonCollection(locations)
             return jsonify(**geojson_collection)
+    return '''<!doctype html><title>Upload new File</title><body>
+           <p>No uploaded file detected.</p></body>'''
+
+
+@app.route('/heatmap', methods=['GET', 'POST'])
+def Heatmap():
+    if request.method == 'POST':
+        uploadedfile = request.files['file']
+        if uploadedfile and AllowedFile(uploadedfile.filename):
+
+            text = uploadedfile.read()
+            locations = nlp_magic.FindLocations(text)
+            geojson_collection = \
+                geojson_maker.MakeGeoJsonCollection(locations)
+            latlngs = geojson_maker.RetrieveLatLngs(geojson_collection)
+
+            return render_template(
+                'heatmap.html',
+                latlngs=latlngs,
+                center=latlngs[0],
+                geojson=geojson_collection
+            )
+
     return '''<!doctype html><title>Upload new File</title><body>
            <p>No uploaded file detected.</p></body>'''

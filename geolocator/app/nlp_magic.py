@@ -18,16 +18,24 @@ def FormatInput(file_text):
 
 
 def IsolateLocations(stanford_list):
+    """
+    Given list of Stanford NER Tagger results in the format of
+    ('name', 'type'). Filter list and retrieve only those listed
+    as 'type'='LOCATION'
+    """
     locations = []
     LOCATION = u'LOCATION'
     for x in xrange(len(stanford_list)):
         if stanford_list[x][1] == LOCATION:
-            if stanford_list[x + 1][1] == LOCATION:
-                locations.append(stanford_list[x][0] + ' '
-                                 + stanford_list[x + 1][0])
-                x += 1
-            else:
-                locations.append(stanford_list[x][0])
+            locations.append(stanford_list[x][0])
+
+            # if len(stanford_list) < (x + 1):
+            #     if stanford_list[x + 1][1] == LOCATION:
+            #         locations.append(stanford_list[x][0] + ' '
+            #                          + stanford_list[x + 1][0])
+            #         x += 1
+            #     else:
+            #         locations.append(stanford_list[x][0])
     return locations
 
 
@@ -42,5 +50,5 @@ def FindLocations(file_text):
     stanford_tagged_entities = stanford_ner.tag(file_text.split())
     stanford_tagged_locations = \
         IsolateLocations(stanford_tagged_entities)
-
+    # x = 1 / 0
     return stanford_tagged_locations
