@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 from app import db
-
-
-# from geoalchemy2.types import Geometry
+from geoalchemy2 import Geometry
 
 class Location(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
-
-    # location = db.Column(Geometry(geometry_type='POINT', srid=4326))
-
+    location = db.Column(Geometry('POINT'), index=True)
     geonameid = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(250), nullable=False)
+    name = db.Column(db.String(250), nullable=False, index=True)
     countrycode = db.Column(db.String(80), nullable=False)
     featureclass = db.Column(db.String(80), nullable=False)
     featurecode = db.Column(db.String(80), nullable=False)
@@ -20,8 +15,9 @@ class Location(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     initial_weight = db.Column(db.Float, default=0.0, nullable=False)
 
-    def __init__(self, geonameid, name, countrycode, featureclass, featurecode,
+    def __init__(self, location, geonameid, name, countrycode, featureclass, featurecode,
                  featuretype, latitude, longitude, initial_weight):
+        self.location = location
         self.geonameid = geonameid
         self.name = name
         self.countrycode = countrycode
