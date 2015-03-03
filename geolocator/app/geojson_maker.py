@@ -12,10 +12,6 @@ from ast import literal_eval
 # geojson points need to be switched.
 
 
-def send_web():
-    return None
-
-
 def RetrieveLatLngs(feature_collection):
     p = re.findall(
         r"\[\-*\d+\.*\d*\,\s\-*\d+\.*\d*\]",
@@ -108,32 +104,21 @@ def FeaturePoint(lon, lat, weight, name):
     return feature
 
 
-def RemoveDuplicatesFromList(l):
-
-    """Unicode to string, assuming there will be no characters that lie
-    outside of ascii range"""
-
-    stringlist = [str(x) for x in l]
-    nodublicate_array = []
-    list(set(stringlist))
-    [nodublicate_array.append(item) for item in stringlist if item
-     not in nodublicate_array]
-    return nodublicate_array
-
-
 def MakeGeoJsonElement(location, existing_locations):
     """Gets the first hit that it gets with the given location name.
     It only searches the name instead of the other parameters.
     Also because of first hit, the accuracy is not very good.
-    Will need to add additional logic for checking""" 
+    Will need to add additional logic for checking"""
 
     """
     Right now these values are hard coded until the results can be improved.
     """
     # P.PPL a populated place like a city, town or village
     ft = 'P.PPL'
-    loc = Location.query.filter_by(name=location, featuretype=ft, countrycode='US') \
-                        .order_by('id').first()
+    loc = Location.query.filter_by(
+        name=location,
+        featuretype=ft,
+        countrycode='US').order_by('id').first()
 
     lon = 0.00
     lat = 0.00
@@ -151,17 +136,69 @@ def MakeGeoJsonElement(location, existing_locations):
         if location == y:
             weight = weight + 1
     name = location
+
     return FeaturePoint(lon, lat, weight, name)
 
 
 def MakeGeoJsonCollection(locations):
-    # Remove duplicates
-    noduplicates = RemoveDuplicatesFromList(locations)
 
     # Turn locations into FeaturePoints
     feature_array = []
-    for l in noduplicates:
+    for l in locations:
         feature_array.append(MakeGeoJsonElement(l, locations))
 
     # Convert FeaturePoints List to FeatureCollection
     return geojson.FeatureCollection(feature_array)
+
+
+# class Coordinates():
+
+#     def __init__(self, latitude, longitude):
+#         self.latitude = latitude
+#         self.longitude = longitude
+
+#     def __repr__(self):
+#         return "<Coordinates(latitude=%f, longitude=%f)>" % \
+#             (self.latitude, self.longitude)
+
+
+# class GeoJsonProperties():
+
+#     def __init__(self, weight, name):
+#         self.weight = weight
+#         self.name = name
+
+#     def __repr__(self):
+#         return "<GeoJsonProperties(weight=%d, name=%s)>" % \
+#             (self.weight, self.name)
+
+
+# class GeoJsonGeometry():
+
+#     def __init__(self, typ, coordinates):
+#         self.typ = typ
+#         self.Coordinates = coordinates
+
+#     def __repr__(self):
+#         return "<GeoJsonGeometry(typ=%s, coordinates=%s)>" % \
+#             (self.typ, self.coordinates)
+
+
+# class GeoJson():
+
+#     def __init__(self, typ="Feature", properties=None, geometry=None):
+#         self.typ = typ
+#         self.Properties = properties
+#         self.Geometry = geometry
+
+#     def __repr__(self):
+#         return "<GeoJson(typ=%s, properties=%s, geometry=%s)>" % \
+#             (self.typ, self.Properties, self.Geometry)
+
+
+# class GeoJsonMaker():
+
+#     def __init__(self, locations):
+#         self.locations = locations
+
+#     def MakeGeoJson(self):

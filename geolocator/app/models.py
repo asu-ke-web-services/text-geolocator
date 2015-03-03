@@ -2,6 +2,7 @@
 from app import db
 from geoalchemy2 import Geometry
 
+
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(Geometry('POINT'), index=True)
@@ -15,8 +16,9 @@ class Location(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     initial_weight = db.Column(db.Float, default=0.0, nullable=False)
 
-    def __init__(self, location, geonameid, name, countrycode, featureclass, featurecode,
-                 featuretype, latitude, longitude, initial_weight):
+    def __init__(self, location, geonameid, name, countrycode, featureclass,
+                 featurecode, featuretype, latitude, longitude,
+                 initial_weight):
         self.location = location
         self.geonameid = geonameid
         self.name = name
