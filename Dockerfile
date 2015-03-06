@@ -5,7 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN 	apt-get update
 RUN 	apt-get install --fix-missing
 RUN 	apt-get -y install default-jre
-RUN 	apt-get -y install default-jdk
+# jdk is unneeded
+# RUN 	apt-get -y install default-jdk
 RUN     pip install -r requirements.txt
 RUN 	mkdir /user
 ENV		HOME 		/user

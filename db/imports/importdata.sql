@@ -60,8 +60,9 @@ CREATE TABLE raw_locations (
 
 /* Put the data into the new tables */
 INSERT INTO location
-(geonameid, name, countrycode, featureclass, featurecode, featuretype, latitude, longitude, initial_weight)
-SELECT cast(geonameid as numeric),
+(location, geonameid, name, countrycode, featureclass, featurecode, featuretype, latitude, longitude, initial_weight)
+SELECT ST_MakePoint(cast(latitude as float), cast(longitude as float)),
+       cast(geonameid as numeric),
        name,
        countrycode,
        featureclass,

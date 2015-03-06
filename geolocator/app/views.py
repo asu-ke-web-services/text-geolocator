@@ -1,33 +1,71 @@
 # -*- coding: utf-8 -*-
-
-from flask import render_template, request, jsonify
+"""
+Provides various URLs handles for the website
+"""
+from flask import render_template, request
 from app import app
 
-import nlp_magic
+from nlp import LocationTagger
 import geojson_maker
 
 
-# add homepage handle
-
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def Index():
-    return render_template('index.html', title='GeoCoding Magic')
+    """
+    Home page of website
 
+    URL Routes:
 
-# For a given file, return whether it's an allowed type or not
+        * '/'
+        * '/home'
+
+    :returns: template 'index.html'
+    """
+    # form = OutputFormatForm()
+    # if form.validate_on_submit():
+    #     x = 1 / 0
+    #     return UploadFile(form.geojson, form.heatmap)
+        # return redirect('/index')
+    return render_template(
+        'index.html',
+        title='Text Geolocator')
+
 
 def AllowedFile(filename):
+    """
+    Validates file type upon upload from user
+
+    Allowed file types:
+
+        * .txt
+
+    :param str filename: name of file (with extension)
+
+    :returns: bool - True if file type is allowed; false otherwise
+    """
     return '.' in filename and filename.rsplit('.', 1)[1] \
         in app.config['ALLOWED_EXTENSIONS']
 
 
-# handle for uploading files
-
 @app.route('/upload', methods=['GET', 'POST'])
 def UploadFile():
+    """
+    Receives the uploaded text of a document via POST and returns the
+        geojson collection data along with a heatmap
+
+    URL Routes:
+
+        * '/upload'
+
+    :returns: heatmap and pretty-printed geojson collection if file is
+        uploaded via POST and is of correct file type; otherwise
+        prints "No uploaded file detected"
+    """
     if request.method == 'POST':
         uploadedfile = request.files['file']
+        geojson = request.form.get('geojson')
+        heatmap = request.form.get('heatmap')
         if uploadedfile and AllowedFile(uploadedfile.filename):
 
             # this is supposed to save file to /tmp/uploads
@@ -41,13 +79,21 @@ def UploadFile():
 
             text = uploadedfile.read()
 
-            # tokens = nltk.word_tokenize(text)
-            # return tokens
-            # nlp_results = nlp_magic.nlp_geo_magic(text)
+            tagger = LocationTagger()
+            locations = tagger.TagLocations(text)
 
-            locations = nlp_magic.FindLocations(text)
             geojson_collection = \
                 geojson_maker.MakeGeoJsonCollection(locations)
-            return jsonify(**geojson_collection)
+
+            latlngs = geojson_maker.RetrieveLatLngs(geojson_collection)
+
+            return render_template(
+                'result.html',
+                latlngs=latlngs,
+                center=latlngs[0],
+                heatmap=str(heatmap),
+                geojson=str(geojson),
+                geojson_collection=geojson_collection
+            )
     return '''<!doctype html><title>Upload new File</title><body>
            <p>No uploaded file detected.</p></body>'''

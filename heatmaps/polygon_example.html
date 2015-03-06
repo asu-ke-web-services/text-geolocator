@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Polygon Auto-completion</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script>
+// This example creates a simple polygon representing a region in Arizona.
+// Note that the code specifies only three LatLng coordinates for the
+// polygon. The API automatically draws a
+// stroke connecting the last LatLng back to the first LatLng.
+
+function initialize() {
+  var mapOptions = {
+    zoom: 7,
+    center: new google.maps.LatLng(33.4500, -112.0667), //Phoenix
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+
+  var arizonaPolygon;
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  // Define the LatLng coordinates for the polygon's path. Note that there's
+  // no need to specify the final coordinates to complete the polygon, because
+  // The Google Maps JavaScript API will automatically draw the closing side.
+  var triangleCoords = [
+    new google.maps.LatLng(35.1992, -111.6311), //Flagstaff
+    new google.maps.LatLng(34.4900, -114.3089), //Lake Havasu City
+    new google.maps.LatLng(33.4500, -112.0667)  //Phoenix
+  ];
+
+  arizonaPolygon = new google.maps.Polygon({
+    paths: triangleCoords,
+    strokeColor: '#FF0000',
+    strokeOpacity: 0.8,
+    strokeWeight: 3,
+    fillColor: '#FF0000',
+    fillOpacity: 0.35
+  });
+
+  arizonaPolygon.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
