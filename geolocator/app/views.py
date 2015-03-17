@@ -9,8 +9,8 @@ from nlp import LocationTagger
 import geojson_maker
 
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/home')
 def Index():
     """
     Home page of website
@@ -48,6 +48,14 @@ def AllowedFile(filename):
         in app.config['ALLOWED_EXTENSIONS']
 
 
+@app.route('/dbtest')
+def dbtest():
+    from app.models import Location
+    location = Location.query.first()
+    print str(location)
+    return str(location)
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 def UploadFile():
     """
@@ -64,8 +72,6 @@ def UploadFile():
     """
     if request.method == 'POST':
         uploadedfile = request.files['file']
-        geojson = request.form.get('geojson')
-        heatmap = request.form.get('heatmap')
         if uploadedfile and AllowedFile(uploadedfile.filename):
 
             # this is supposed to save file to /tmp/uploads
@@ -91,8 +97,6 @@ def UploadFile():
                 'result.html',
                 latlngs=latlngs,
                 center=latlngs[0],
-                heatmap=str(heatmap),
-                geojson=str(geojson),
                 geojson_collection=geojson_collection
             )
     return '''<!doctype html><title>Upload new File</title><body>

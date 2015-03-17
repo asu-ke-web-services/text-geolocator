@@ -1,120 +1,94 @@
 {% extends "base.html" %}
-{% block style %}
-  {% if heatmap %}
-    
-   html, body, #map-canvas {
-      height: 100%;
-      margin: 20px;
-      padding: 0px
-    }
-    #panel {
-      margin-top: 50px;
-      padding-top: 50px;
-      position: absolute;
-      top: 5px;
-      left: 50%;
-      margin-left: -180px;
-      z-index: 5;
-      background-color: #fff;
-      padding: 5px;
-      border: 1px solid #999;
-    }
-    #geojson {
-      margin: 20px;
-    }
-  {% endif %}
-{% endblock %}
 {% block head %}
-  {% if heatmap %}
-  
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-    <script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+  <script>
+    function initialize() {
 
-      // Adding 500 Data Points
-      var map, pointarray, heatmap;
+      var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 11,
 
-      var taxiData = [
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng({{ center.lat }}, {{ center.lng }}),
+
+        // How you would like to style the map. 
+        // This is where you would paste any style found on Snazzy Maps.
+        styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
+      };
+
+      // Get the HTML DOM element that will contain your map 
+      // We are using a div with id="map" seen below in the <body>
+      var mapElement = document.getElementById('map-canvas');
+
+      // Create the Google Map using our element and options defined above
+      var map = new google.maps.Map(mapElement, mapOptions);
+
+      var mapData = [
         {% for latlng in latlngs %}
           new google.maps.LatLng({{ latlng.lat }}, {{ latlng.lng }}),
         {% endfor %}
-
       ];
+      var pointArray = new google.maps.MVCArray(mapData);
 
-      function initialize() {
-        var mapOptions = {
-          zoom: 13,
-          center: new google.maps.LatLng({{ center.lat }}, {{ center.lng }}),
-          mapTypeId: google.maps.MapTypeId.SATELLITE
-        };
+      var heatmap = new google.maps.visualization.HeatmapLayer({
+        data: pointArray
+      });
+      heatmap.setMap(map);
+    }
 
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+    function toggleHeatmap() {
+      heatmap.setMap(heatmap.getMap() ? null : map);
+    }
 
-        var pointArray = new google.maps.MVCArray(taxiData);
+    function changeGradient() {
+      var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+      ]
+      heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+    }
 
-        heatmap = new google.maps.visualization.HeatmapLayer({
-          data: pointArray
-        });
+    function changeRadius() {
+      heatmap.set('radius', heatmap.get('radius') ? null : 20);
+    }
 
-        heatmap.setMap(map);
-      }
+    function changeOpacity() {
+      heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+    }
 
-      function toggleHeatmap() {
-        heatmap.setMap(heatmap.getMap() ? null : map);
-      }
-
-      function changeGradient() {
-        var gradient = [
-          'rgba(0, 255, 255, 0)',
-          'rgba(0, 255, 255, 1)',
-          'rgba(0, 191, 255, 1)',
-          'rgba(0, 127, 255, 1)',
-          'rgba(0, 63, 255, 1)',
-          'rgba(0, 0, 255, 1)',
-          'rgba(0, 0, 223, 1)',
-          'rgba(0, 0, 191, 1)',
-          'rgba(0, 0, 159, 1)',
-          'rgba(0, 0, 127, 1)',
-          'rgba(63, 0, 91, 1)',
-          'rgba(127, 0, 63, 1)',
-          'rgba(191, 0, 31, 1)',
-          'rgba(255, 0, 0, 1)'
-        ]
-        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-      }
-
-      function changeRadius() {
-        heatmap.set('radius', heatmap.get('radius') ? null : 20);
-      }
-
-      function changeOpacity() {
-        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-      }
-
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-
-
-  {% endif %}
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
 {% endblock %}
 {% block content %}
-    {% if heatmap == 'True' %}
-      <div id="panel">
-        <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-        <button onclick="changeGradient()">Change gradient</button>
-        <button onclick="changeRadius()">Change radius</button>
-        <button onclick="changeOpacity()">Change opacity</button>
-      </div>
-      <h3>Heatmap</h3>
-      <div id="map-canvas"></div>
-    {% endif %}
-    {% if geojson == 'True' %}
-      <div id="geojson">
-        <h3>Locations</h3>
-        <ul>
-          {% for gj in geojson_collection %}<li>{{ gj }}</li>{% endfor %}
-        </ul>
-      </div>
-    {% endif %}
+  <div class="container">
+    <div id="panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change gradient</button>
+      <button onclick="changeRadius()">Change radius</button>
+      <button onclick="changeOpacity()">Change opacity</button>
+    </div>
+    <h3>Heatmap</h3>
+  </div>
+  <div class="center-align" id="map-canvas"></div>
+  <div class="container">
+    <div id="geojson">
+      <h3>Locations</h3>
+      <ul>
+        {% for gj in geojson_collection %}<li>{{ gj }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
 {% endblock %}
 </html>
