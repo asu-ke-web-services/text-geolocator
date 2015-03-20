@@ -121,19 +121,21 @@ def MakeGeoJsonElement(location, existing_locations):
     """
     # P.PPL a populated place like a city, town or village
     ft = 'P.PPL'
-    # loc = Location.query.filter_by(
-    #     name=location,
-    #     featuretype=ft,
-    #     countrycode='US').order_by('id').first()
+    loc = Location.query.filter_by(
+        name=location,
+        featuretype=ft,
+        countrycode='US').order_by('id').first()
 
-    lon = -111.932338
-    lat = 33.418669
+    # lon = -111.932338
+    # lat = 33.418669
+    lon = 0
+    lat = 0
 
     # If there is no match, the locations will be 0,0.....
 
-    # if loc is not None:
-    #     lon = loc.longitude
-    #     lat = loc.latitude
+    if loc is not None:
+        lon = loc.longitude
+        lat = loc.latitude
 
     # Weight calculations
 

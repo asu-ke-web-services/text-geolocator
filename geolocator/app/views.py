@@ -2,11 +2,11 @@
 """
 Provides various URLs handles for the website
 """
-from flask import render_template, request
+from flask import render_template, render_template_string, request
 from app import app
 
 from nlp import LocationTagger
-import geojson_maker
+import geolocator
 
 
 @app.route('/')
@@ -50,10 +50,13 @@ def AllowedFile(filename):
 
 @app.route('/dbtest')
 def dbtest():
-    from app.models import Location
+    from app.models import Location, Feature
     location = Location.query.first()
-    print str(location)
-    return str(location)
+    feature = Feature.query.first()
+    return render_template(
+        'dbtest.html',
+        first_location=location,
+        first_feature=feature)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -89,9 +92,9 @@ def UploadFile():
             locations = tagger.TagLocations(text)
 
             geojson_collection = \
-                geojson_maker.MakeGeoJsonCollection(locations)
+                geolocator.MakeGeoJsonCollection(locations)
 
-            latlngs = geojson_maker.RetrieveLatLngs(geojson_collection)
+            latlngs = geolocator.RetrieveLatLngs(geojson_collection)
 
             return render_template(
                 'result.html',

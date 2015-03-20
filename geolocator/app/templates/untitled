@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Database Test</h1>
+  <h3>First Location returned from database: {{ first_location }}</h3>
+  <h3>First Feature returned from database: {{ first_feature }}</h3>
+{% endblock %}

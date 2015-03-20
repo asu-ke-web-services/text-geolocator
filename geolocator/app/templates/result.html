@@ -6,7 +6,7 @@
 
       var mapOptions = {
         // How zoomed in you want the map to start at (always required)
-        zoom: 11,
+        zoom: 2,
 
         // The latitude and longitude to center the map (always required)
         center: new google.maps.LatLng({{ center.lat }}, {{ center.lng }}),
@@ -73,12 +73,12 @@
 {% endblock %}
 {% block content %}
   <div class="container">
-    <div id="panel">
+<!--     <div id="panel">
       <button onclick="toggleHeatmap()">Toggle Heatmap</button>
       <button onclick="changeGradient()">Change gradient</button>
       <button onclick="changeRadius()">Change radius</button>
       <button onclick="changeOpacity()">Change opacity</button>
-    </div>
+    </div> -->
     <h3>Heatmap</h3>
   </div>
   <div class="center-align" id="map-canvas"></div>
@@ -88,6 +88,7 @@
       <ul>
         {% for gj in geojson_collection %}<li>{{ gj }}</li>{% endfor %}
       </ul>
+      {{ geojson_collection|e }}
     </div>
   </div>
 {% endblock %}
