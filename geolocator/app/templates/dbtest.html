@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="center-align">
+<div class="container">
   <h1>Database Test</h1>
   <h3>First Location returned from database: {{ first_location|e }}</h3>
+  <ul>
+  	<li>id = {{ first_location.id|e }}</li>
+  	<li>location = {{ first_location.location|e }}</li>
+  	<li>geonameid = {{ first_location.geonameid|e }}</li>
+  	<li>name = {{ first_location.name|e }}</li>
+  	<li>countrycode = {{ first_location.countrycode|e }}</li>
+  	<li>featureclass = {{ first_location.featureclass|e }}</li>
+  	<li>featurecode = {{ first_location.featurecode|e }}</li>
+  	<li>featuretype = {{ first_location.featuretype|e }}</li>
+  	<li>latitude = {{ first_location.latitude|e }}</li>
+  	<li>longitude = {{ first_location.longitude|e }}</li>
+  	<li>initial_weight = {{ first_location.initial_weight|e }}</li>
+  </ul>
   <h3>First Feature returned from database: {{ first_feature|e }}</h3>
+  <ul>
+  	<li>id = {{ first_feature.id|e }}</li>
+  	<li>featureclass = {{ first_feature.featureclass|e }}</li>
+  	<li>featurecode = {{ first_feature.featurecode|e }}</li>
+  	<li>code = {{ first_feature.code|e }}</li>
+  	<li>name = {{ first_feature.name|e }}</li>
+  	<li>description = {{ first_feature.description|e }}</li>
+  </ul>
 </div>
 {% endblock %}
