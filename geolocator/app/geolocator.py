@@ -6,10 +6,149 @@ import re
 from ast import literal_eval
 
 
+class LocationMatches(object):
+
+    def __init__(self, locations):
+        self.index = -1
+        self.locations = locations
+
+    def __iter__(self):
+        self.index = -1
+        return self
+
+    def next(self):
+        if self.index >= len(self.locations)-1:
+            raise StopIteration
+        else:
+            return self.locations[self.index]
+
+    def __repr__(self):
+        return "<LocationMatches(len(locations)=%s, locations=%s)" % (
+            str(len(self.locations)), str(self.locations))
+
+
+class GeoJSONer(object):
+
+    def __init__(self):
+        self.features = []
+        return
+
+    def _convert_to_feature(self, location):
+        """
+        Converts the given app.models.Location object to a geojson.Feature
+        object
+
+        :param app.models.Location location: Location object to convert
+
+        :returns: geojson.Feature
+        """
+        geometry = {
+            'type': 'Point',
+            'coordinates': [
+                location.latitude,
+                location.longitude
+            ]
+        }
+        properties = {
+            # 'weight': location.weight,
+            'weight': 1,
+            'name': location.name
+        }
+
+        feature = geojson.Feature(location.name, geometry, properties)
+        return feature
+
+    def append(self, location):
+        """
+        Converts the given Location object to a geojson.Feature object and
+        appends it to the feature list
+
+        :param app.models.Location location: Location object to append
+
+        :returns: None
+        """
+        feature = self._convert_to_feature(location)
+        self.features.append(feature)
+        return
+
+    def geojson(self):
+        """
+        Returns the features array as a geojson.FeatureCollection
+        """
+        return geojson.FeatureCollection(self.features)
+
+    def __repr__(self):
+        return "<GeoJSONer()>"
+
+
+class Geocoder(object):
+
+    FT = 'P.PPL'
+
+    def __init__(self):
+        return
+
+    def geocode(self, location):
+        """
+        Queries the geonames database and retrieves all matching locations
+
+        :param str location: name of location to query for
+
+        :returns: app.geolocator.LocationMatches object
+        """
+        matches = Location.query.filter_by(
+            name=location
+            # featuretype=ft
+        ).order_by('id').all()
+        return LocationMatches(matches)
+
+    def __repr__(self):
+        return "<Geocoder()>"
+
+
+class Geolocator(object):
+
+    def __init__(self):
+        self.geocoder = Geocoder()
+        self.geojsoner = GeoJSONer()
+        return
+
+    def geolocate(self, locations):
+        """
+        Given a list of tagged locations from the NLP tagger, this will
+        find the coordinates of each, apply weighting, and convert to geojson
+
+        :param list locations: list of app.models.Location objects to geolocate
+
+        :returns: None
+        """
+        for l in locations:
+            matches = self.geocoder.geocode(l)
+            self.geojsoner.append(matches)
+        return
+
+    def geojson(self):
+        """
+        Returns the geojson of all geolocated locations
+
+        :returns: geojson.FeatureCollection
+        """
+        return self.geojsoner.geojson()
+
+    def __repr__(self):
+        return "<Geolocator()>"
+
+
 #takes in geojson looks for coordinates
 #keep track of what location = what location name
 # new google.maps.Latlng(37.785, -122.443)
 # geojson points need to be switched.
+
+class LatLng():
+
+    def __init__(self, lat, lng):
+        self.lat = lat
+        self.lng = lng
 
 
 def RetrieveLatLngs(feature_collection):
@@ -28,13 +167,6 @@ def RetrieveLatLngs(feature_collection):
     for n in coordinates_set:
         latlngs.append(LatLng(n[0], n[1]))
     return latlngs
-
-
-class LatLng():
-
-    def __init__(self, lat, lng):
-        self.lat = lat
-        self.lng = lng
 
 
 def sam_MakeGeoJsonCollection(arg1):
@@ -94,14 +226,6 @@ def sam_MakeGeoJsonCollection(arg1):
 from app.models import Location
 
 
-def FeaturePoint(lon, lat, weight, name):
-    geometry = {'type': 'Point', 'coordinates': [lat, lon]}
-    properties = {'weight': weight, 'name': name}
-
-    # Feature takes in: id= "", geometry json, property json
-
-    feature = geojson.Feature(name, geometry, properties)
-    return feature
 
 
 def MakeGeoJsonElement(location, existing_locations):
@@ -157,56 +281,3 @@ def MakeGeoJsonCollection(locations):
 
     # Convert FeaturePoints List to FeatureCollection
     return geojson.FeatureCollection(feature_array)
-
-
-# class Coordinates():
-
-#     def __init__(self, latitude, longitude):
-#         self.latitude = latitude
-#         self.longitude = longitude
-
-#     def __repr__(self):
-#         return "<Coordinates(latitude=%f, longitude=%f)>" % \
-#             (self.latitude, self.longitude)
-
-
-# class GeoJsonProperties():
-
-#     def __init__(self, weight, name):
-#         self.weight = weight
-#         self.name = name
-
-#     def __repr__(self):
-#         return "<GeoJsonProperties(weight=%d, name=%s)>" % \
-#             (self.weight, self.name)
-
-
-# class GeoJsonGeometry():
-
-#     def __init__(self, typ, coordinates):
-#         self.typ = typ
-#         self.Coordinates = coordinates
-
-#     def __repr__(self):
-#         return "<GeoJsonGeometry(typ=%s, coordinates=%s)>" % \
-#             (self.typ, self.coordinates)
-
-
-# class GeoJson():
-
-#     def __init__(self, typ="Feature", properties=None, geometry=None):
-#         self.typ = typ
-#         self.Properties = properties
-#         self.Geometry = geometry
-
-#     def __repr__(self):
-#         return "<GeoJson(typ=%s, properties=%s, geometry=%s)>" % \
-#             (self.typ, self.Properties, self.Geometry)
-
-
-# class GeoJsonMaker():
-
-#     def __init__(self, locations):
-#         self.locations = locations
-
-#     def MakeGeoJson(self):
