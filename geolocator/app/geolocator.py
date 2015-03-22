@@ -3,10 +3,42 @@ import geojson
 # import json
 # import sets
 import re
+from app import db
 from ast import literal_eval
 
 
+class Weightifier(object):
+    """
+    Applies a weighting algorithm to all tagged locations to improve the
+    app's accuracy when displaying locations in the heatmap
+    """
+
+    def __init__(self):
+        return
+
+    def _get_admin(self):
+        """
+        Retrieve the app.models.Location for a Location's admin code
+        """
+        query = db.session.execute("""SELECT l.name
+            FROM location l
+            INNER JOIN feature f ON f.code = l.featuretype
+                AND (f.name = 'whatever'
+                    OR f.featurecode = 'whatever'
+                    OR <someother_column>)
+            WHERE <somecolumn> = <somevalue>""")
+        x = 1 / 0
+        return
+
+    def __repr__(self):
+        return "<Weightifier()>"
+
+
 class LocationMatches(object):
+    """
+    A wrapper for a list of app.models.Location objects. Also serves as an
+    iterator.
+    """
 
     def __init__(self, locations):
         self.index = -1
@@ -20,6 +52,7 @@ class LocationMatches(object):
         if self.index >= len(self.locations)-1:
             raise StopIteration
         else:
+            self.index += 1
             return self.locations[self.index]
 
     def __repr__(self):
@@ -28,6 +61,9 @@ class LocationMatches(object):
 
 
 class GeoJSONer(object):
+    """
+    Responsible for geojson creation and manipulation.
+    """
 
     def __init__(self):
         self.features = []
@@ -82,6 +118,9 @@ class GeoJSONer(object):
 
 
 class Geocoder(object):
+    """
+    The database wrapper. Used to find coordinates of tagged locations.
+    """
 
     FT = 'P.PPL'
 
@@ -98,7 +137,6 @@ class Geocoder(object):
         """
         matches = Location.query.filter_by(
             name=location
-            # featuretype=ft
         ).order_by('id').all()
         return LocationMatches(matches)
 
@@ -107,6 +145,10 @@ class Geocoder(object):
 
 
 class Geolocator(object):
+    """
+    Master geolocation class. Uses Geocoder and GeoJSONer and Weightifier to
+    find coordinates for and apply weights to all tagged locations.
+    """
 
     def __init__(self):
         self.geocoder = Geocoder()
@@ -124,7 +166,10 @@ class Geolocator(object):
         """
         for l in locations:
             matches = self.geocoder.geocode(l)
-            self.geojsoner.append(matches)
+            for match in matches:
+                self.geojsoner.append(match)
+                # print 'appended ' + str(match)
+            # print 'yes'
         return
 
     def geojson(self):
@@ -225,6 +270,7 @@ def sam_MakeGeoJsonCollection(arg1):
 # import geojson
 from app.models import Location
 
+
 def FeaturePoint(lon, lat, weight, name):
     geometry = {'type': 'Point', 'coordinates': [lat, lon]}
     properties = {'weight': weight, 'name': name}
@@ -253,7 +299,9 @@ def MakeGeoJsonElement(location, existing_locations):
     # P.PPL a populated place like a city, town or village
     ft = 'P.PPL'
     loc = Location.query.filter_by(
-        name=location).order_by('id').first()
+        name=location,
+        featuretype=ft,
+        countrycode='US').order_by('id').first()
 
     # lon = -111.932338
     # lat = 33.418669

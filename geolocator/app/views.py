@@ -6,7 +6,7 @@ from flask import render_template, render_template_string, request, jsonify
 from app import app
 
 from nlp import LocationTagger
-import geolocator
+from geolocator import Geolocator, RetrieveLatLngs
 
 
 @app.route('/')
@@ -91,18 +91,26 @@ def UploadFile():
             tagger = LocationTagger()
             locations = tagger.TagLocations(text)
 
-            geojson_collection = \
-                geolocator.MakeGeoJsonCollection(locations)
+            geolocator = Geolocator()
+            geolocator.geolocate(locations)
+            geojson = geolocator.geojson()
+            geojson_jsonify = jsonify(**geojson)
+            # geojson_collection = \
+            #     geolocator.MakeGeoJsonCollection(locations)
 
-            latlngs = geolocator.RetrieveLatLngs(geojson_collection)
-            geojson_jsonify =  jsonify(**geojson_collection)
+            latlngs = RetrieveLatLngs(geojson)
 
             return render_template(
                 'result.html',
-                geojson_jsonify =  geojson_jsonify,
                 latlngs=latlngs,
                 center=latlngs[0],
-                geojson_collection=geojson_collection
+                geojson_collection=geojson,
+                geojson_jsonify=geojson_jsonify
             )
-    return '''<!doctype html><title>Upload new File</title><body>
-           <p>No uploaded file detected.</p></body>'''
+    return render_template_string("""
+        {% extends "base.html" %}
+        {% block content %}
+        <div class="center">
+            <h1>No uploaded file detected.</h1>
+        </div>
+        {% endblock %}""")
