@@ -2,7 +2,7 @@ dbdata:
     image: busybox:latest
     command: echo dbdata
     volumes:
-        - /tmp/app:/var/lib/postgresql/data
+        - /var/appdb:/var/lib/postgresql/data
 db:
     build: db
     ports:
