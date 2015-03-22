@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block head %}
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+  <script src="http://danml.com/js/download.js"></script>
   <script>
     function initialize() {
 
       var mapOptions = {
         // How zoomed in you want the map to start at (always required)
-        zoom: 2,
+        zoom: 10,
 
         // The latitude and longitude to center the map (always required)
         center: new google.maps.LatLng({{ center.lat }}, {{ center.lng }}),
@@ -84,10 +85,17 @@
   <div class="center-align" id="map-canvas"></div>
   <div class="container">
     <div id="geojson">
+
+      <button id = "download_geojson">Download GeoJson </button>
+
+        <!-- Event listener to download geojson -->
+      <script>
+        document.getElementById("download_geojson").addEventListener("click", function(){
+          var geojson_file = '{{ geojson_collection|tojson|safe }}';
+            download(geojson_file, "untitled.geojson", "text/plain");
+        });
+      </script>
       <h3>Locations</h3>
-      <ul>
-        {% for gj in geojson_collection %}<li>{{ gj }}</li>{% endfor %}
-      </ul>
       {{ geojson_collection|e }}
     </div>
   </div>
