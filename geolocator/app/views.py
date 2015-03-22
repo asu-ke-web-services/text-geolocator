@@ -92,7 +92,7 @@ def UploadFile():
             locations = tagger.TagLocations(text)
 
             geolocator = Geolocator()
-            geolocator.geolocate(locations)
+            geolocator.geolocate(locations, weights=False, accuracy=1)
             geojson = geolocator.geojson()
             geojson_jsonify = jsonify(**geojson)
             # geojson_collection = \

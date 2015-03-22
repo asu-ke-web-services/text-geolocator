@@ -1,0 +1,1 @@
+fig run web nosetests --with-coverage --cover-package=geolocator --cover-erase --cover-html-dir=/code/coverage_report --cover-html geolocator

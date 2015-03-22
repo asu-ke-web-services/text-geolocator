@@ -13,11 +13,12 @@ Submodules
 
 .. toctree::
 
-   app.geojson_maker
+   app.geolocator
    app.models
    app.nlp
    app.services
    app.views
+   app.weighter
 
 Module contents
 ---------------

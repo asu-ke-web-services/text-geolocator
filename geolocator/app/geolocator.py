@@ -1,43 +1,130 @@
 #!/usr/bin/python
+"""
+    Example Queries:
+        * Returns all locations named Phoenix:
+          SELECT l.name
+          FROM location l
+          WHERE l.name = 'Phoenix'
+        * Returns all locations named Phoenix in the United States:
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.name = 'Phoenix'
+            AND l.countrycode = 'US'
+        * Returns just Arizona (the state):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM1'
+            AND l.featureclass = 'A'
+        * Returns just Maricopa County (in Arizona):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin2code = '013'
+            AND l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM2'
+
+    The above queries can be executed like this:
+
+        result = db.engine.execute(sql)
+        hits = []
+        for row in result:
+            hits.append(row)
+        return hits
+
+        hits will then contain all the rows of the result of the query
+
+"""
 import geojson
-# import json
-# import sets
 import re
-from app import db
 from ast import literal_eval
+from app.models import Location
+from app.weighter import Weightifier
+
+ADMIN_FEATURE_CLASS = 'A'
+ADMIN_FEATURE_CODES = [
+    'ADM1',  # admin1
+    'ADM2',  # admin2
+    'ADM3',  # admin3
+    'ADM4'   # admin4
+]
+POPULATED_PLACE_FEATURE_CLASS = 'P'
+POPULATED_PLACE_FEATURE_CODES = [
+    'PPLA',   # admin1
+    'PPLA2',  # admin2
+    'PPLA3',  # admin3
+    'PPLA4'   # admin4
+]
 
 
-class Weightifier(object):
+class LocationWrap(object):
     """
-    Applies a weighting algorithm to all tagged locations to improve the
-    app's accuracy when displaying locations in the heatmap
+    Wrapper for an app.models.Location object. Adds needed weight attributes.
     """
+    def __init__(self, location):
+        self.location = location
+        self._weight = 0
+        self.adminnames = []
 
-    def __init__(self):
+    def name(self):
+        return self.location.name
+
+    def latitude(self):
+        return self.location.latitude
+
+    def longitude(self):
+        return self.location.longitude
+
+    def weight(self):
+        return self._weight
+
+    def geonameid(self):
+        return self.location.geonameid
+
+    def set_adminnames(self, location_admin_names):
+        self.adminnames = location_admin_names
         return
 
-    def _get_admin(self):
+    def increment_weight_on_match(self, location_name):
         """
-        Retrieve the app.models.Location for a Location's admin code
+        If location_name matches either this location's name or any of this
+        location's admin names, then weight += 1
+
+        :param str location_name: a name of a location
+
+        :returns: None
         """
-        query = db.session.execute("""SELECT l.name
-            FROM location l
-            INNER JOIN feature f ON f.code = l.featuretype
-                AND (f.name = 'whatever'
-                    OR f.featurecode = 'whatever'
-                    OR <someother_column>)
-            WHERE <somecolumn> = <somevalue>""")
-        x = 1 / 0
+        if (self.location.name == location_name or
+                self.adminnames.match(location_name)):
+            self._weight += 1
         return
+
+    def names_list(self):
+        """
+        Returns location's name and all admin names as one list
+        EDIT: Returns only admin names
+
+        :returns: list of names
+        """
+        names = []
+        # names.append(self.location.name)
+        names.extend(self.adminnames.list())
+        return names
 
     def __repr__(self):
-        return "<Weightifier()>"
+        return "<LocationWrap(location=%s, weight=%s)" % (
+            str(self.location.name), str(self._weight))
 
 
-class LocationMatches(object):
+class LocationHits(object):
     """
-    A wrapper for a list of app.models.Location objects. Also serves as an
-    iterator.
+    A wrapper for a list of app.geolocator.LocationWrap objects. Also serves as
+    an iterator.
     """
 
     def __init__(self, locations):
@@ -55,9 +142,71 @@ class LocationMatches(object):
             self.index += 1
             return self.locations[self.index]
 
+    def increment_weight_on_match(self, location_name):
+        """
+        Checks each location to see if it or any of its admin names matches
+        location_name. If it does, then it increments its weight.
+
+        :param str location_name: name of a location
+
+        :returns: None
+        """
+        for l in self.locations:
+            l.increment_weight_on_match(location_name)
+        return
+
+    def __len__(self):
+        length = 0
+        if self.locations:
+            length = len(self.locations)
+        return length
+
     def __repr__(self):
-        return "<LocationMatches(len(locations)=%s, locations=%s)" % (
+        return "<LocationHits(len(locations)=%s, locations=%s)" % (
             str(len(self.locations)), str(self.locations))
+
+
+class LocationHitsContainer(object):
+    """
+    A container for a one or more app.geolocator.LocationHits objects
+    """
+    def __init__(self):
+        self.hits = []
+
+    def append(self, location_hits):
+        """
+        Appends the given LocationHits object to the hits list
+
+        :param app.geolocator.LocationHits location_hits: object to append
+
+        :returns: None
+        """
+        self.hits.append(location_hits)
+
+    def increment_weight_on_match(self, location_name):
+        """
+        Checks each location to see if it or any of its admin names matches
+        location_name. If it does, then it increments its weight.
+
+        :param str location_name: name of a location
+
+        :returns: None
+        """
+        for hits in self.hits:
+            hits.increment_weight_on_match(location_name)
+        return
+
+    def __len__(self):
+        """
+        Returns total number of contained locations
+        """
+        length = 0
+        for h in self.hits:
+            length += len(h)
+        return length
+
+    def __repr__(self):
+        return "<LocationHitsContainer(len(hits)=%s)>" % (str(len(self.hits)))
 
 
 class GeoJSONer(object):
@@ -71,35 +220,34 @@ class GeoJSONer(object):
 
     def _convert_to_feature(self, location):
         """
-        Converts the given app.models.Location object to a geojson.Feature
+        Converts the given LocationWrap object to a geojson.Feature
         object
 
-        :param app.models.Location location: Location object to convert
+        :param app.geolocator.LocationWrap location: object to convert
 
         :returns: geojson.Feature
         """
         geometry = {
             'type': 'Point',
             'coordinates': [
-                location.latitude,
-                location.longitude
+                location.latitude(),
+                location.longitude()
             ]
         }
         properties = {
-            # 'weight': location.weight,
-            'weight': 1,
-            'name': location.name
+            'weight': location.weight(),
+            'name': location.name()
         }
 
-        feature = geojson.Feature(location.name, geometry, properties)
+        feature = geojson.Feature(location.name(), geometry, properties)
         return feature
 
     def append(self, location):
         """
-        Converts the given Location object to a geojson.Feature object and
+        Converts the given LocationWrap object to a geojson.Feature object and
         appends it to the feature list
 
-        :param app.models.Location location: Location object to append
+        :param app.geolocator.LocationWrap location: object to append
 
         :returns: None
         """
@@ -119,26 +267,38 @@ class GeoJSONer(object):
 
 class Geocoder(object):
     """
-    The database wrapper. Used to find coordinates of tagged locations.
+    Used to find coordinates of tagged locations
     """
 
     FT = 'P.PPL'
+    """feature type denoting a populated place (doesn't quite work)"""
 
     def __init__(self):
         return
+
+    def _wrap_location(self, location):
+        """
+        Converts the given Location object to a LocationWrap
+
+        :param app.models.Location location: location object to convert
+
+        :returns: app.geolocator.LocationWrap
+        """
+        return LocationWrap(location)
 
     def geocode(self, location):
         """
         Queries the geonames database and retrieves all matching locations
 
-        :param str location: name of location to query for
+        :param str location: location name to query for
 
-        :returns: app.geolocator.LocationMatches object
+        :returns: app.geolocator.LocationHits object
         """
         matches = Location.query.filter_by(
-            name=location
-        ).order_by('id').all()
-        return LocationMatches(matches)
+            name=location,
+            countrycode='US').order_by('id').all()
+        matches = map(self._wrap_location, matches)
+        return LocationHits(matches)
 
     def __repr__(self):
         return "<Geocoder()>"
@@ -153,23 +313,44 @@ class Geolocator(object):
     def __init__(self):
         self.geocoder = Geocoder()
         self.geojsoner = GeoJSONer()
+        self.weightifier = Weightifier()
         return
 
-    def geolocate(self, locations):
+    def geolocate(self, locations, weights=True, accuracy=1):
         """
-        Given a list of tagged locations from the NLP tagger, this will
-        find the coordinates of each, apply weighting, and convert to geojson
+        Given a list of tagged locations from the NLP tagger, this will convert
+        each location to a app.geolocator.LocationWrap, find the coordinates of
+        each, apply weighting, and convert to geojson
 
         :param list locations: list of app.models.Location objects to geolocate
+        :param bool weights: flag indicating if weights should be calculated or
+        not (defaults to True)
+        :param int accuracy: level of accuracy to use when calculating weights
+        (defaults to 1) (must be greater than 0 and less than or equal to 5)
+            * 1 - weights will be found for all matches to countrycode
+            * 2 - weights will be found for all matches to the above and
+            admin1code
+            * 3 - weights will be found for all matches to the above and
+            admin2code
+            * 4 - weights will be found for all matches to the above and
+            admin3code
+            * 5 - weights will be found for all matches to the above and
+            admin4code
 
         :returns: None
         """
+        container = LocationHitsContainer()
         for l in locations:
-            matches = self.geocoder.geocode(l)
-            for match in matches:
-                self.geojsoner.append(match)
-                # print 'appended ' + str(match)
-            # print 'yes'
+            container.append(self.geocoder.geocode(l))
+
+        if weights:
+            if accuracy > 5:
+                accuracy = 5
+            container = self.weightifier.weightify(container, accuracy)
+
+        for hits in container.hits:
+            for l in hits:
+                self.geojsoner.append(l)
         return
 
     def geojson(self):
@@ -184,8 +365,8 @@ class Geolocator(object):
         return "<Geolocator()>"
 
 
-#takes in geojson looks for coordinates
-#keep track of what location = what location name
+# takes in geojson looks for coordinates
+# keep track of what location = what location name
 # new google.maps.Latlng(37.785, -122.443)
 # geojson points need to be switched.
 
@@ -201,136 +382,14 @@ def RetrieveLatLngs(feature_collection):
         r"\[\-*\d+\.*\d*\,\s\-*\d+\.*\d*\]",
         str(feature_collection))
     coordinates_set = []
-    #go through p list
+    # go through p list
     for n in p:
         m = literal_eval(n)
         coordinates_set.append(m)
-        #push n to
-    #now can access elements in coordinates_set as a set.
+        # push n to
+    # now can access elements in coordinates_set as a set.
     print coordinates_set
     latlngs = []
     for n in coordinates_set:
         latlngs.append(LatLng(n[0], n[1]))
     return latlngs
-
-
-def sam_MakeGeoJsonCollection(arg1):
-    l = [u'Phoenix', u'Arizona', u'Austrailia', u'Flagstaff']
-    coordinate_array = [[131.87, -25.76], [138.12, -25.04], [140.14, -21.04],
-                        [144.14, -27.41]]
-    stringlist = [str(x) for x in l]
-    # unicode to string, assuming there will be no characters that lie
-    # outside of ascii range
-    feature_array = []
-    nodublicate_array = []
-    list(set(stringlist))
-    coordinate_lat = 0
-    coordinate_lon = 0
-    [nodublicate_array.append(item) for item in stringlist if item not in nodublicate_array]
-    for x in nodublicate_array:
-       #lookup x in database
-        lon = coordinate_array[coordinate_lon][coordinate_lat]
-        coordinate_lat = coordinate_lat + 1
-        lat = coordinate_array[coordinate_lon][coordinate_lat]
-        coordinate_lon = coordinate_lon + 1
-        coordinate_lat = coordinate_lat - 1
-        #weight calculations
-        weight = 0
-        for y in stringlist:
-            if x == y:
-                weight = weight + 1
-                print weight
-        name = x
-
-        feature_type = FeaturePoint(lon, lat, weight, name)
-        feature_array.append(feature_type)
-        #feature collection takes in an array
-    feature_collection = geojson.FeatureCollection(feature_array)
-    print feature_collection
-    #print json.dumps(feature_collection, sort_keys=True,
-    #   indent=4, separators=(',', ': '))
-    #print  feature_collection
-    return geojson_magicalparsing(feature_collection)
-    print "\n\n\n\n"
-    #print type(feature_collection)
-    #print json.dumps(feature_collection, sort_keys=True,
-    #   indent=4, separators=(',', ': '))
-
-# if __name__ == '__main__':
-#     main()
-
-#pip install geojson
-#pip install --upgrade geojson
-# to test: in terminal:
-    #python
-    #from geojson import Point
-
-
-# -*- coding: utf-8 -*-
-# import geojson
-from app.models import Location
-
-
-def FeaturePoint(lon, lat, weight, name):
-    geometry = {'type': 'Point', 'coordinates': [lat, lon]}
-    properties = {'weight': weight, 'name': name}
-
-    # Feature takes in: id= "", geometry json, property json
-
-    feature = geojson.Feature(name, geometry, properties)
-    return feature
-
-
-def MakeGeoJsonElement(location, existing_locations):
-    """Gets the first hit that it gets with the given location name.
-    It only searches the name instead of the other parameters.
-    Also because of first hit, the accuracy is not very good.
-    Will need to add additional logic for checking"""
-
-    """
-    Right now these values are hard coded until the results can be improved.
-
-
-    **************
-    Sam's edit: commented out database queries for hard coded values.
-
-    **************
-    """
-    # P.PPL a populated place like a city, town or village
-    ft = 'P.PPL'
-    loc = Location.query.filter_by(
-        name=location,
-        featuretype=ft,
-        countrycode='US').order_by('id').first()
-
-    # lon = -111.932338
-    # lat = 33.418669
-    lon = 0
-    lat = 0
-
-    # If there is no match, the locations will be 0,0.....
-
-    if loc is not None:
-        lon = loc.longitude
-        lat = loc.latitude
-
-    # Weight calculations
-
-    weight = 0
-    for y in existing_locations:
-        if location == y:
-            weight = weight + 1
-    name = location
-
-    return FeaturePoint(lon, lat, weight, name)
-
-
-def MakeGeoJsonCollection(locations):
-
-    # Turn locations into FeaturePoints
-    feature_array = []
-    for l in locations:
-        feature_array.append(MakeGeoJsonElement(l, locations))
-
-    # Convert FeaturePoints List to FeatureCollection
-    return geojson.FeatureCollection(feature_array)

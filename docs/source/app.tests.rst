@@ -6,9 +6,9 @@ Submodules
 
 .. toctree::
 
+   app.tests.test_geolocator
    app.tests.test_nlp
-   app.tests.test_nlp_old
-   app.tests.tests
+   app.tests.test_weighter
 
 Module contents
 ---------------
