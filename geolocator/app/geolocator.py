@@ -225,7 +225,14 @@ def sam_MakeGeoJsonCollection(arg1):
 # import geojson
 from app.models import Location
 
+def FeaturePoint(lon, lat, weight, name):
+    geometry = {'type': 'Point', 'coordinates': [lat, lon]}
+    properties = {'weight': weight, 'name': name}
 
+    # Feature takes in: id= "", geometry json, property json
+
+    feature = geojson.Feature(name, geometry, properties)
+    return feature
 
 
 def MakeGeoJsonElement(location, existing_locations):
@@ -246,9 +253,7 @@ def MakeGeoJsonElement(location, existing_locations):
     # P.PPL a populated place like a city, town or village
     ft = 'P.PPL'
     loc = Location.query.filter_by(
-        name=location,
-        featuretype=ft,
-        countrycode='US').order_by('id').first()
+        name=location).order_by('id').first()
 
     # lon = -111.932338
     # lat = 33.418669

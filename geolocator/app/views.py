@@ -2,7 +2,7 @@
 """
 Provides various URLs handles for the website
 """
-from flask import render_template, render_template_string, request
+from flask import render_template, render_template_string, request, jsonify
 from app import app
 
 from nlp import LocationTagger
@@ -95,9 +95,11 @@ def UploadFile():
                 geolocator.MakeGeoJsonCollection(locations)
 
             latlngs = geolocator.RetrieveLatLngs(geojson_collection)
+            geojson_jsonify =  jsonify(**geojson_collection)
 
             return render_template(
                 'result.html',
+                geojson_jsonify =  geojson_jsonify,
                 latlngs=latlngs,
                 center=latlngs[0],
                 geojson_collection=geojson_collection
