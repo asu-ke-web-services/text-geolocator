@@ -116,6 +116,11 @@ def UploadFile():
         {% endblock %}""")
 
 
+@app.route('/examples')
+def examples():
+    return render_template('examples.html')
+
+
 @app.route('/examples/weights_off')
 def example_weights_off():
     return render_template('example_weights_off.html')
