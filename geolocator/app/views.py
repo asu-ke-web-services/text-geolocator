@@ -140,3 +140,8 @@ def example_weights_off():
 @app.route('/examples/weights_on_accuracy_1')
 def example_weights_on_acc_1():
     return render_template('example_weights_on_acc_1.html')
+
+
+@app.route('/examples/weights_on_accuracy_2')
+def example_weights_on_acc_2():
+    return render_template('example_weights_on_acc_2.html')

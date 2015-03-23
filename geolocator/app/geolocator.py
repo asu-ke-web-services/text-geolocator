@@ -382,9 +382,14 @@ class Geolocator(object):
 
 class LatLng():
 
-    def __init__(self, lat, lng):
+    def __init__(self, identity, lat, lng):
+        self.identity = identity
         self.lat = lat
         self.lng = lng
+
+    def __repr__(self):
+        return "<LatLng(identity=%s, lat=%s, lng=%s)>" % (
+            str(self.identity), str(self.lat), str(self.lng))
 
 
 def RetrieveLatLngs(feature_collection):
@@ -400,6 +405,6 @@ def RetrieveLatLngs(feature_collection):
     # now can access elements in coordinates_set as a set.
     print coordinates_set
     latlngs = []
-    for n in coordinates_set:
-        latlngs.append(LatLng(n[0], n[1]))
+    for i, n in enumerate(coordinates_set):
+        latlngs.append(LatLng(i, n[0], n[1]))
     return latlngs

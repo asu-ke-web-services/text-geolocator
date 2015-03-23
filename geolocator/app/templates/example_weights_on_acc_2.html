@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Team Geolocators">
+
+    <title></title>
+
+    
+
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+
+  <script src="http://danml.com/js/download.js"></script>
+
+  <script>
+
+    function initialize() {
+
+
+
+      var mapOptions = {
+
+        // How zoomed in you want the map to start at (always required)
+
+        zoom: 10,
+
+
+
+        // The latitude and longitude to center the map (always required)
+
+        center: new google.maps.LatLng(29.64605, -89.93979),
+
+
+
+        // How you would like to style the map. 
+
+        // This is where you would paste any style found on Snazzy Maps.
+
+        styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
+
+      };
+
+
+
+      // Get the HTML DOM element that will contain your map 
+
+      // We are using a div with id="map" seen below in the <body>
+
+      var mapElement = document.getElementById('map-canvas');
+
+
+
+      // Create the Google Map using our element and options defined above
+
+      var map = new google.maps.Map(mapElement, mapOptions);
+
+      
+
+      var mapData = [
+
+        
+
+          new google.maps.LatLng(29.64605, -89.93979),
+
+        
+
+          new google.maps.LatLng(29.3819, -98.54168),
+
+        
+
+          new google.maps.LatLng(40.47788, -74.31293),
+
+        
+
+          new google.maps.LatLng(40.52983, -74.34098),
+
+        
+
+          new google.maps.LatLng(33.44838, -112.07404),
+
+        
+
+          new google.maps.LatLng(32.78904, -92.95766),
+
+        
+
+          new google.maps.LatLng(30.78963, -95.468),
+
+        
+
+
+
+      ];
+
+      var infoWindow = new google.maps.InfoWindow(); /*info window*/
+
+
+
+      var circles = [
+
+        
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(29.64605, -89.93979),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 0 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(29.3819, -98.54168),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 1 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(40.47788, -74.31293),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 2 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(40.52983, -74.34098),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 3 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(33.44838, -112.07404),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 4 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(32.78904, -92.95766),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 5 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+          new google.maps.Circle({
+
+            center : new google.maps.LatLng(30.78963, -95.468),
+
+            clickable: true,
+
+            strokeColor: '#FF0000',
+
+            strokeOpacity: 0,
+
+            strokeWeight: 2,
+
+            fillColor: '#FF0000',
+
+            fillOpacity: 0,
+
+            radius: 20000,
+
+            map:map,
+
+            id: 6 /*need to change latlng to distribute id num (int) */
+
+          }),
+
+          
+
+
+
+/*          var infowindow = new google.maps.infowindow({
+
+            content: 'Latitude: ' + 'longitude:' + '<br>(input type = "checkbox" name = "blah" value = "blah" /><input type = "button" value = "Is this a correct location?"'
+
+          });*/
+
+          ]
+
+      for (i in circles) {
+
+        google.maps.event.addListener(circles[i], 'mouseover', (function(circles, i) {
+
+              return function() {
+
+                  infoWindow.setContent("Id: " + circles[i].id + "\n Location: " + circles[i].center);
+
+                  infoWindow.setPosition(circles[i].getCenter());
+
+                  infoWindow.open(map);
+
+              }
+
+            })(circles, i));
+
+      }
+
+
+
+
+
+
+
+      var pointArray = new google.maps.MVCArray(mapData);
+
+
+
+      var heatmap = new google.maps.visualization.HeatmapLayer({
+
+        data: pointArray
+
+      });
+
+      
+
+      heatmap.setMap(map);
+
+      circles.setMap(map);
+
+    }
+
+
+
+    function toggleHeatmap() {
+
+      heatmap.setMap(heatmap.getMap() ? null : map);
+
+    }
+
+
+
+    function changeGradient() {
+
+      var gradient = [
+
+        'rgba(0, 255, 255, 0)',
+
+        'rgba(0, 255, 255, 1)',
+
+        'rgba(0, 191, 255, 1)',
+
+        'rgba(0, 127, 255, 1)',
+
+        'rgba(0, 63, 255, 1)',
+
+        'rgba(0, 0, 255, 1)',
+
+        'rgba(0, 0, 223, 1)',
+
+        'rgba(0, 0, 191, 1)',
+
+        'rgba(0, 0, 159, 1)',
+
+        'rgba(0, 0, 127, 1)',
+
+        'rgba(63, 0, 91, 1)',
+
+        'rgba(127, 0, 63, 1)',
+
+        'rgba(191, 0, 31, 1)',
+
+        'rgba(255, 0, 0, 1)'
+
+      ]
+
+      heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+
+    }
+
+
+
+    function changeRadius() {
+
+      heatmap.set('radius', heatmap.get('radius') ? null : 20);
+
+    }
+
+
+
+    function changeOpacity() {
+
+      heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+
+    }
+
+
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+
+
+
+    <link href="../static/css/geolocator.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../static/css/starter_template.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- Navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home">Text-Geolocator</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/home#about">About</a></li>
+            <li><a href="/home#contact">Contact</a></li>
+            <li><a href="/examples">Examples</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <!-- Content Container -->
+    <!-- <div id="content"> -->
+    
+
+  <div class="container">
+
+<!--     <div id="panel">
+
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+
+      <button onclick="changeGradient()">Change gradient</button>
+
+      <button onclick="changeRadius()">Change radius</button>
+
+      <button onclick="changeOpacity()">Change opacity</button>
+
+    </div> -->
+
+    <h3>Heatmap</h3>
+
+  </div>
+
+  <div class="center-align" id="map-canvas"></div>
+
+  <div class="container">
+
+    <div id="geojson">
+
+
+
+      <button id = "download_geojson">Download GeoJson </button>
+
+
+
+        <!-- Event listener to download geojson -->
+
+      <script>
+
+        document.getElementById("download_geojson").addEventListener("click", function(){
+
+          var geojson_file = '{"features": [{"geometry": {"coordinates": [29.64605, -89.93979], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [29.3819, -98.54168], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [40.47788, -74.31293], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [40.52983, -74.34098], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [33.44838, -112.07404], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [32.78904, -92.95766], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 23}, "type": "Feature"}, {"geometry": {"coordinates": [30.78963, -95.468], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 23}, "type": "Feature"}], "type": "FeatureCollection"}';
+
+            download(geojson_file, "untitled.geojson", "text/plain");
+
+        });
+
+      </script>
+
+      <h3>Locations</h3>
+
+      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [29.64605, -89.93979], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [29.3819, -98.54168], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.47788, -74.31293], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.52983, -74.34098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.44838, -112.07404], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.78904, -92.95766], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 23}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.78963, -95.468], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 23}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
+
+    </div>
+
+  </div>
+
+
+    <!-- </div> -->
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+  </body>
+</html>

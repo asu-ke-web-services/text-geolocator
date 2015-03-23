@@ -231,7 +231,8 @@ class AdminNameGetter(object):
         query = Query([self.SELECT], [self.FROM], wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result
+        if result:
+            return result[0]
 
     def _admin3name(self):
         """
@@ -251,7 +252,8 @@ class AdminNameGetter(object):
         query = Query([self.SELECT], [self.FROM], wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result
+        if result:
+            return result[0]
 
     def _admin2name(self):
         """
@@ -270,7 +272,8 @@ class AdminNameGetter(object):
         query = Query([self.SELECT], [self.FROM], wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result[0]
+        if result:
+            return result[0]
 
     def _admin1name(self):
         """
@@ -288,7 +291,8 @@ class AdminNameGetter(object):
         query = Query([self.SELECT], [self.FROM], wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result[0]
+        if result:
+            return result[0]
 
     def _countryname(self):
         """
@@ -302,7 +306,8 @@ class AdminNameGetter(object):
         query = Query(selects, froms, wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result[0]
+        if result:
+            return result[0]
 
     def adminnames(self):
         """
