@@ -118,6 +118,11 @@ class StanfordNerTaggerTests(unittest.TestCase):
         """
         assert isinstance(self.Tagger.Tagger, NERTagger)
 
+    def test_repre(self):
+	#Tests the __repr__ for correct output
+	placeh = self.Tagger.__repr__()
+	assert placeh == "<StanfordNerTagger(Tagger=%s)>" % (self.Tagger.Tagger)
+
     def test_Tag_symbols_stop(self):
         """
         Verifies that the tagger stops at the following symbols:
@@ -231,7 +236,6 @@ class LocationTaggerTests(unittest.TestCase):
         it's nlp.StanfordNerTagger member
         """
         assert isinstance(self.Tagger.Tagger, nlp.StanfordNerTagger)
-
     def test_RemovePunctuations(self):
         """
         Tests :func:'app.nlp.LocationTagger._RemovePunctuations'
@@ -248,4 +252,32 @@ class LocationTaggerTests(unittest.TestCase):
         """
         Tests :func:'app.nlp.LocationTagger._Tokenize'
         """
-        assert True
+	pretext = "Hello, my name is Jang."
+	tokens = self.Tagger._Tokenize(pretext)
+	assert tokens == ['Hello', ',', 'my', 'name', 'is', 'Jang', '.']
+
+    def test_PreProcessText(self):
+	"""
+	Tests preprocesstext function as well as tokenize and removepunctuation
+	"""
+	pretext = "Hello, my name is Jang."
+	process = self.Tagger._PreProcessText(pretext)
+	assert process == ['Hello', ',', 'my', 'name', 'is', 'Jang']
+
+
+    def test_TagLocations(self):
+	"""
+	Tests the TagLocations function which utilizes and also tests the preprocess, tag,
+	IsolateLocations, and RemoveDuplicates functions as well
+	"""
+	
+	pretext = "Hello, my name is Jang and I am from Phoenix, Arizona. My hometown is in Chandler, AZ but I like Phoenix, Arizona better."
+	tagged = self.Tagger.TagLocations(pretext)
+	assert tagged == ['Phoenix', 'Arizona', 'Chandler', 'AZ']
+	
+    def test_Repr(self):
+	#Tests the __repr__ for correct output
+	placeh = self.Tagger.__repr__()
+	assert placeh == "<LocationTagger(Tagger=%s)>" % (self.Tagger.Tagger)
+
+

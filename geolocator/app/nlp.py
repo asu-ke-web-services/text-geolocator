@@ -85,7 +85,8 @@ class LocationTagger():
         Example:
 
             Text: "Hello, my name is Jack!"
-            Result: ['Hello,', 'my', 'name', 'is', 'Jack!']
+            Result: ['Hello', ',', 'my', 'name', 'is', 'Jack', '!']
+	    Punctuation is separate from everything else
 
         :param str text: text to split
 
@@ -100,6 +101,7 @@ class LocationTagger():
 
             * Removing punctuation
             * Tokenizing text (aka splitting into individual words)
+	    * Does not remove commas inside text
 
         :param str text: text to process
 
