@@ -14,7 +14,12 @@
   	<li>featuretype = {{ first_location.featuretype|e }}</li>
   	<li>latitude = {{ first_location.latitude|e }}</li>
   	<li>longitude = {{ first_location.longitude|e }}</li>
-  	<li>initial_weight = {{ first_location.initial_weight|e }}</li>
+    <li>initial_weight = {{ first_location.initial_weight|e }}</li>
+  	<li>admin4name = ({{ admin_codes.admin4code|e}}) {{ admin_names.admin4name|e }}</li>
+    <li>admin3name = ({{ admin_codes.admin3code|e}}) {{ admin_names.admin3name|e }}</li>
+    <li>admin2name = ({{ admin_codes.admin2code|e}}) {{ admin_names.admin2name|e }}</li>
+    <li>admin1name = ({{ admin_codes.admin1code|e}}) {{ admin_names.admin1name|e }}</li>
+    <li>countryname = ({{ admin_codes.countrycode|e}}) {{ admin_names.countryname|e }}</li>
   </ul>
   <h3>First Feature returned from database: {{ first_feature|e }}</h3>
   <ul>

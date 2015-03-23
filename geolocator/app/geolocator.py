@@ -155,6 +155,17 @@ class LocationHits(object):
             l.increment_weight_on_match(location_name)
         return
 
+    def max_weight(self):
+        """
+        Returns the max weight value within all locations
+
+        :returns: int
+        """
+        weights = list()
+        for wrap in self.locations:
+            weights.append(wrap.weight())
+        return max(weights)
+
     def __len__(self):
         length = 0
         if self.locations:

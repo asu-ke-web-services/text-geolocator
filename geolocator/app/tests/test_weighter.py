@@ -7,6 +7,198 @@ import unittest
 from nose.tools import nottest
 
 
+class LocationAdminNamesTestCase(unittest.TestCase):
+    """
+    Tests app.weighter.LocationAdminNames
+    """
+
+    # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        """
+        Executed at the start of every test
+        Instantiates a new instance of weighter.LocationAdminNames()
+        """
+        self.names = LocationAdminNames()
+        return
+
+    def tearDown(self):
+        """
+        Executed at the end of every test
+        """
+        self.names = None
+        return
+
+    # ----------------------- Helpers ----------------------- #
+
+    # ----------------------- Tests ----------------------- #
+    def test__init__pass(self):
+        """
+        Ensures that the weighter.LocationAdminNames successfully initializes
+        """
+        assert isinstance(self.names, LocationAdminNames)
+        assert self.names.geonameid == -1
+        assert self.names.name is None
+        assert self.names.admin4name is None
+        assert self.names.admin3name is None
+        assert self.names.admin2name is None
+        assert self.names.admin1name is None
+        assert self.names.countryname is None
+
+    def test__list__pass(self):
+        """
+        Tests app.weighter.LocationAdminNames.list
+        """
+        expected = ['May', 'the', 'Force', 'be', 'with you!']
+        self.names.admin4name = expected[0]
+        self.names.admin3name = expected[1]
+        self.names.admin2name = expected[2]
+        self.names.admin1name = expected[3]
+        self.names.countryname = expected[4]
+        actual = self.names.list()
+        assert expected == actual
+
+    def test__eq__pass(self):
+        """
+        Tests app.weighter.LocationAdminNames.__eq__ with two equal objects
+        """
+        A4 = 'apple'
+        A2 = 'peanut butter'
+        FC = '5'
+        NAME = 'Joe'
+        c1 = LocationAdminNames()
+        c1.admin4name = A4
+        c1.admin2name = A2
+        c1.name = NAME
+        c2 = LocationAdminNames()
+        c2.admin4name = A4
+        c2.admin2name = A2
+        c2.name = NAME
+        assert c1 == c2
+
+    def test__eq__fail(self):
+        """
+        Tests app.weighter.LocationAdminNames.__eq__ with two different objects
+        """
+        A4 = 'apple'
+        A2 = 'peanut butter'
+        FC = '5'
+        NAME = 'Frank'
+        c1 = LocationAdminNames()
+        c1.admin4name = A4
+        c1.admin2name = A2
+        c1.name = 'Joe'
+        c2 = LocationAdminNames()
+        c2.admin4name = A4
+        c2.admin2name = A2
+        c2.name = NAME
+        assert c1 != c2
+
+    def test__repr__good(self):
+        """
+        Tests app.weighter.LocationAdminNames.__repr__
+        """
+        self.names.name = 'Banana'
+        self.names.countryname = 'United States'
+        self.names.admin3name = 'Apple'
+        # test if any exceptions fire
+        s = self.codes.__repr__()
+        assert s is not None
+        assert isinstance(s, str)
+
+
+class LocationAdminCodesTestCase(unittest.TestCase):
+    """
+    Tests app.weighter.LocationAdminCodes
+    """
+
+    # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        """
+        Executed at the start of every test
+        Instantiates a new instance of weighter.LocationAdminCodes()
+        """
+        self.codes = LocationAdminCodes()
+        return
+
+    def tearDown(self):
+        """
+        Executed at the end of every test
+        """
+        self.codes = None
+        return
+
+    # ----------------------- Helpers ----------------------- #
+
+    # ----------------------- Tests ----------------------- #
+    def test__init__pass(self):
+        """
+        Ensures that the weighter.LocationAdminCodes successfully initializes
+        """
+        assert isinstance(self.codes, LocationAdminCodes)
+        assert self.codes.geonameid == -1
+        assert self.codes.name = None
+        assert self.codes.featurecode is None
+        assert self.codes.featureclass is None
+        assert self.codes.admin4code is None
+        assert self.codes.admin3code is None
+        assert self.codes.admin2code is None
+        assert self.codes.admin1code is None
+        assert self.codes.countrycode is None
+
+    def test__eq__pass(self):
+        """
+        Tests app.weighter.LocationAdminCodes.__eq__ with two equal objects
+        """
+        A4 = 'apple'
+        A2 = 'peanut butter'
+        FC = '5'
+        NAME = 'Joe'
+        c1 = LocationAdminCodes()
+        c1.admin4code = A4
+        c1.admin2code = A2
+        c1.featurecode = FC
+        c1.name = NAME
+        c2 = LocationAdminCodes()
+        c2.admin4code = A4
+        c2.admin2code = A2
+        c2.featurecode = FC
+        c2.name = NAME
+        assert c1 == c2
+
+    def test__eq__fail(self):
+        """
+        Tests app.weighter.LocationAdminCodes.__eq__ with two different objects
+        """
+        A4 = 'apple'
+        A2 = 'peanut butter'
+        FC = '5'
+        NAME = 'Joe'
+        c1 = LocationAdminCodes()
+        c1.admin4code = A4
+        c1.admin2code = A4
+        c1.featurecode = FC
+        c1.name = FC
+        c2 = LocationAdminCodes()
+        c2.admin4code = A2
+        c2.admin2code = A4
+        c2.featurecode = NAME
+        c2.name = NAME
+        assert c1 != c2
+
+    def test__repr__good(self):
+        """
+        Tests app.weighter.LocationAdminCodes.__repr__
+        """
+        self.codes.name = 'Banana'
+        self.codes.featurecode = 'PPL'
+        self.codes.featureclass = 'P'
+        self.codes.countrycode = 'US'
+        # test if any exceptions fire
+        s = self.codes.__repr__()
+        assert s is not None
+        assert isinstance(s, str)
+
+
 class AdminNameGetterTestCase(unittest.TestCase):
     """
     Tests for app.weighter.AdminNameGetter
@@ -180,6 +372,34 @@ class AdminNameGetterTestCase(unittest.TestCase):
         actual = self.getter._admin1name()
         print actual
         print expected
+        assert expected == actual
+
+    def test__adminnames__pass_acc3(self):
+        """
+        Tests AdminNameGetter.adminnames with accuracy of 3
+        """
+        ADM2 = '237'
+        ADM1 = 'GA'
+        COCO = 'US'
+        codes = LocationAdminCodes()
+        codes.featurecode = 'PPL'
+        codes.featureclass = 'P'
+        codes.featureclass = 'P'
+        codes.admin4code = None
+        codes.admin3code = None
+        codes.admin2code = ADM2
+        codes.admin1code = ADM1
+        codes.countrycode = COCO
+        self.init(codes)
+        expected = LocationAdminNames()
+        expected.admin4name = None
+        expected.admin3name = None
+        expected.admin2name = 'Putnam County'
+        expected.admin1name = 'Georgia'
+        expected.countryname = 'United States'
+        actual = self.getter.adminnames()
+        print 'expected -> ' + str(expected)
+        print 'actual -> ' + str(actual)
         assert expected == actual
 
 

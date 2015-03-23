@@ -51,11 +51,22 @@ def AllowedFile(filename):
 @app.route('/dbtest')
 def dbtest():
     from app.models import Location, Feature
-    location = Location.query.first()
+    from app.weighter import Weightifier
+    from app.geolocator import LocationWrap
+    weightifier = Weightifier()
+    location = Location.query.filter_by(
+        name='Phoenix',
+        countrycode='US').order_by('id').first()
     feature = Feature.query.first()
+    wrap = LocationWrap(location)
+    codes = weightifier._get_admin_codes(wrap, 5)
+    names = weightifier._get_admin_names(codes)
+    # wrap.set_adminnames(names)
     return render_template(
         'dbtest.html',
         first_location=location,
+        admin_codes=codes,
+        admin_names=names,
         first_feature=feature)
 
 
@@ -92,7 +103,7 @@ def UploadFile():
             locations = tagger.TagLocations(text)
 
             geolocator = Geolocator()
-            geolocator.geolocate(locations, weights=False, accuracy=1)
+            geolocator.geolocate(locations, weights=True, accuracy=1)
             geojson = geolocator.geojson()
             geojson_jsonify = jsonify(**geojson)
             # geojson_collection = \
@@ -124,3 +135,8 @@ def examples():
 @app.route('/examples/weights_off')
 def example_weights_off():
     return render_template('example_weights_off.html')
+
+
+@app.route('/examples/weights_on_accuracy_1')
+def example_weights_on_acc_1():
+    return render_template('example_weights_on_acc_1.html')

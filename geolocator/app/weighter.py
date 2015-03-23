@@ -27,15 +27,15 @@ class LocationAdminNames(LocationAdminParent):
     def list(self):
         l = []
         if self.admin4name:
-            l.append(self.admin4name[0])
+            l.append(self.admin4name)
         if self.admin3name:
-            l.append(self.admin3name[0])
+            l.append(self.admin3name)
         if self.admin2name:
-            l.append(self.admin2name[0])
+            l.append(self.admin2name)
         if self.admin1name:
-            l.append(self.admin1name[0])
+            l.append(self.admin1name)
         if self.countryname:
-            l.append(self.countryname[0])
+            l.append(self.countryname)
         return l
 
     def match(self, location_name):
@@ -51,6 +51,14 @@ class LocationAdminNames(LocationAdminParent):
                 location_name == self.admin2name or
                 location_name == self.admin1name or
                 location_name == self.countryname)
+
+    def __eq__(self, other):
+        return (isinstance(other, LocationAdminNames) and
+                self.admin4name == other.admin4name and
+                self.admin3name == other.admin3name and
+                self.admin2name == other.admin2name and
+                self.admin1name == other.admin1name and
+                self.countryname == other.countryname)
 
     def __repr__(self):
         return ("<LocationAdminNames(geonameid=%s, name=%s, admin4name=%s, "
@@ -262,7 +270,7 @@ class AdminNameGetter(object):
         query = Query([self.SELECT], [self.FROM], wheres)
         sql = query.to_sql()
         result = self._query_one(sql)
-        return result
+        return result[0]
 
     def _admin1name(self):
         """
@@ -462,19 +470,10 @@ class Weightifier(object):
         :returns: app.geolocator.LocationHitsContainer with admin names
         """
         for hits in container.hits:
-            count = 0
-            # length = len(hits)
             for l in hits:
-                # if count == length:
-                #     x = 1 / 0
-                # if count == 2:
-                #     x = 1 / 0
-                count += 1
                 codes = self._get_admin_codes(l, accuracy)
                 names = self._get_admin_names(codes)
-                x = 1 / 0
                 l.set_adminnames(names)
-            # x = 1 / 0
         return container
 
     def weightify(self, container, accuracy):
@@ -494,7 +493,6 @@ class Weightifier(object):
         # -------------
         # iterate over all names and increments all location wraps
         # that either have the same name or matches their admin names
-        count = 0
         names_attempted = list()
         for hits in container.hits:
             for loc_wrap in hits:
@@ -502,9 +500,17 @@ class Weightifier(object):
                 for name in names:
                     names_attempted.append(name)
                     container.increment_weight_on_match(name)
-                    if count == 0:
-                        x = 1 / 0
-                    count += 1
+        # -------------
+        # iterate over all hits remove all location wraps that are
+        # less than the max weight for those wraps
+        for i, hits in enumerate(container.hits):
+            max_weight = hits.max_weight()
+            removes = list()
+            for l in hits:
+                if l.weight() < max_weight:
+                    removes.append(l)
+            for l in removes:
+                container.hits[i].locations.remove(l)
         return container
 
     def __repr__(self):
