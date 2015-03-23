@@ -295,8 +295,7 @@ class Geocoder(object):
         :returns: app.geolocator.LocationHits object
         """
         matches = Location.query.filter_by(
-            name=location,
-            countrycode='US').order_by('id').all()
+            name=location).order_by('id').all()
         matches = map(self._wrap_location, matches)
         return LocationHits(matches)
 

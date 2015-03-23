@@ -114,3 +114,8 @@ def UploadFile():
             <h1>No uploaded file detected.</h1>
         </div>
         {% endblock %}""")
+
+
+@app.route('/examples/weights_off')
+def example_weights_off():
+    return render_template('example_weights_off.html')

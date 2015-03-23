@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Team Geolocators">
+
+    <title></title>
+
+    
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+  <script src="http://danml.com/js/download.js"></script>
+  <script>
+    function initialize() {
+
+      var mapOptions = {
+        // How zoomed in you want the map to start at (always required)
+        zoom: 10,
+
+        // The latitude and longitude to center the map (always required)
+        center: new google.maps.LatLng(-34.96862, 139.18517),
+
+        // How you would like to style the map. 
+        // This is where you would paste any style found on Snazzy Maps.
+        styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
+      };
+
+      // Get the HTML DOM element that will contain your map 
+      // We are using a div with id="map" seen below in the <body>
+      var mapElement = document.getElementById('map-canvas');
+
+      // Create the Google Map using our element and options defined above
+      var map = new google.maps.Map(mapElement, mapOptions);
+
+      var mapData = [
+        
+          new google.maps.LatLng(-34.96862, 139.18517),
+        
+          new google.maps.LatLng(49.09979, -118.58562),
+        
+          new google.maps.LatLng(37.78651, 20.89943),
+        
+          new google.maps.LatLng(6.90348, -58.45244),
+        
+          new google.maps.LatLng(6.46198, -57.64923),
+        
+          new google.maps.LatLng(-7.78178, 110.37814),
+        
+          new google.maps.LatLng(18.42516, -77.72388),
+        
+          new google.maps.LatLng(18.36667, -78.28333),
+        
+          new google.maps.LatLng(35.09843, 129.02964),
+        
+          new google.maps.LatLng(-20.28667, 57.50222),
+        
+          new google.maps.LatLng(46.20074, 21.28622),
+        
+          new google.maps.LatLng(1.30082, 103.84015),
+        
+          new google.maps.LatLng(33.36597, -83.27766),
+        
+          new google.maps.LatLng(29.64605, -89.93979),
+        
+          new google.maps.LatLng(39.51649, -76.61608),
+        
+          new google.maps.LatLng(32.58125, -90.56287),
+        
+          new google.maps.LatLng(34.2935, -78.05833),
+        
+          new google.maps.LatLng(34.07735, -82.11095),
+        
+          new google.maps.LatLng(29.3819, -98.54168),
+        
+          new google.maps.LatLng(41.61115, -87.63477),
+        
+          new google.maps.LatLng(47.38881, -88.27761),
+        
+          new google.maps.LatLng(40.47788, -74.31293),
+        
+          new google.maps.LatLng(40.52983, -74.34098),
+        
+          new google.maps.LatLng(43.23118, -76.30076),
+        
+          new google.maps.LatLng(33.44838, -112.07404),
+        
+          new google.maps.LatLng(39.92689, -112.1105),
+        
+          new google.maps.LatLng(42.27541, -122.81809),
+        
+          new google.maps.LatLng(-29.71667, 31.01667),
+        
+          new google.maps.LatLng(-29.70428, 30.9761),
+        
+          new google.maps.LatLng(-26.07098, 29.20451),
+        
+          new google.maps.LatLng(-28.3, 26.81667),
+        
+          new google.maps.LatLng(-25.71076, 23.04885),
+        
+          new google.maps.LatLng(-16.71667, 29.78333),
+        
+          new google.maps.LatLng(-35.72259, -65.31972),
+        
+          new google.maps.LatLng(-23.11667, 149.2),
+        
+          new google.maps.LatLng(-21.66667, 141.55),
+        
+          new google.maps.LatLng(-19.53333, 141.35001),
+        
+          new google.maps.LatLng(-30.48236, 116.867),
+        
+          new google.maps.LatLng(-34.53529, 117.88443),
+        
+          new google.maps.LatLng(-33.30794, 118.66646),
+        
+          new google.maps.LatLng(-32.49089, 151.40037),
+        
+          new google.maps.LatLng(-35.0347, 146.52509),
+        
+          new google.maps.LatLng(-8.66667, -40.95),
+        
+          new google.maps.LatLng(-6.45, -41.58333),
+        
+          new google.maps.LatLng(-5.56667, -35.78333),
+        
+          new google.maps.LatLng(-5.28333, -35.7),
+        
+          new google.maps.LatLng(-16.21667, -40.06667),
+        
+          new google.maps.LatLng(-12.8, -40.93333),
+        
+          new google.maps.LatLng(-8.68222, -40.96139),
+        
+          new google.maps.LatLng(-8.75436, -40.91927),
+        
+          new google.maps.LatLng(49.82832, -99.02859),
+        
+          new google.maps.LatLng(-24.58333, -70.0),
+        
+          new google.maps.LatLng(-30.4, -70.16667),
+        
+          new google.maps.LatLng(10.57197, -74.13696),
+        
+          new google.maps.LatLng(10.48333, -75.43333),
+        
+          new google.maps.LatLng(4.04375, -72.96845),
+        
+          new google.maps.LatLng(2.72084, -72.28228),
+        
+          new google.maps.LatLng(6.81806, -70.76),
+        
+          new google.maps.LatLng(5.97167, -71.81694),
+        
+          new google.maps.LatLng(5.93889, -70.97944),
+        
+          new google.maps.LatLng(2.17809, -74.5573),
+        
+          new google.maps.LatLng(3.32008, -73.50162),
+        
+          new google.maps.LatLng(10.36374, -73.48162),
+        
+          new google.maps.LatLng(10.19707, -84.95201),
+        
+          new google.maps.LatLng(27.79, -15.7),
+        
+          new google.maps.LatLng(13.95806, -90.82028),
+        
+          new google.maps.LatLng(15.63333, -87.31667),
+        
+          new google.maps.LatLng(15.68333, -87.33333),
+        
+          new google.maps.LatLng(44.13157, 12.48532),
+        
+          new google.maps.LatLng(20.91744, -87.46447),
+        
+          new google.maps.LatLng(30.45639, -109.46373),
+        
+          new google.maps.LatLng(22.9128, -99.11055),
+        
+          new google.maps.LatLng(17.03278, -92.34472),
+        
+          new google.maps.LatLng(15.62028, -93.18833),
+        
+          new google.maps.LatLng(21.42886, -87.70516),
+        
+          new google.maps.LatLng(-23.2, 16.03333),
+        
+          new google.maps.LatLng(-27.73333, 19.8),
+        
+          new google.maps.LatLng(32.78904, -92.95766),
+        
+          new google.maps.LatLng(30.78963, -95.468),
+        
+          new google.maps.LatLng(41.81443, -96.13363),
+        
+          new google.maps.LatLng(34.5003, -111.50098),
+        
+          new google.maps.LatLng(-25.92325, 22.79326),
+        
+          new google.maps.LatLng(-19.21667, 29.61667),
+        
+          new google.maps.LatLng(-18.19478, 31.63905),
+        
+          new google.maps.LatLng(-17.85918, 31.98619),
+        
+      ];
+      var pointArray = new google.maps.MVCArray(mapData);
+
+      var heatmap = new google.maps.visualization.HeatmapLayer({
+        data: pointArray
+      });
+      heatmap.setMap(map);
+    }
+
+    function toggleHeatmap() {
+      heatmap.setMap(heatmap.getMap() ? null : map);
+    }
+
+    function changeGradient() {
+      var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+      ]
+      heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+    }
+
+    function changeRadius() {
+      heatmap.set('radius', heatmap.get('radius') ? null : 20);
+    }
+
+    function changeOpacity() {
+      heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </script>
+
+
+    <link href="../static/css/geolocator.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../static/css/starter_template.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- Navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home">Text-Geolocator</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/home#about">About</a></li>
+            <li><a href="/home#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <!-- Content Container -->
+    <!-- <div id="content"> -->
+    
+  <div class="container">
+<!--     <div id="panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change gradient</button>
+      <button onclick="changeRadius()">Change radius</button>
+      <button onclick="changeOpacity()">Change opacity</button>
+    </div> -->
+    <h3>Heatmap</h3>
+  </div>
+  <div class="center-align" id="map-canvas"></div>
+  <div class="container">
+    <div id="geojson">
+
+      <button id = "download_geojson">Download GeoJson </button>
+
+        <!-- Event listener to download geojson -->
+      <script>
+        document.getElementById("download_geojson").addEventListener("click", function(){
+          var geojson_file = '{"features": [{"geometry": {"coordinates": [-34.96862, 139.18517], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [49.09979, -118.58562], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [37.78651, 20.89943], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [6.90348, -58.45244], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [6.46198, -57.64923], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-7.78178, 110.37814], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [18.42516, -77.72388], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [18.36667, -78.28333], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [35.09843, 129.02964], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-20.28667, 57.50222], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [46.20074, 21.28622], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [1.30082, 103.84015], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [33.36597, -83.27766], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [29.64605, -89.93979], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [39.51649, -76.61608], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [32.58125, -90.56287], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [34.2935, -78.05833], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [34.07735, -82.11095], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [29.3819, -98.54168], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [41.61115, -87.63477], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [47.38881, -88.27761], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [40.47788, -74.31293], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [40.52983, -74.34098], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [43.23118, -76.30076], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [33.44838, -112.07404], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [39.92689, -112.1105], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [42.27541, -122.81809], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-29.71667, 31.01667], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-29.70428, 30.9761], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-26.07098, 29.20451], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-28.3, 26.81667], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-25.71076, 23.04885], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-16.71667, 29.78333], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-35.72259, -65.31972], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-23.11667, 149.2], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-21.66667, 141.55], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-19.53333, 141.35001], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-30.48236, 116.867], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-34.53529, 117.88443], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-33.30794, 118.66646], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-32.49089, 151.40037], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-35.0347, 146.52509], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-8.66667, -40.95], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-6.45, -41.58333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-5.56667, -35.78333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-5.28333, -35.7], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-16.21667, -40.06667], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-12.8, -40.93333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-8.68222, -40.96139], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-8.75436, -40.91927], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [49.82832, -99.02859], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-24.58333, -70.0], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-30.4, -70.16667], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [10.57197, -74.13696], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [10.48333, -75.43333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [4.04375, -72.96845], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [2.72084, -72.28228], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [6.81806, -70.76], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [5.97167, -71.81694], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [5.93889, -70.97944], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [2.17809, -74.5573], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [3.32008, -73.50162], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [10.36374, -73.48162], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [10.19707, -84.95201], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [27.79, -15.7], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [13.95806, -90.82028], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [15.63333, -87.31667], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [15.68333, -87.33333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [44.13157, 12.48532], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [20.91744, -87.46447], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [30.45639, -109.46373], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [22.9128, -99.11055], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [17.03278, -92.34472], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [15.62028, -93.18833], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [21.42886, -87.70516], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-23.2, 16.03333], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-27.73333, 19.8], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [32.78904, -92.95766], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [30.78963, -95.468], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [41.81443, -96.13363], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [34.5003, -111.50098], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-25.92325, 22.79326], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-19.21667, 29.61667], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-18.19478, 31.63905], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}, {"geometry": {"coordinates": [-17.85918, 31.98619], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 0}, "type": "Feature"}], "type": "FeatureCollection"}';
+            download(geojson_file, "untitled.geojson", "text/plain");
+        });
+      </script>
+      <h3>Locations</h3>
+      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [-34.96862, 139.18517], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [49.09979, -118.58562], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [37.78651, 20.89943], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [6.90348, -58.45244], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [6.46198, -57.64923], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-7.78178, 110.37814], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [18.42516, -77.72388], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [18.36667, -78.28333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [35.09843, 129.02964], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-20.28667, 57.50222], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [46.20074, 21.28622], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [1.30082, 103.84015], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.36597, -83.27766], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [29.64605, -89.93979], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.51649, -76.61608], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.58125, -90.56287], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.2935, -78.05833], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.07735, -82.11095], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [29.3819, -98.54168], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.61115, -87.63477], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [47.38881, -88.27761], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.47788, -74.31293], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.52983, -74.34098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [43.23118, -76.30076], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.44838, -112.07404], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.92689, -112.1105], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.27541, -122.81809], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-29.71667, 31.01667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-29.70428, 30.9761], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-26.07098, 29.20451], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-28.3, 26.81667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-25.71076, 23.04885], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-16.71667, 29.78333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-35.72259, -65.31972], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-23.11667, 149.2], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-21.66667, 141.55], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-19.53333, 141.35001], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-30.48236, 116.867], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-34.53529, 117.88443], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-33.30794, 118.66646], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-32.49089, 151.40037], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-35.0347, 146.52509], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-8.66667, -40.95], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-6.45, -41.58333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-5.56667, -35.78333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-5.28333, -35.7], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-16.21667, -40.06667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-12.8, -40.93333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-8.68222, -40.96139], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-8.75436, -40.91927], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [49.82832, -99.02859], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-24.58333, -70.0], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-30.4, -70.16667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [10.57197, -74.13696], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [10.48333, -75.43333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [4.04375, -72.96845], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [2.72084, -72.28228], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [6.81806, -70.76], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [5.97167, -71.81694], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [5.93889, -70.97944], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [2.17809, -74.5573], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [3.32008, -73.50162], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [10.36374, -73.48162], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [10.19707, -84.95201], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [27.79, -15.7], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [13.95806, -90.82028], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [15.63333, -87.31667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [15.68333, -87.33333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [44.13157, 12.48532], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [20.91744, -87.46447], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.45639, -109.46373], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [22.9128, -99.11055], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [17.03278, -92.34472], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [15.62028, -93.18833], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [21.42886, -87.70516], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-23.2, 16.03333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-27.73333, 19.8], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.78904, -92.95766], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.78963, -95.468], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.81443, -96.13363], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.5003, -111.50098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-25.92325, 22.79326], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-19.21667, 29.61667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-18.19478, 31.63905], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-17.85918, 31.98619], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 0}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
+    </div>
+  </div>
+
+    <!-- </div> -->
+    <!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+  </body>
+</html>
