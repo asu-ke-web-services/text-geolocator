@@ -136,7 +136,7 @@ class LocationAdminCodesTestCase(unittest.TestCase):
         """
         assert isinstance(self.codes, LocationAdminCodes)
         assert self.codes.geonameid == -1
-        assert self.codes.name = None
+        assert self.codes.name == None
         assert self.codes.featurecode is None
         assert self.codes.featureclass is None
         assert self.codes.admin4code is None
