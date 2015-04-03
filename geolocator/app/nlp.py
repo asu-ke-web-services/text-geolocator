@@ -22,7 +22,8 @@ class StanfordNerTagger():
         # Example here: www.nltk.org/api/nltk.tag.html#module-nltk.tag.stanford
         self.Tagger = NERTagger(
             app.config['SNER_CLASSIFIERS'],
-            app.config['SNER_JARFILE'])
+            app.config['SNER_JARFILE'],
+            encoding='utf-8')
         return
 
     def Tag(self, text):
@@ -111,17 +112,6 @@ class LocationTagger():
         text = self._Tokenize(text)
         return text
 
-    def _ConvertToAscii(self, text):
-        """
-        The Tagger can only handle ASCII based text, so convert all text to
-        ASCII characters by replacing any non-ASCII characters with a space
-
-        :param str text: text to convert
-
-        :returns: converted text
-        """
-        return ''.join([i if ord(i) < 128 else ' ' for i in text])
-
     def _IsolateLocations(self, stanford_ner_tagger_output):
         """
         Given list of Stanford NER Tagger results in the format of
@@ -163,7 +153,6 @@ class LocationTagger():
 
         :returns: list -- all locations in text
         """
-        text = self._ConvertToAscii(text)
         text = self._PreProcessText(text)
         tagged = self.Tagger.Tag(text)
         locations = self._IsolateLocations(tagged)

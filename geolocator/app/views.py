@@ -26,7 +26,7 @@ def Index():
     # if form.validate_on_submit():
     #     x = 1 / 0
     #     return UploadFile(form.geojson, form.heatmap)
-        # return redirect('/index')
+    # return redirect('/index')
     return render_template(
         'index.html',
         title='Text Geolocator')
@@ -96,18 +96,15 @@ def UploadFile():
             # with open(uploadedfile_path, 'wb') as f:
             # ....f.write(uploadedfile.read())
             # return redirect(url_for('uploaded_file', filename=filename))
-
             text = uploadedfile.read()
 
             tagger = LocationTagger()
             locations = tagger.TagLocations(text)
 
             geolocator = Geolocator()
-            geolocator.geolocate(locations, weights=True, accuracy=1)
+            geolocator.geolocate(locations, weights=False, accuracy=1)
             geojson = geolocator.geojson()
             geojson_jsonify = jsonify(**geojson)
-            # geojson_collection = \
-            #     geolocator.MakeGeoJsonCollection(locations)
 
             latlngs = RetrieveLatLngs(geojson)
 

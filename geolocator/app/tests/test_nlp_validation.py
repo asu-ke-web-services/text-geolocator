@@ -1,6 +1,9 @@
-# tests/test_nlp.py
+# tests/test_nlp_validation.py
 """
-run with: sudo fig run web nosetests geolocator
+run with:
+
+    sudo fig run web nosetests geolocator/app/tests/test_nlp_validation.py
+
 """
 from app import nlp
 import unittest
@@ -65,7 +68,6 @@ class TaggerValidationTests(unittest.TestCase):
         """
         Helper Function to tag locations but not remove duplicates
         """
-        text = self.Tagger._ConvertToAscii(text)
         text = self.Tagger._PreProcessText(text)
         tagged = self.Tagger.Tagger.Tag(text)
         locations = self.Tagger._IsolateLocations(tagged)
@@ -108,4 +110,86 @@ class TaggerValidationTests(unittest.TestCase):
         with geolocator/sample-data/from-ivan/Agric_Hum_Values.txt
         """
         name = 'Agric_Hum_Values'
+        self.runTestForFilesWithName(name)
+
+    def test__Bhattachan_etal_2014_Ecosphere(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/
+        Bhattachan_etal_2014_Ecosphere.txt
+        """
+        name = 'Bhattachan_etal_2014_Ecosphere'
+        self.runTestForFilesWithName(name)
+
+    def test__Eby_etal_2014_Oecologia(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Eby_etal_2014_Oecologia.txt
+        """
+        name = 'Eby_etal_2014_Oecologia'
+        self.runTestForFilesWithName(name)
+
+    def test__Ecological_Modelling(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Ecological_Modelling.txt
+        """
+        name = 'Ecological_Modelling'
+        self.runTestForFilesWithName(name)
+
+    def test__Ecology_Letters(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Ecology_Letters.txt
+        """
+        name = 'Ecology_Letters'
+        self.runTestForFilesWithName(name)
+
+    def test__Journal_of_Agrarian_Change(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Journal_of_Agrarian_Change.txt
+        """
+        name = 'Journal_of_Agrarian_Change'
+        self.runTestForFilesWithName(name)
+
+    def test__Journal_of_Arid_Environments(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Journal_of_Arid_Environments.txt
+        """
+        name = 'Journal_of_Arid_Environments'
+        self.runTestForFilesWithName(name)
+
+    def test__Koerner_etal_2014_Ecology(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Koerner_etal_2014_Ecology.txt
+        """
+        name = 'Koerner_etal_2014_Ecology'
+        self.runTestForFilesWithName(name)
+
+    def test__Ladwig_etal_2014_REM(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/Ladwig_etal_2014_REM.txt
+        """
+        name = 'Ladwig_etal_2014_REM'
+        self.runTestForFilesWithName(name)
+
+    def test__REVIEWS_REVIEWS_REVIEWS(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/REVIEWS_REVIEWS_REVIEWS.txt
+        """
+        name = 'REVIEWS_REVIEWS_REVIEWS'
+        self.runTestForFilesWithName(name)
+
+    def test__Vicca_etal_2014_Biogeosciences_0(self):
+        """
+        Checks that the tagger produces the expected locations when tested
+        with geolocator/sample-data/from-ivan/
+        Vicca_etal_2014_Biogeosciences_0.txt
+        """
+        name = 'Vicca_etal_2014_Biogeosciences_0'
         self.runTestForFilesWithName(name)
