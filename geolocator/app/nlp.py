@@ -86,7 +86,7 @@ class LocationTagger():
 
             Text: "Hello, my name is Jack!"
             Result: ['Hello', ',', 'my', 'name', 'is', 'Jack', '!']
-	    Punctuation is separate from everything else
+        Punctuation is separate from everything else
 
         :param str text: text to split
 
@@ -101,7 +101,7 @@ class LocationTagger():
 
             * Removing punctuation
             * Tokenizing text (aka splitting into individual words)
-	    * Does not remove commas inside text
+            * Does not remove commas inside text
 
         :param str text: text to process
 
@@ -110,6 +110,17 @@ class LocationTagger():
         text = self._RemovePunctuations(text)
         text = self._Tokenize(text)
         return text
+
+    def _ConvertToAscii(self, text):
+        """
+        The Tagger can only handle ASCII based text, so convert all text to
+        ASCII characters by replacing any non-ASCII characters with a space
+
+        :param str text: text to convert
+
+        :returns: converted text
+        """
+        return ''.join([i if ord(i) < 128 else ' ' for i in text])
 
     def _IsolateLocations(self, stanford_ner_tagger_output):
         """
@@ -152,6 +163,7 @@ class LocationTagger():
 
         :returns: list -- all locations in text
         """
+        text = self._ConvertToAscii(text)
         text = self._PreProcessText(text)
         tagged = self.Tagger.Tag(text)
         locations = self._IsolateLocations(tagged)
