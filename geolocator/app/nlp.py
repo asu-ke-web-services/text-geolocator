@@ -12,6 +12,10 @@ from nltk.tokenize import word_tokenize
 from app import app
 
 
+NLP_PUNCTUATION_TOKEN = '__NLP_PUNCTUATION_TOKEN__'
+"""Marks the place of a period in uploaded file's text"""
+
+
 class StanfordNerTagger():
     """
     Wrapper class for the nltk.tag.stanford.NERTagger module. Provides
@@ -75,7 +79,7 @@ class LocationTagger():
         """
         punctuations = ['.', '!', '?']
         for p in punctuations:
-            text = text.replace(p, ' ')
+            text = text.replace(p, ' %s' % NLP_PUNCTUATION_TOKEN)
         return text
 
     def _Tokenize(self, text):
@@ -111,6 +115,62 @@ class LocationTagger():
         text = self._RemovePunctuations(text)
         text = self._Tokenize(text)
         return text
+
+    def _ReuniteSeparatedLocations(self, originals, tagged):
+        """
+        The Stanford NER Tagger tags multi word locations like this:
+
+            "Sun City" = [('Sun', 'LOCATION'), ('City', 'LOCATION')]
+
+        This function will reunite the separated locations so they look like:
+
+            "Sun City" = [('Sun City', 'Location')]
+
+        This is done to improve accuracy when retrieving coordinates
+
+        :param list originals: tokenized text from uploaded file
+        :param list tagged: results of Stanford NER Tagger tagging
+
+        :returns: list -- tagged locations with separated locations reunited
+        """
+        reunited = []
+        remove = []
+        # iterate over all tagged locations
+        for i, t in enumerate(tagged):
+            tname = t[0]
+            ttag = t[1]
+            # only worry about tuples tagged as LOCATION
+            if ttag == 'LOCATION':
+                # find the index of the location in original tokens
+                if tname in originals:
+                    print 'checking: \t\t%s (%s)' % (str(tname), str(ttag))
+                    index = originals.index(tname)
+                    # make sure you're not exceeding the bounds
+                    if len(originals) > index:
+                        # get name of next token from originals
+                        tname_plus_1 = originals[index+1]
+                        print 'originals plus1: \t%s' % (
+                            str(tname_plus_1))
+                        print 'tagged plus1: \t\t%s (%s)' % (
+                            str(tagged[i+1][0]), str(tagged[i+1][1]))
+                        # check if it is the next tagged location
+                        if (tname_plus_1 == tagged[i+1][0] and
+                                'LOCATION' == tagged[i+1][1]):
+                            # reunite the locations
+                            print '\t\t\treunited!'
+                            reunited.append(
+                                (tname + ' ' + tname_plus_1, 'LOCATION'))
+                            # mark old ones to be removed
+                            remove.append(i)
+                            remove.append(i+1)
+                        print '\n'
+        # remove duplicates from 'remove'
+        remove = list(set(remove))
+        # remove those tagged for removal
+        for r in reversed(remove):
+            del tagged[r]
+        # combine the rest of the tagged locations and the reunited locations
+        return tagged + reunited
 
     def _IsolateLocations(self, stanford_ner_tagger_output):
         """
@@ -155,6 +215,7 @@ class LocationTagger():
         """
         text = self._PreProcessText(text)
         tagged = self.Tagger.Tag(text)
+        tagged = self._ReuniteSeparatedLocations(text, tagged)
         locations = self._IsolateLocations(tagged)
         noduplicates = self._RemoveDuplicates(locations)
         return noduplicates

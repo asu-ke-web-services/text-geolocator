@@ -70,6 +70,7 @@ class TaggerValidationTests(unittest.TestCase):
         """
         text = self.Tagger._PreProcessText(text)
         tagged = self.Tagger.Tagger.Tag(text)
+        tagged = self.Tagger._ReuniteSeparatedLocations(text, tagged)
         locations = self.Tagger._IsolateLocations(tagged)
         return locations
 
@@ -99,9 +100,14 @@ class TaggerValidationTests(unittest.TestCase):
         text = self.getInputText(input_txt)
         expected = self.getOutputList(output_csv)
         actual = self.getAllLocations(text)
-        print expected
-        print actual
-        assert expected == actual
+        print 'expected -> %s\n' % str(expected)
+        print 'actual -> %s\n' % str(actual)
+        missed = []
+        for e in expected:
+            if not (e in actual):
+                missed.append(e)
+        print 'missed -> %s\n' % str(missed)
+        assert len(missed) == 0
 
     # ----------------------- Tests ----------------------- #
     def test__Agric_Hum_Values(self):

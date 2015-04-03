@@ -4,8 +4,6 @@ run with: sudo fig run web nosetests geolocator
 """
 from app import nlp
 import unittest
-import csv
-import os
 from nltk.tag.stanford import NERTagger
 from nltk.tokenize import word_tokenize
 from nose.tools import nottest
@@ -54,7 +52,8 @@ class StanfordNerTaggerTests(unittest.TestCase):
         :raises: TypeError if list1 and list2 are not of equal length
         """
         if len(list1) != len(list2):
-            raise TypeError('list1 and list2 must be of equal length')
+            raise TypeError('list1 (%s) and list2 (%s) must be of equal'
+                            'length' % (str(len(list1)), str(len(list2))))
         return zip(list1, list2)
 
     def tokenize(self, words):
@@ -89,6 +88,7 @@ class StanfordNerTaggerTests(unittest.TestCase):
             # sentence to test
             sentence = chocolate_chip + mark + cookies
             tokens = self.tokenize(sentence)
+            print tokens
             if symbol_tuple is None:
                 if expect_stop:
                     # if nlp is  expected to stop at punctuation mark
@@ -198,6 +198,42 @@ class StanfordNerTaggerTests(unittest.TestCase):
         actual = self.Tagger.Tag(tokens)
         assert actual == expected
 
+    def test_Tag_3(self):
+        """
+        Tests the tagger's tagging ability.
+
+        Input: "Sun City and Paradise Valley are both in Arizona"
+
+        Expected output:
+
+            [('Sun', 'LOCATION'), ('City', 'OTHER'), ('Grand', 'OTHER'),
+            ('Canyon', 'OTHER'), ('Arizona', 'LOCATION'), ('Hong', 'LOCATION'),
+            ('Kong', 'LOCATION'), ('China', 'LOCATION'),
+            ('United', 'LOCATION'), ('States', 'LOCATION')]
+
+        Note that it does not automatically group multi-word entities as a
+        single entity. It separates them but still correctly labels them.
+        """
+        tokens = ("Sun City and Paradise Valley are both in Arizona").split()
+        expected = self.makeTuples(
+            tokens,
+            [
+                LOCATION,   # Sun
+                LOCATION,   # City
+                OTHER,      # and
+                LOCATION,   # Paradise
+                LOCATION,   # Valley
+                OTHER,      # are
+                OTHER,      # both
+                OTHER,      # in
+                LOCATION    # Arizona
+            ]
+        )
+        actual = self.Tagger.Tag(tokens)
+        print expected
+        print actual
+        assert actual == expected
+
     def test_Tag_empty(self):
         """
         Tests the tagger's behavior when given an empty set of tokens
@@ -250,8 +286,12 @@ class LocationTaggerTests(unittest.TestCase):
         Expected output: "Hola  Estoy bien  Y tu "
         """
         text = "Hola! Estoy bien. Y tu?"
-        expected = "Hola  Estoy bien  Y tu "
+        expected = ("Hola %s Estoy bien %s Y tu %s" %
+                    (nlp.NLP_PUNCTUATION_TOKEN, nlp.NLP_PUNCTUATION_TOKEN,
+                        nlp.NLP_PUNCTUATION_TOKEN))
         actual = self.Tagger._RemovePunctuations(text)
+        print expected
+        print actual
         assert actual == expected
 
     def test_Tokenize(self):
@@ -268,7 +308,50 @@ class LocationTaggerTests(unittest.TestCase):
         """
         pretext = "Hello, my name is Jang."
         process = self.Tagger._PreProcessText(pretext)
-        assert process == ['Hello', ',', 'my', 'name', 'is', 'Jang']
+        assert process == ['Hello', ',', 'my', 'name', 'is', 'Jang',
+                           nlp.NLP_PUNCTUATION_TOKEN]
+
+    def test_ReuniteSeparatedLocations1(self):
+        """
+        Tests _ReuniteSeparatedLocations
+        """
+        originals = ['Fountain', 'Hills', 'has', 'a', 'fountain']
+        tagged = [
+            (originals[0], LOCATION),
+            (originals[1], LOCATION),
+            (originals[2], OTHER),
+            (originals[3], OTHER),
+            (originals[4], OTHER)]
+        expected = [
+            (originals[2], OTHER),
+            (originals[3], OTHER),
+            (originals[4], OTHER),
+            ('Fountain Hills', LOCATION)]
+        actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
+        print 'expected -> %s' % str(expected)
+        print 'actual -> %s' % str(actual)
+        assert expected == actual
+
+    def test_ReuniteSeparatedLocations2(self):
+        """
+        Tests _ReuniteSeparatedLocations with two locations separated by '.'
+        """
+        originals = ['I', 'went', 'to', 'Chicago', nlp.NLP_PUNCTUATION_TOKEN,
+                     'Phoenix', 'is', 'hotter']
+        tagged = [
+            (originals[0], OTHER),      # I
+            (originals[1], OTHER),      # went
+            (originals[2], OTHER),      # to
+            (originals[3], LOCATION),   # Chicago
+            (originals[4], OTHER),      # NLP_PUNCTUATION_TOKEN
+            (originals[5], LOCATION),   # Phoenix
+            (originals[6], OTHER),      # is
+            (originals[7], OTHER)]      # hotter
+        expected = tagged
+        actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
+        print 'expected -> %s' % str(expected)
+        print 'actual -> %s' % str(actual)
+        assert expected == actual
 
     def test_TagLocations(self):
         """
