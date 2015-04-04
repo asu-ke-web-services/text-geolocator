@@ -247,6 +247,188 @@ class StanfordNerTaggerTests(unittest.TestCase):
         assert actual == expected
 
 
+class MultiWordLocationStitcherTests(unittest.TestCase):
+    """
+    Unit tests for app.nlp.MultiWordLocationStitcher
+
+    Note that this class has no tests for StitchMultiWordLocations.
+    That function is tested in LocationTaggerTests for
+    LocationTagger._ReuniteSeparatedLocations
+    """
+
+    # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        """
+        Executed at the start of every test
+        Instantiates a new instance of nlp.MultiWordLocationStitcher()
+        """
+        self.Stitcher = nlp.MultiWordLocationStitcher()
+        return
+
+    def tearDown(self):
+        """
+        Executed at the end of every test
+        """
+        self.Stitcher = None
+        return
+
+    # ----------------------- Helpers ----------------------- #
+
+    # ----------------------- Tests ----------------------- #
+    def test__IsLocation__pass(self):
+        """
+        Tests _IsLocation function with a 'LOCATION'
+        """
+        expected = True
+        actual = self.Stitcher._IsLocation(('Beijing', 'LOCATION'))
+        assert expected == actual
+
+    def test__IsLocation__None(self):
+        """
+        Tests _IsLocation function with a param of None
+        """
+        expected = False
+        actual = self.Stitcher._IsLocation(None)
+        assert expected == actual
+
+    def test__IsLocation__not_a_tuple(self):
+        """
+        Tests _IsLocation function with a  param that is not a tuple
+        """
+        expected = False
+        actual = self.Stitcher._IsLocation('not a tuple')
+        assert expected == actual
+
+    def test__IsLocation__length_less_than_2(self):
+        """
+        Tests _IsLocation function with a tuple of length 1
+        """
+        expected = False
+        actual = self.Stitcher._IsLocation(tuple('1'))
+        assert expected == actual
+
+    def test__GetListIndex__pass(self):
+        """
+        Tests _GetListIndex with a list containing the targeted element
+
+        Returns the index of element in list_to_search
+
+        :param ? element: element to search list for
+        :param list list_to_search: list to search in
+
+        :returns: int (0 or greater) if found; otherwise -1
+        """
+        element = 'apple'
+        list_to_search = ['banana', element, 'orange']
+        expected = 1
+        actual = self.Stitcher._GetListIndex(element, list_to_search)
+        assert expected == actual
+
+    def test__GetListIndex__None_param1(self):
+        """
+        Tests _GetListIndex with a first param of None
+        """
+        element = 'apple'
+        list_to_search = None
+        expected = -1
+        actual = self.Stitcher._GetListIndex(element, list_to_search)
+        assert expected == actual
+
+    def test__GetListIndex__None_param2(self):
+        """
+        Tests _GetListIndex with a second param of None
+        """
+        element = None
+        list_to_search = ['banana', 'frog', 'orange']
+        expected = -1
+        actual = self.Stitcher._GetListIndex(element, list_to_search)
+        assert expected == actual
+
+    def test__GetListIndex__not_found(self):
+        """
+        Tests _GetListIndex with a list not containing the targeted element
+        """
+        element = 'apple'
+        list_to_search = ['banana', 'frog', 'orange']
+        expected = -1
+        actual = self.Stitcher._GetListIndex(element, list_to_search)
+        assert expected == actual
+
+    def test__GetListIndex__not_a_list(self):
+        """
+        Tests _GetListIndex with a list_to_search that is not a list
+        """
+        element = 'apple'
+        # not a list! it is a tuple
+        list_to_search = ('banana', element, 'orange')
+        expected = -1
+        actual = self.Stitcher._GetListIndex(element, list_to_search)
+        assert expected == actual
+
+    def test__GetNextLocationIndex__pass1(self):
+        """
+        Tests _GetNextLocationIndex where there is another location after start
+        """
+        tuples = [('Russia', LOCATION), ('ASU', ORG), ('Moscow', LOCATION)]
+        start = 0
+        expected = 2
+        actual = self.Stitcher._GetNextLocationIndex(tuples, start)
+        assert expected == actual
+
+    def test__GetNextLocationIndex__None_param1(self):
+        """
+        Tests _GetNextLocationIndex where 'ner_tuples' is None
+        """
+        tuples = None
+        start = 5
+        expected = -1
+        actual = self.Stitcher._GetNextLocationIndex(tuples, start)
+        assert expected == actual
+
+    def test__GetNextLocationIndex__None_param2(self):
+        """
+        Tests _GetNextLocationIndex where 'start' is None
+        """
+        tuples = [('England', LOCATION), ('Berlin', LOCATION),
+                  ('Congress', ORG), ('in', OTHER)]
+        start = None
+        expected = -1
+        actual = self.Stitcher._GetNextLocationIndex(tuples, start)
+        assert expected == actual
+
+    def test__GetNextLocationIndex__no_next_location(self):
+        """
+        Tests _GetNextLocationIndex where there is not another location after
+        start
+        """
+        tuples = [('England', LOCATION), ('Berlin', LOCATION),
+                  ('Congress', ORG), ('in', OTHER)]
+        start = 1
+        expected = -1
+        actual = self.Stitcher._GetNextLocationIndex(tuples, start)
+        print actual
+        print tuples[actual]
+        assert expected == actual
+
+    def test__GetNextLocationIndex__start_too_large(self):
+        """
+        Tests _GetNextLocationIndex where start is greater than len(ner_tuples)
+        """
+        tuples = [('England', LOCATION), ('Berlin', LOCATION),
+                  ('Congress', ORG), ('in', OTHER)]
+        start = 4
+        expected = -1
+        actual = self.Stitcher._GetNextLocationIndex(tuples, start)
+        assert expected == actual
+
+    def test__repr__(self):
+        """
+        Tests __repr__ to make sure that it returns a str without error
+        """
+        s = self.Stitcher.__repr__()
+        assert isinstance(s, str)
+
+
 class LocationTaggerTests(unittest.TestCase):
     """
     Unit tests for app.nlp.LocationTaggerTests
@@ -322,11 +504,7 @@ class LocationTaggerTests(unittest.TestCase):
             (originals[2], OTHER),
             (originals[3], OTHER),
             (originals[4], OTHER)]
-        expected = [
-            (originals[2], OTHER),
-            (originals[3], OTHER),
-            (originals[4], OTHER),
-            ('Fountain Hills', LOCATION)]
+        expected = [('Fountain Hills', LOCATION)]
         actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
         print 'expected -> %s' % str(expected)
         print 'actual -> %s' % str(actual)
@@ -347,7 +525,81 @@ class LocationTaggerTests(unittest.TestCase):
             (originals[5], LOCATION),   # Phoenix
             (originals[6], OTHER),      # is
             (originals[7], OTHER)]      # hotter
-        expected = tagged
+        expected = [('Chicago', 'LOCATION'), ('Phoenix', 'LOCATION')]
+        actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
+        print 'expected -> %s' % str(expected)
+        print 'actual -> %s' % str(actual)
+        assert expected == actual
+
+    def test_ReuniteSeparatedLocations3(self):
+        """
+        Tests _ReuniteSeparatedLocations with a three word location
+        """
+        originals = ['I', 'went', 'to', 'Half', 'Moon', 'Bay', 'in',
+                     'California']
+        tagged = [
+            (originals[0], OTHER),      # I
+            (originals[1], OTHER),      # went
+            (originals[2], OTHER),      # to
+            (originals[3], LOCATION),   # Half
+            (originals[4], LOCATION),   # Moon
+            (originals[5], LOCATION),   # Bay
+            (originals[6], OTHER),      # in
+            (originals[7], LOCATION)]   # California
+        expected = [('Half Moon Bay', LOCATION), ('California', LOCATION)]
+        actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
+        print 'expected -> %s' % str(expected)
+        print 'actual -> %s' % str(actual)
+        assert expected == actual
+
+    def test_ReuniteSeparatedLocations4(self):
+        """
+        Tests _ReuniteSeparatedLocations with several multi-word locations
+        """
+        originals = ['I', 'went', 'to', 'Half', 'Moon', 'Bay', 'in',
+                     'California', nlp.NLP_PUNCTUATION_TOKEN, "I've", 'never',
+                     'been', 'to', 'Hong', 'Kong', ',', 'China',
+                     nlp.NLP_PUNCTUATION_TOKEN, 'Have', 'you', 'been', 'to',
+                     'San', 'Luis', 'Obispo', ',', 'California',
+                     nlp.NLP_PUNCTUATION_TOKEN]
+        tagged = [
+            (originals[0], OTHER),      # I
+            (originals[1], OTHER),      # went
+            (originals[2], OTHER),      # to
+            (originals[3], LOCATION),   # Half
+            (originals[4], LOCATION),   # Moon
+            (originals[5], LOCATION),   # Bay
+            (originals[6], OTHER),      # in
+            (originals[7], LOCATION),   # California
+            (originals[8], OTHER),      # .
+            (originals[9], OTHER),      # I've
+            (originals[10], OTHER),     # never
+            (originals[11], OTHER),     # been
+            (originals[12], OTHER),     # to
+            (originals[13], LOCATION),  # Hong
+            (originals[14], LOCATION),  # Kong
+            (originals[15], OTHER),     # ,
+            (originals[16], LOCATION),  # China
+            (originals[17], OTHER),     # .
+            (originals[18], OTHER),     # Have
+            (originals[19], OTHER),     # you
+            (originals[20], OTHER),     # been
+            (originals[21], OTHER),     # to
+            (originals[22], LOCATION),  # San
+            (originals[23], LOCATION),  # Luis
+            (originals[24], LOCATION),  # Obispo
+            (originals[25], OTHER),     # ,
+            (originals[26], LOCATION),  # California
+            (originals[27], OTHER)]     # ?
+        # print tagged
+        expected = [
+            ('Half Moon Bay', LOCATION),
+            ('California', LOCATION),
+            ('Hong Kong', LOCATION),
+            ('China', LOCATION),
+            ('San Luis Obispo', LOCATION),
+            ('California', LOCATION)
+        ]
         actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
         print 'expected -> %s' % str(expected)
         print 'actual -> %s' % str(actual)
@@ -365,6 +617,21 @@ class LocationTaggerTests(unittest.TestCase):
             "but I like Phoenix, Arizona better.")
         tagged = self.Tagger.TagLocations(pretext)
         assert tagged == ['Phoenix', 'Arizona', 'Chandler', 'AZ']
+
+    def test_TagLocations2(self):
+        """
+        Tests TagLocations with multi-word location sentence from
+        Agric_Hum_Values.txt
+        """
+        text = ("We draw from the rich history of hazards research to explore "
+                "how evolving livelihood strategies and the consequent shift "
+                "in the role of agriculture in the Upper Lerma Valley may "
+                "provide insights into the meaning of flood losses to rural "
+                "populations, and thus new opportunities for flood management."
+                )
+        expected = ['Upper Lerma Valley']
+        actual = self.Tagger.TagLocations(text)
+        assert expected == actual
 
     def test_Repr(self):
         """
