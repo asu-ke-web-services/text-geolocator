@@ -180,7 +180,7 @@ def UploadFile():
 
                 end = time.time()
 
-                elapsed = end - start
+                elapsed = (end - start) / 60
 
                 return render_template(
                     'result.html',
