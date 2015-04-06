@@ -92,6 +92,21 @@
 {% endblock %}
 {% block content %}
   <div class="container">
+    <h1>{{ uploaded_file_name }}</h1>
+    {% if display_file_stats == 1 %}
+    <ul>
+      <li>Words&#58; {{ word_count|e }}</li>
+      <li>Tagged Locations&#58; {{ tagged_locations|e }}</li>
+      <li>Distinct Locations&#58; {{ distinct_locations|e }}</li>
+      <li>Accuracy&#58; {{ accuracy }}</li>
+    </ul>
+    {% else %}
+    <ul>
+      <li>Distinct Locations&#58; {{ distinct_locations|e }}</li>
+    </ul>
+    {% endif %}
+  </div>
+  <div class="container">
 <!--     <div id="panel">
 
       <button onclick="toggleHeatmap()">Toggle Heatmap</button>
@@ -113,11 +128,18 @@
       <script>
         document.getElementById("download_geojson").addEventListener("click", function(){
           var geojson_file = '{{ geojson_collection|tojson|safe }}';
-            download(geojson_file, "{{ filename }}.geojson", "text/plain");
+            download(geojson_file, "{{ download_filename }}.geojson", "text/plain");
         });
       </script>
       <h3>Locations</h3>
       {{ geojson_collection|e }}
+      {% if display_file_stats == 1 %}
+      <h3>Text</h3>
+      {{ filetext }}
+      {% endif %}
+      <br>
+      <br>
+      <br>
     </div>
   </div>
 {% endblock %}

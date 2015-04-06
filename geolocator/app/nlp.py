@@ -295,6 +295,17 @@ class LocationTagger():
          not in noduplicate_array]
         return noduplicate_array
 
+    def CountWords(self, text):
+        """
+        Given some text, split it and return the number of tokens
+
+        :param str text: text to analyze
+
+        :returns: int -- number of words in text
+        """
+        split = text.split(' ')
+        return len(split)
+
     def TagLocations(self, text):
         """
         Given the text of a document, find and return all locations

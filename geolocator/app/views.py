@@ -94,62 +94,85 @@ def UploadFile():
     if request.method == 'POST':
         uploadedfile = request.files['file']
         accuracy = request.form.get('weight')
-        if uploadedfile and GeojsonCheck(uploadedfile.filename):
-            # checks for a geojson upload
-            geojson = uploadedfile.read()
-            latlngs = RetrieveLatLngs(geojson)
-            if not latlngs:
-                return render_template_string("""
-                    {% extends "base.html" %}
-                    {% block content %}
-                    <div class="center">
-                        <h1>File formatted incorrectly.</h1>
-                    </div>
-                    {% endblock %}""")
-            return render_template(
-                'result.html',
-                latlngs=latlngs,
-                center=latlngs[0],
-                geojson_collection=geojson
-            )
-        if uploadedfile and AllowedFile(uploadedfile.filename):
+        if uploadedfile:
 
             filename = "%s_acc-%s" % (str(uploadedfile.filename),
                                       str(accuracy))
 
-            # this is supposed to save file to /tmp/uploads
-            # ---------------------------------------------------------------
-            # filename = secure_filename(uploadedfile.filename)
-            # uploadedfile_path =
-            #     os.path.join(app.config['UPLOAD_FOLDER'],filename)
-            # with open(uploadedfile_path, 'wb') as f:
-            # ....f.write(uploadedfile.read())
-            # return redirect(url_for('uploaded_file', filename=filename))
-            text = uploadedfile.read()
+            if GeojsonCheck(uploadedfile.filename):
+                # checks for a geojson upload
+                geojson = uploadedfile.read()
+                latlngs = RetrieveLatLngs(geojson)
+                if not latlngs:
+                    return render_template_string("""
+                        {% extends "base.html" %}
+                        {% block content %}
+                        <div class="center">
+                            <h1>File formatted incorrectly.</h1>
+                        </div>
+                        {% endblock %}""")
+                return render_template(
+                    'result.html',
+                    latlngs=latlngs,
+                    center=latlngs[0],
+                    geojson_collection=geojson,
+                    uploaded_file_name=uploadedfile.filename,
+                    download_filename=filename,
+                    display_file_stats=0,
+                    distinct_locations=len(latlngs)
+                )
+            if AllowedFile(uploadedfile.filename):
 
-            tagger = LocationTagger()
-            locations = tagger.TagLocations(text)
+                # this is supposed to save file to /tmp/uploads
+                # ---------------------------------------------------------
+                # filename = secure_filename(uploadedfile.filename)
+                # uploadedfile_path =
+                #     os.path.join(app.config['UPLOAD_FOLDER'],filename)
+                # with open(uploadedfile_path, 'wb') as f:
+                # ....f.write(uploadedfile.read())
+                # return redirect(url_for('uploaded_file', filename=filename))
+                text = uploadedfile.read()
 
-            geolocator = Geolocator()
-            try:
-                accuracy = int(accuracy)
-            except:
-                accuracy = 0
-            weights = (accuracy > 0)
-            geolocator.geolocate(locations, weights=weights, accuracy=accuracy)
-            geojson = geolocator.geojson()
-            geojson_jsonify = jsonify(**geojson)
+                tagger = LocationTagger()
+                wordcount = tagger.CountWords(text)
+                locations = tagger.TagLocations(text)
 
-            latlngs = RetrieveLatLngs(geojson)
+                geolocator = Geolocator()
+                try:
+                    accuracy = int(accuracy)
+                except:
+                    accuracy = 0
+                weights = (accuracy > 0)
+                geolocator.geolocate(
+                    locations,
+                    weights=weights,
+                    accuracy=accuracy)
+                geojson = geolocator.geojson()
+                geojson_jsonify = jsonify(**geojson)
 
-            return render_template(
-                'result.html',
-                latlngs=latlngs,
-                center=latlngs[0],
-                geojson_collection=geojson,
-                geojson_jsonify=geojson_jsonify,
-                filename=filename,
-            )
+                latlngs = RetrieveLatLngs(geojson)
+
+                try:
+                    text = text.encode('utf-8')
+                except:
+                    text = ("Cannot display file's contents as "
+                            "non-unicode characters are present")
+
+                return render_template(
+                    'result.html',
+                    latlngs=latlngs,
+                    center=latlngs[0],
+                    geojson_collection=geojson,
+                    geojson_jsonify=geojson_jsonify,
+                    uploaded_file_name=uploadedfile.filename,
+                    display_file_stats=1,
+                    word_count=wordcount,
+                    tagged_locations=len(locations),
+                    distinct_locations=len(latlngs),
+                    accuracy=accuracy,
+                    download_filename=filename,
+                    filetext=text
+                )
     return render_template_string("""
         {% extends "base.html" %}
         {% block content %}
