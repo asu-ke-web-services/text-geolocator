@@ -33,6 +33,13 @@ def Index():
 
 
 def GeojsonCheck(filename):
+    """
+    Checks if filename is of type geojson
+
+    :param str filename: filename to check
+
+    :returns: bool - True if filename ends with geojson; otherwise False
+    """
     if filename.endswith('.geojson'):
         return True
     else:
@@ -57,6 +64,15 @@ def AllowedFile(filename):
 
 @app.route('/dbtest')
 def dbtest():
+    """
+    This is a hidden url route not available through website GUI.
+
+    It serves as a test for developer's to make sure that their
+    database and environment are up and running correctly.
+
+    If the dev does not get an error message when louding this URL,
+    then it can be assumed that the environment is working.
+    """
     from app.models import Location, Feature
     from app.weighter import Weightifier
     from app.geolocator import LocationWrap
@@ -184,19 +200,103 @@ def UploadFile():
 
 @app.route('/examples')
 def examples():
+    """
+    Examples page of website.
+    Provides links to several example outputs of the application.
+
+    URL Routes:
+
+        * '/examples'
+
+    :returns: template 'examples.html'
+    """
     return render_template('examples.html')
 
 
 @app.route('/examples/weights_off')
 def example_weights_off():
+    """
+    Example of application output with "weights" turned off.
+
+    URL Routes:
+
+        * '/weights_off'
+
+    :returns: template 'example_weights_off.html'
+    """
     return render_template('example_weights_off.html')
 
 
 @app.route('/examples/weights_on_accuracy_1')
 def example_weights_on_acc_1():
+    """
+    Example of application output with "weights" turned on and
+    "accuracy" set to 1.
+
+    URL Routes:
+
+        * '/weights_on_accuracy_1'
+
+    :returns: template 'example_weights_on_acc_1.html'
+    """
     return render_template('example_weights_on_acc_1.html')
 
 
 @app.route('/examples/weights_on_accuracy_2')
 def example_weights_on_acc_2():
+    """
+    Example of application output with "weights" turned on and
+    "accuracy" set to 2.
+
+    URL Routes:
+
+        * '/weights_on_accuracy_2'
+
+    :returns: template 'example_weights_on_acc_2.html'
+    """
     return render_template('example_weights_on_acc_2.html')
+
+
+@app.route('/examples/weights_on_accuracy_3')
+def example_weights_on_acc_3():
+    """
+    Example of application output with "weights" turned on and
+    "accuracy" set to 3.
+
+    URL Routes:
+
+        * '/weights_on_accuracy_3'
+
+    :returns: template 'example_weights_on_acc_3.html'
+    """
+    return render_template('example_weights_on_acc_3.html')
+
+
+@app.route('/examples/weights_on_accuracy_4')
+def example_weights_on_acc_4():
+    """
+    Example of application output with "weights" turned on and
+    "accuracy" set to 4.
+
+    URL Routes:
+
+        * '/weights_on_accuracy_4'
+
+    :returns: template 'example_weights_on_acc_4.html'
+    """
+    return render_template('example_weights_on_acc_4.html')
+
+
+@app.route('/examples/weights_on_accuracy_5')
+def example_weights_on_acc_5():
+    """
+    Example of application output with "weights" turned on and
+    "accuracy" set to 5.
+
+    URL Routes:
+
+        * '/weights_on_accuracy_5'
+
+    :returns: template 'example_weights_on_acc_5.html'
+    """
+    return render_template('example_weights_on_acc_5.html')
