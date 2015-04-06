@@ -1,4 +1,16 @@
 #!/usr/bin/python
+"""
+Contains the following classes:
+
+    * LocationAdminParent
+    * LocationAdminNames
+    * LocationAdminCodes
+    * Query
+    * AdminNameGetter
+    * Weightifier
+
+This file manages all weighting operations within this application
+"""
 from sqlalchemy import text
 from app import db
 
@@ -14,6 +26,10 @@ class LocationAdminParent(object):
 
 
 class LocationAdminNames(LocationAdminParent):
+    """
+    Container object for a location's admin names
+    Inherits from LocationAdminParent
+    """
 
     def __init__(self):
         super(LocationAdminNames, self).__init__()
@@ -25,6 +41,11 @@ class LocationAdminNames(LocationAdminParent):
         return
 
     def list(self):
+        """
+        Returns all names combined in a list
+
+        :returns: list -- all names
+        """
         l = []
         if self.admin4name:
             l.append(self.admin4name)
@@ -70,6 +91,10 @@ class LocationAdminNames(LocationAdminParent):
 
 
 class LocationAdminCodes(LocationAdminParent):
+    """
+    Container object for a location's admin codes
+    Inherits from LocationAdminParent
+    """
 
     def __init__(self):
         super(LocationAdminCodes, self).__init__()
@@ -113,6 +138,9 @@ class LocationAdminCodes(LocationAdminParent):
 
 
 class Query(object):
+    """
+    Simplifies writing code for querying the geonames database
+    """
 
     def __init__(self, selects, froms, wheres=None):
         if not isinstance(selects, list):
@@ -170,7 +198,8 @@ class Query(object):
 
 class AdminNameGetter(object):
     """
-    Gets the names of locations according to given admin codes
+    Gets the names of locations according to given admin codes from the
+    geonames db
     """
 
     ADMIN_FEATURE_CODES = [
@@ -184,10 +213,22 @@ class AdminNameGetter(object):
     FROM = 'raw_locations l'
 
     def __init__(self, admincodes):
+        """
+        :param LocationAdminCodes admincodes: codes will be used when
+        querying for names
+        """
         self.codes = admincodes
         return
 
     def _query_one(self, sql):
+        """
+        Returns a single hit from the geonames database from the query
+        defined in sql
+
+        :param str sql: query to execute
+
+        :returns: a 'hit' whatever that might be from the given query
+        """
         result = db.engine.execute(sql)
         hit = None
         for row in result:
@@ -195,21 +236,39 @@ class AdminNameGetter(object):
         return hit
 
     def _sql_admin4code(self):
+        """
+        Formats part of an sql query statement for matching the admin4code
+        """
         return "l.admin4code = '%s'" % str(self.codes.admin4code)
 
     def _sql_admin3code(self):
+        """
+        Formats part of an sql query statement for matching the admin3code
+        """
         return "l.admin3code = '%s'" % str(self.codes.admin3code)
 
     def _sql_admin2code(self):
+        """
+        Formats part of an sql query statement for matching the admin2code
+        """
         return "l.admin2code = '%s'" % str(self.codes.admin2code)
 
     def _sql_admin1code(self):
+        """
+        Formats part of an sql query statement for matching the admin1code
+        """
         return "l.admin1code = '%s'" % str(self.codes.admin1code)
 
     def _sql_countrycode(self):
+        """
+        Formats part of an sql query statement for matching the countrycode
+        """
         return "l.countrycode = '%s'" % str(self.codes.countrycode)
 
     def _sql_featurecode(self, index):
+        """
+        Formats part of an sql query statement for matching the featurecode
+        """
         return "l.featurecode = '%s'" % str(self.ADMIN_FEATURE_CODES[index])
 
     def _admin4name(self):
