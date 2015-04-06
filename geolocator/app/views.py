@@ -93,6 +93,7 @@ def UploadFile():
     """
     if request.method == 'POST':
         uploadedfile = request.files['file']
+        accuracy = request.form.get('weight')
         if uploadedfile and GeojsonCheck(uploadedfile.filename):
             # checks for a geojson upload
             geojson = uploadedfile.read()
@@ -113,6 +114,9 @@ def UploadFile():
             )
         if uploadedfile and AllowedFile(uploadedfile.filename):
 
+            filename = "%s_acc-%s" % (str(uploadedfile.filename),
+                                      str(accuracy))
+
             # this is supposed to save file to /tmp/uploads
             # ---------------------------------------------------------------
             # filename = secure_filename(uploadedfile.filename)
@@ -127,7 +131,12 @@ def UploadFile():
             locations = tagger.TagLocations(text)
 
             geolocator = Geolocator()
-            geolocator.geolocate(locations, weights=False, accuracy=1)
+            try:
+                accuracy = int(accuracy)
+            except:
+                accuracy = 0
+            weights = (accuracy > 0)
+            geolocator.geolocate(locations, weights=weights, accuracy=accuracy)
             geojson = geolocator.geojson()
             geojson_jsonify = jsonify(**geojson)
 
@@ -138,7 +147,8 @@ def UploadFile():
                 latlngs=latlngs,
                 center=latlngs[0],
                 geojson_collection=geojson,
-                geojson_jsonify=geojson_jsonify
+                geojson_jsonify=geojson_jsonify,
+                filename=filename,
             )
     return render_template_string("""
         {% extends "base.html" %}

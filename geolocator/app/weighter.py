@@ -510,12 +510,13 @@ class Weightifier(object):
         # less than the max weight for those wraps
         for i, hits in enumerate(container.hits):
             max_weight = hits.max_weight()
-            removes = list()
-            for l in hits:
-                if l.weight() < max_weight:
-                    removes.append(l)
-            for l in removes:
-                container.hits[i].locations.remove(l)
+            if max_weight > -1:
+                removes = list()
+                for l in hits:
+                    if l.weight() < max_weight:
+                        removes.append(l)
+                for l in removes:
+                    container.hits[i].locations.remove(l)
         return container
 
     def __repr__(self):

@@ -164,7 +164,10 @@ class LocationHits(object):
         weights = list()
         for wrap in self.locations:
             weights.append(wrap.weight())
-        return max(weights)
+        if len(weights) > 0:
+            return max(weights)
+        else:
+            return -1
 
     def __len__(self):
         length = 0
