@@ -3,27 +3,31 @@
 run with: sudo fig run web nosetests geolocator/app/tests/test_weighter.py
 """
 from app.geolocator import LocationWrap, LocationHits, LocationHitsContainer
-from app.models import Location
+# from app.models import Location
 import unittest
-from nose.tools import nottest
+
 
 class Location(object):
     def __init__(self, name, longitude, latitude, geonameid):
-	self.name = name
-	self.longitude = longitude
-	self.latitude = latitude
-	self.geonameid = geonameid
+        self.name = name
+        self.longitude = longitude
+        self.latitude = latitude
+        self.geonameid = geonameid
+
 
 class admin(object):
     def __init__(self, s1, s2):
-	l1 = []
-	l1.extend(s1)
-	l1.extend(s2)	
-	self.adminnames = l1
+        l1 = []
+        l1.extend(s1)
+        l1.extend(s2)
+        self.adminnames = l1
+
     def list(self):
-	return self.adminnames
+        return self.adminnames
+
     def match(self, something):
-	return True
+        return True
+
 
 class LocationWrapTestCase(unittest.TestCase):
     """
@@ -46,7 +50,7 @@ class LocationWrapTestCase(unittest.TestCase):
         return
 
     # ----------------------- Helpers ----------------------- #
-    def init(self, location):#=Location()):
+    def init(self, location):
         self.wrap = LocationWrap(location)
         return
 
@@ -66,19 +70,19 @@ class LocationWrapTestCase(unittest.TestCase):
         """
         Tests the "getter" functions for the locationwrapper
         """
-	loc = Location('Phoenix', 82.546, 36.111, 'phx')
-	locwrap = LocationWrap(loc)
-	locwrap.increment_weight_on_match('Phoenix')
-	#l1 = ['Jang', 'Bob']
-	l1 = admin('Jang', 'Bob')
-	locwrap.set_adminnames(l1)
-	names = locwrap.names_list()
+        loc = Location('Phoenix', 82.546, 36.111, 'phx')
+        locwrap = LocationWrap(loc)
+        locwrap.increment_weight_on_match('Phoenix')
+        # l1 = ['Jang', 'Bob']
+        l1 = admin('Jang', 'Bob')
+        locwrap.set_adminnames(l1)
+        # names = locwrap.names_list()
 
-	assert locwrap.name() == 'Phoenix'
-	assert locwrap.longitude() == 82.546
-	assert locwrap.latitude() == 36.111
-	assert locwrap.geonameid() == 'phx'
-	assert locwrap.weight() == 1
+        assert locwrap.name() == 'Phoenix'
+        assert locwrap.longitude() == 82.546
+        assert locwrap.latitude() == 36.111
+        assert locwrap.geonameid() == 'phx'
+        assert locwrap.weight() == 1
 
         return
 
@@ -147,22 +151,20 @@ class LocationHitsTestCase(unittest.TestCase):
         """
         Tests :func:`app.geolocator.LocationHits.increment_weight_on_match`
         """
-	loc = Location('Phoenix', 82.546, 36.111, 'phx')
-	locwrap = LocationWrap(loc)
-	s1 = admin('Jang', 'Bob')
-	locwrap.set_adminnames(s1)
-	loc2 = Location('Denver', 18.546, 44.111, 'den')
-	locwrap2 = LocationWrap(loc2)
-	s2 = admin('Jang', 'Bob')
-	locwrap2.set_adminnames(s2)
-	l1 = [locwrap, locwrap2]
+        loc = Location('Phoenix', 82.546, 36.111, 'phx')
+        locwrap = LocationWrap(loc)
+        s1 = admin('Jang', 'Bob')
+        locwrap.set_adminnames(s1)
+        loc2 = Location('Denver', 18.546, 44.111, 'den')
+        locwrap2 = LocationWrap(loc2)
+        s2 = admin('Jang', 'Bob')
+        locwrap2.set_adminnames(s2)
+        l1 = [locwrap, locwrap2]
         self.init(l1)
-	self.hits.increment_weight_on_match('Phoenix')
+        self.hits.increment_weight_on_match('Phoenix')
 
-	f1 = self.hits.max_weight
-	assert f1 != 1 	
-
-        return
+        f1 = self.hits.max_weight
+        assert f1 != 1
 
     def test__len__pass(self):
         """
@@ -208,7 +210,7 @@ class LocationHitsContainerTestCase(unittest.TestCase):
 
     # ----------------------- Helpers ----------------------- #
     def init(self, locations=[]):
-        #self.hits = LocationHitsContainer(locations)
+        # self.hits = LocationHitsContainer(locations)
         return
 
     # ----------------------- Tests ----------------------- #
@@ -218,8 +220,6 @@ class LocationHitsContainerTestCase(unittest.TestCase):
         """
         LOCATIONS = ['apple', 'banana', 'orange']
         self.init(LOCATIONS)
-        #assert isinstance(self.hits, LocationHits)
-        #assert self.hits.index == -1
-        #assert self.hits.locations == LOCATIONS
-
-
+        # assert isinstance(self.hits, LocationHits)
+        # assert self.hits.index == -1
+        # assert self.hits.locations == LOCATIONS
