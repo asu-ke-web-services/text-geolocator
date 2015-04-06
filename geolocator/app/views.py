@@ -32,6 +32,13 @@ def Index():
         title='Text Geolocator')
 
 
+def GeojsonCheck(filename):
+    if filename.endswith('.geojson'):
+        return True
+    else:
+        return False
+
+
 def AllowedFile(filename):
     """
     Validates file type upon upload from user
@@ -86,6 +93,24 @@ def UploadFile():
     """
     if request.method == 'POST':
         uploadedfile = request.files['file']
+        if uploadedfile and GeojsonCheck(uploadedfile.filename):
+            # checks for a geojson upload
+            geojson = uploadedfile.read()
+            latlngs = RetrieveLatLngs(geojson)
+            if not latlngs:
+                return render_template_string("""
+                    {% extends "base.html" %}
+                    {% block content %}
+                    <div class="center">
+                        <h1>File formatted incorrectly.</h1>
+                    </div>
+                    {% endblock %}""")
+            return render_template(
+                'result.html',
+                latlngs=latlngs,
+                center=latlngs[0],
+                geojson_collection=geojson
+            )
         if uploadedfile and AllowedFile(uploadedfile.filename):
 
             # this is supposed to save file to /tmp/uploads
