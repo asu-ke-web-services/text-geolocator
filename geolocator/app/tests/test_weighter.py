@@ -63,7 +63,6 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         """
         A4 = 'apple'
         A2 = 'peanut butter'
-        FC = '5'
         NAME = 'Joe'
         c1 = LocationAdminNames()
         c1.admin4name = A4
@@ -81,7 +80,6 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         """
         A4 = 'apple'
         A2 = 'peanut butter'
-        FC = '5'
         NAME = 'Frank'
         c1 = LocationAdminNames()
         c1.admin4name = A4
