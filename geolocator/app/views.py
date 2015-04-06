@@ -8,6 +8,8 @@ from app import app
 from nlp import LocationTagger
 from geolocator import Geolocator, RetrieveLatLngs
 
+import time
+
 
 @app.route('/')
 @app.route('/home')
@@ -139,6 +141,8 @@ def UploadFile():
                 )
             if AllowedFile(uploadedfile.filename):
 
+                start = time.time()
+
                 # this is supposed to save file to /tmp/uploads
                 # ---------------------------------------------------------
                 # filename = secure_filename(uploadedfile.filename)
@@ -174,6 +178,10 @@ def UploadFile():
                     text = ("Cannot display file's contents as "
                             "non-unicode characters are present")
 
+                end = time.time()
+
+                elapsed = end - start
+
                 return render_template(
                     'result.html',
                     latlngs=latlngs,
@@ -187,7 +195,8 @@ def UploadFile():
                     distinct_locations=len(latlngs),
                     accuracy=accuracy,
                     download_filename=filename,
-                    filetext=text
+                    filetext=text,
+                    elapsed_time=elapsed
                 )
     return render_template_string("""
         {% extends "base.html" %}
