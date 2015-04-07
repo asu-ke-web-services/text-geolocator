@@ -69,10 +69,40 @@ class LocationWrap(object):
     def __init__(self, location):
         self.location = location
         self._weight = 0
-        self.adminnames = []
+        self.adminnames = None
 
     def name(self):
         return self.location.name
+
+    def admin1name(self):
+        name = None
+        if self.adminnames:
+            name = self.adminnames.admin1name
+        return name
+
+    def admin2name(self):
+        name = None
+        if self.adminnames:
+            name = self.adminnames.admin2name
+        return name
+
+    def admin3name(self):
+        name = None
+        if self.adminnames:
+            name = self.adminnames.admin3name
+        return name
+
+    def admin4name(self):
+        name = None
+        if self.adminnames:
+            name = self.adminnames.admin4name
+        return name
+
+    def countryname(self):
+        name = None
+        if self.adminnames:
+            name = self.adminnames.countryname
+        return name
 
     def latitude(self):
         return self.location.latitude
@@ -87,6 +117,10 @@ class LocationWrap(object):
         return self.location.geonameid
 
     def set_adminnames(self, location_admin_names):
+        """
+        :param app.weighter.LocationAdminNames location_admin_names:
+        admin names
+        """
         self.adminnames = location_admin_names
         return
 
@@ -164,7 +198,10 @@ class LocationHits(object):
         weights = list()
         for wrap in self.locations:
             weights.append(wrap.weight())
-        return max(weights)
+        if len(weights) > 0:
+            return max(weights)
+        else:
+            return -1
 
     def __len__(self):
         length = 0
@@ -247,7 +284,12 @@ class GeoJSONer(object):
         }
         properties = {
             'weight': location.weight(),
-            'name': location.name()
+            'name': location.name(),
+            'countryname': location.countryname(),
+            'admin1name': location.admin1name(),
+            'admin2name': location.admin2name(),
+            'admin3name': location.admin3name(),
+            'admin4name': location.admin4name(),
         }
 
         feature = geojson.Feature(location.name(), geometry, properties)

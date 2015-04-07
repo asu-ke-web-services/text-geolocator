@@ -11,403 +11,1220 @@
     <title></title>
 
     
-
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-
   <script src="http://danml.com/js/download.js"></script>
-
   <script>
-
     function initialize() {
-
-
-
       var mapOptions = {
-
         // How zoomed in you want the map to start at (always required)
-
-        zoom: 10,
-
-
-
+        zoom: 2,
         // The latitude and longitude to center the map (always required)
-
-        center: new google.maps.LatLng(29.64605, -89.93979),
-
-
-
+        center: new google.maps.LatLng(28.75054, -82.5001),
         // How you would like to style the map. 
-
         // This is where you would paste any style found on Snazzy Maps.
-
         styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
-
       };
-
-
-
       // Get the HTML DOM element that will contain your map 
-
       // We are using a div with id="map" seen below in the <body>
-
       var mapElement = document.getElementById('map-canvas');
-
-
-
       // Create the Google Map using our element and options defined above
-
       var map = new google.maps.Map(mapElement, mapOptions);
-
-      
-
       var mapData = [
-
         
-
-          new google.maps.LatLng(29.64605, -89.93979),
-
+          new google.maps.LatLng(28.75054, -82.5001),
         
-
-          new google.maps.LatLng(29.3819, -98.54168),
-
+          new google.maps.LatLng(39.4931, -91.78711),
         
-
-          new google.maps.LatLng(40.47788, -74.31293),
-
+          new google.maps.LatLng(41.32199, -84.20439),
         
-
-          new google.maps.LatLng(40.52983, -74.34098),
-
+          new google.maps.LatLng(40.16032, -85.71025),
         
-
-          new google.maps.LatLng(33.44838, -112.07404),
-
+          new google.maps.LatLng(42.66675, -73.01121),
         
-
-          new google.maps.LatLng(32.78904, -92.95766),
-
+          new google.maps.LatLng(41.33176, -74.35682),
         
-
-          new google.maps.LatLng(30.78963, -95.468),
-
+          new google.maps.LatLng(37.215, -107.75256),
         
-
-
-
+          new google.maps.LatLng(34.09118, -106.89836),
+        
+          new google.maps.LatLng(32.41592, -107.57669),
+        
+          new google.maps.LatLng(28.76147, -81.7113),
+        
+          new google.maps.LatLng(36.33538, -89.49347),
+        
+          new google.maps.LatLng(42.34941, -87.86179),
+        
+          new google.maps.LatLng(41.47221, -87.37637),
+        
+          new google.maps.LatLng(43.99001, -85.8017),
+        
+          new google.maps.LatLng(47.52317, -91.40885),
+        
+          new google.maps.LatLng(41.71393, -81.24527),
+        
+          new google.maps.LatLng(44.02204, -97.12938),
+        
+          new google.maps.LatLng(39.09965, -122.75318),
+        
+          new google.maps.LatLng(39.20238, -106.34484),
+        
+          new google.maps.LatLng(47.64594, -114.08935),
+        
+          new google.maps.LatLng(42.79339, -120.38747),
+        
+          new google.maps.LatLng(-22.72657, 30.0791),
+        
+          new google.maps.LatLng(-23.8, 30.35),
+        
+          new google.maps.LatLng(36.33256, -88.2581),
+        
+          new google.maps.LatLng(30.81713, -89.11116),
+        
+          new google.maps.LatLng(32.52514, -96.6161),
+        
+          new google.maps.LatLng(40.37646, -79.11948),
+        
+          new google.maps.LatLng(37.84033, -87.07277),
+        
+          new google.maps.LatLng(32.99568, -90.77121),
+        
+          new google.maps.LatLng(40.18228, -82.95713),
+        
+          new google.maps.LatLng(-4.58333, -72.03333),
+        
+          new google.maps.LatLng(-12.51667, -69.01667),
+        
+          new google.maps.LatLng(-25.67378, 27.32334),
+        
+          new google.maps.LatLng(-6.05, 39.26667),
+        
+          new google.maps.LatLng(-4.65, 34.33333),
+        
+          new google.maps.LatLng(-6.9525, 22.35662),
+        
+          new google.maps.LatLng(-1.86667, 38.3),
+        
+          new google.maps.LatLng(-1.4551, 30.0149),
+        
+          new google.maps.LatLng(-1.5438, 29.7097),
+        
+          new google.maps.LatLng(-1.5484, 29.7156),
+        
+          new google.maps.LatLng(-1.97778, 30.72556),
+        
+          new google.maps.LatLng(-1.4398, 30.0097),
+        
+          new google.maps.LatLng(1.21667, 32.16667),
+        
+          new google.maps.LatLng(0.35333, 32.75528),
+        
+          new google.maps.LatLng(0.26667, 32.45),
+        
+          new google.maps.LatLng(0.16483, 32.7343),
+        
+          new google.maps.LatLng(-0.96216, 29.6236),
+        
+          new google.maps.LatLng(13.08784, 80.27847),
+        
+          new google.maps.LatLng(13.08891, 80.26483),
+        
+          new google.maps.LatLng(40.16706, -74.49987),
+        
+          new google.maps.LatLng(33.42845, -92.31431),
+        
+          new google.maps.LatLng(33.71567, -83.79879),
+        
+          new google.maps.LatLng(38.37456, -75.60465),
+        
+          new google.maps.LatLng(37.97429, -75.86077),
+        
+          new google.maps.LatLng(35.73097, -80.31533),
+        
+          new google.maps.LatLng(35.0698, -85.19273),
+        
+          new google.maps.LatLng(38.21152, -77.13942),
+        
+          new google.maps.LatLng(40.05367, -82.72323),
+        
+          new google.maps.LatLng(46.77074, -116.18765),
+        
+          new google.maps.LatLng(34.53814, -85.20523),
+        
+          new google.maps.LatLng(38.42785, -84.8105),
+        
+          new google.maps.LatLng(39.67338, -85.69859),
+        
+          new google.maps.LatLng(39.41452, -82.12042),
+        
+          new google.maps.LatLng(36.21398, -83.29489),
+        
+          new google.maps.LatLng(39.04702, -81.49262),
+        
+          new google.maps.LatLng(41.39642, -90.29874),
+        
+          new google.maps.LatLng(42.17252, -89.06705),
+        
+          new google.maps.LatLng(44.22719, -93.44467),
+        
+          new google.maps.LatLng(40.42511, -74.25376),
+        
+          new google.maps.LatLng(40.79677, -74.48154),
+        
+          new google.maps.LatLng(44.58645, -75.64829),
+        
+          new google.maps.LatLng(40.06313, -81.07427),
+        
+          new google.maps.LatLng(44.55727, -72.62373),
+        
+          new google.maps.LatLng(33.8567, -112.62323),
+        
+          new google.maps.LatLng(39.65239, -120.90467),
+        
+          new google.maps.LatLng(45.93861, -101.72319),
+        
       ];
-
       var infoWindow = new google.maps.InfoWindow(); /*info window*/
-
-
-
       var circles = [
-
         
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(29.64605, -89.93979),
-
+            center : new google.maps.LatLng(28.75054, -82.5001),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 0 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(29.3819, -98.54168),
-
+            center : new google.maps.LatLng(39.4931, -91.78711),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 1 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(40.47788, -74.31293),
-
+            center : new google.maps.LatLng(41.32199, -84.20439),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 2 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(40.52983, -74.34098),
-
+            center : new google.maps.LatLng(40.16032, -85.71025),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 3 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(33.44838, -112.07404),
-
+            center : new google.maps.LatLng(42.66675, -73.01121),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 4 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(32.78904, -92.95766),
-
+            center : new google.maps.LatLng(41.33176, -74.35682),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 5 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
           new google.maps.Circle({
-
-            center : new google.maps.LatLng(30.78963, -95.468),
-
+            center : new google.maps.LatLng(37.215, -107.75256),
             clickable: true,
-
             strokeColor: '#FF0000',
-
             strokeOpacity: 0,
-
             strokeWeight: 2,
-
             fillColor: '#FF0000',
-
             fillOpacity: 0,
-
             radius: 20000,
-
             map:map,
-
             id: 6 /*need to change latlng to distribute id num (int) */
-
           }),
-
           
-
-
-
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.09118, -106.89836),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 7 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.41592, -107.57669),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 8 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(28.76147, -81.7113),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 9 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(36.33538, -89.49347),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 10 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(42.34941, -87.86179),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 11 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(41.47221, -87.37637),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 12 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(43.99001, -85.8017),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 13 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(47.52317, -91.40885),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 14 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(41.71393, -81.24527),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 15 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(44.02204, -97.12938),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 16 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.09965, -122.75318),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 17 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.20238, -106.34484),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 18 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(47.64594, -114.08935),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 19 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(42.79339, -120.38747),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 20 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-22.72657, 30.0791),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 21 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-23.8, 30.35),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 22 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(36.33256, -88.2581),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 23 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(30.81713, -89.11116),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 24 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.52514, -96.6161),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 25 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.37646, -79.11948),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 26 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(37.84033, -87.07277),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 27 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.99568, -90.77121),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 28 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.18228, -82.95713),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 29 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-4.58333, -72.03333),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 30 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-12.51667, -69.01667),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 31 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-25.67378, 27.32334),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 32 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-6.05, 39.26667),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 33 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-4.65, 34.33333),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 34 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-6.9525, 22.35662),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 35 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.86667, 38.3),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 36 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.4551, 30.0149),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 37 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.5438, 29.7097),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 38 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.5484, 29.7156),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 39 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.97778, 30.72556),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 40 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-1.4398, 30.0097),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 41 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(1.21667, 32.16667),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 42 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(0.35333, 32.75528),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 43 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(0.26667, 32.45),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 44 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(0.16483, 32.7343),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 45 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(-0.96216, 29.6236),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 46 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(13.08784, 80.27847),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 47 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(13.08891, 80.26483),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 48 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.16706, -74.49987),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 49 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(33.42845, -92.31431),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 50 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(33.71567, -83.79879),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 51 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(38.37456, -75.60465),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 52 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(37.97429, -75.86077),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 53 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(35.73097, -80.31533),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 54 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(35.0698, -85.19273),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 55 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(38.21152, -77.13942),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 56 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.05367, -82.72323),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 57 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(46.77074, -116.18765),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 58 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.53814, -85.20523),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 59 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(38.42785, -84.8105),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 60 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.67338, -85.69859),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 61 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.41452, -82.12042),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 62 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(36.21398, -83.29489),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 63 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.04702, -81.49262),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 64 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(41.39642, -90.29874),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 65 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(42.17252, -89.06705),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 66 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(44.22719, -93.44467),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 67 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.42511, -74.25376),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 68 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.79677, -74.48154),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 69 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(44.58645, -75.64829),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 70 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.06313, -81.07427),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 71 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(44.55727, -72.62373),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 72 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(33.8567, -112.62323),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 73 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.65239, -120.90467),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 74 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(45.93861, -101.72319),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 75 /*need to change latlng to distribute id num (int) */
+          }),
+          
 /*          var infowindow = new google.maps.infowindow({
-
             content: 'Latitude: ' + 'longitude:' + '<br>(input type = "checkbox" name = "blah" value = "blah" /><input type = "button" value = "Is this a correct location?"'
-
           });*/
-
           ]
-
       for (i in circles) {
-
         google.maps.event.addListener(circles[i], 'mouseover', (function(circles, i) {
-
               return function() {
-
                   infoWindow.setContent("Id: " + circles[i].id + "\n Location: " + circles[i].center);
-
                   infoWindow.setPosition(circles[i].getCenter());
-
                   infoWindow.open(map);
-
               }
-
             })(circles, i));
-
       }
-
-
-
-
-
-
-
       var pointArray = new google.maps.MVCArray(mapData);
-
-
-
       var heatmap = new google.maps.visualization.HeatmapLayer({
-
         data: pointArray
-
       });
-
-      
-
       heatmap.setMap(map);
-
       circles.setMap(map);
-
     }
-
-
-
     function toggleHeatmap() {
-
       heatmap.setMap(heatmap.getMap() ? null : map);
-
     }
-
-
-
     function changeGradient() {
-
       var gradient = [
-
         'rgba(0, 255, 255, 0)',
-
         'rgba(0, 255, 255, 1)',
-
         'rgba(0, 191, 255, 1)',
-
         'rgba(0, 127, 255, 1)',
-
         'rgba(0, 63, 255, 1)',
-
         'rgba(0, 0, 255, 1)',
-
         'rgba(0, 0, 223, 1)',
-
         'rgba(0, 0, 191, 1)',
-
         'rgba(0, 0, 159, 1)',
-
         'rgba(0, 0, 127, 1)',
-
         'rgba(63, 0, 91, 1)',
-
         'rgba(127, 0, 63, 1)',
-
         'rgba(191, 0, 31, 1)',
-
         'rgba(255, 0, 0, 1)'
-
       ]
-
       heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-
     }
-
-
-
     function changeRadius() {
-
       heatmap.set('radius', heatmap.get('radius') ? null : 20);
-
     }
-
-
-
     function changeOpacity() {
-
       heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-
     }
-
-
-
     google.maps.event.addDomListener(window, 'load', initialize);
-
   </script>
-
 
 
     <link href="../static/css/geolocator.css" rel="stylesheet">
@@ -444,9 +1261,19 @@
     <!-- Content Container -->
     <!-- <div id="content"> -->
     
-
   <div class="container">
-
+    <h1>sample_test_article.txt</h1>
+    
+    <ul>
+      <li>Words&#58; 1177</li>
+      <li>Tagged Locations&#58; 20</li>
+      <li>Distinct Locations&#58; 76</li>
+      <li>Accuracy&#58; 1</li>
+      <li>Elapsed Time&#58; 10.8938977003 minutes</li>
+    </ul>
+    
+  </div>
+  <div class="container">
 <!--     <div id="panel">
 
       <button onclick="toggleHeatmap()">Toggle Heatmap</button>
@@ -458,45 +1285,52 @@
       <button onclick="changeOpacity()">Change opacity</button>
 
     </div> -->
-
     <h3>Heatmap</h3>
-
   </div>
-
   <div class="center-align" id="map-canvas"></div>
-
   <div class="container">
-
     <div id="geojson">
-
-
-
       <button id = "download_geojson">Download GeoJson </button>
-
-
-
-        <!-- Event listener to download geojson -->
-
+      <!-- Event listener to download geojson -->
       <script>
-
         document.getElementById("download_geojson").addEventListener("click", function(){
-
-          var geojson_file = '{"features": [{"geometry": {"coordinates": [29.64605, -89.93979], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [29.3819, -98.54168], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [40.47788, -74.31293], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [40.52983, -74.34098], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [33.44838, -112.07404], "type": "Point"}, "id": "Phoenix", "properties": {"name": "Phoenix", "weight": 21}, "type": "Feature"}, {"geometry": {"coordinates": [32.78904, -92.95766], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 23}, "type": "Feature"}, {"geometry": {"coordinates": [30.78963, -95.468], "type": "Point"}, "id": "Arizona", "properties": {"name": "Arizona", "weight": 23}, "type": "Feature"}], "type": "FeatureCollection"}';
-
-            download(geojson_file, "untitled.geojson", "text/plain");
-
+          var geojson_file = '{"features": [{"geometry": {"coordinates": [28.75054, -82.5001], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.4931, -91.78711], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [41.32199, -84.20439], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [40.16032, -85.71025], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [42.66675, -73.01121], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [41.33176, -74.35682], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [37.215, -107.75256], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [34.09118, -106.89836], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [32.41592, -107.57669], "type": "Point"}, "id": "Florida", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [28.76147, -81.7113], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [36.33538, -89.49347], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [42.34941, -87.86179], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [41.47221, -87.37637], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [43.99001, -85.8017], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [47.52317, -91.40885], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [41.71393, -81.24527], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [44.02204, -97.12938], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.09965, -122.75318], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.20238, -106.34484], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [47.64594, -114.08935], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [42.79339, -120.38747], "type": "Point"}, "id": "Lake County", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Lake County", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [-22.72657, 30.0791], "type": "Point"}, "id": "Nairobi", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "South Africa", "name": "Nairobi", "weight": 22}, "type": "Feature"}, {"geometry": {"coordinates": [-23.8, 30.35], "type": "Point"}, "id": "Kenya", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "South Africa", "name": "Kenya", "weight": 27}, "type": "Feature"}, {"geometry": {"coordinates": [36.33256, -88.2581], "type": "Point"}, "id": "India", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "India", "weight": 57}, "type": "Feature"}, {"geometry": {"coordinates": [30.81713, -89.11116], "type": "Point"}, "id": "India", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "India", "weight": 57}, "type": "Feature"}, {"geometry": {"coordinates": [32.52514, -96.6161], "type": "Point"}, "id": "India", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "India", "weight": 57}, "type": "Feature"}, {"geometry": {"coordinates": [40.37646, -79.11948], "type": "Point"}, "id": "India", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "India", "weight": 57}, "type": "Feature"}, {"geometry": {"coordinates": [37.84033, -87.07277], "type": "Point"}, "id": "Africa", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Africa", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [32.99568, -90.77121], "type": "Point"}, "id": "Africa", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Africa", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [40.18228, -82.95713], "type": "Point"}, "id": "Africa", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Africa", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [-4.58333, -72.03333], "type": "Point"}, "id": "Colombia", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Peru", "name": "Colombia", "weight": 47}, "type": "Feature"}, {"geometry": {"coordinates": [-12.51667, -69.01667], "type": "Point"}, "id": "Colombia", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Peru", "name": "Colombia", "weight": 47}, "type": "Feature"}, {"geometry": {"coordinates": [-25.67378, 27.32334], "type": "Point"}, "id": "Colombia", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "South Africa", "name": "Colombia", "weight": 47}, "type": "Feature"}, {"geometry": {"coordinates": [-6.05, 39.26667], "type": "Point"}, "id": "Uganda", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Tanzania", "name": "Uganda", "weight": 8}, "type": "Feature"}, {"geometry": {"coordinates": [-4.65, 34.33333], "type": "Point"}, "id": "Uganda", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Tanzania", "name": "Uganda", "weight": 8}, "type": "Feature"}, {"geometry": {"coordinates": [-6.9525, 22.35662], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Democratic Republic of the Congo", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.86667, 38.3], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Kenya", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.4551, 30.0149], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Rwanda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.5438, 29.7097], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Rwanda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.5484, 29.7156], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Rwanda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.97778, 30.72556], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Rwanda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-1.4398, 30.0097], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Rwanda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [1.21667, 32.16667], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Uganda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [0.35333, 32.75528], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Uganda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [0.26667, 32.45], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Uganda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [0.16483, 32.7343], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Uganda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [-0.96216, 29.6236], "type": "Point"}, "id": "Mukono", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "Uganda", "name": "Mukono", "weight": 5}, "type": "Feature"}, {"geometry": {"coordinates": [13.08784, 80.27847], "type": "Point"}, "id": "Chennai", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "India", "name": "Chennai", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [13.08891, 80.26483], "type": "Point"}, "id": "Chennai", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "India", "name": "Chennai", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [40.16706, -74.49987], "type": "Point"}, "id": "New Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "New Jersey", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [33.42845, -92.31431], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [33.71567, -83.79879], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [38.37456, -75.60465], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [37.97429, -75.86077], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [35.73097, -80.31533], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [35.0698, -85.19273], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [38.21152, -77.13942], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [40.05367, -82.72323], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [46.77074, -116.18765], "type": "Point"}, "id": "Jersey", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jersey", "weight": 56}, "type": "Feature"}, {"geometry": {"coordinates": [34.53814, -85.20523], "type": "Point"}, "id": "New", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "New", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [38.42785, -84.8105], "type": "Point"}, "id": "New", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "New", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.67338, -85.69859], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.41452, -82.12042], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [36.21398, -83.29489], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.04702, -81.49262], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [41.39642, -90.29874], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [42.17252, -89.06705], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [44.22719, -93.44467], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [40.42511, -74.25376], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [40.79677, -74.48154], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [44.58645, -75.64829], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [40.06313, -81.07427], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [44.55727, -72.62373], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [33.8567, -112.62323], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [39.65239, -120.90467], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}, {"geometry": {"coordinates": [45.93861, -101.72319], "type": "Point"}, "id": "Morristown", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Morristown", "weight": 55}, "type": "Feature"}], "type": "FeatureCollection"}';
+            download(geojson_file, "sample_test_article.txt_acc-1.geojson", "text/plain");
         });
-
       </script>
-
       <h3>Locations</h3>
+      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [28.75054, -82.5001], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.4931, -91.78711], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.32199, -84.20439], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#3#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.16032, -85.71025], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.66675, -73.01121], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.33176, -74.35682], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [37.215, -107.75256], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.09118, -106.89836], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.41592, -107.57669], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [28.76147, -81.7113], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [36.33538, -89.49347], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.34941, -87.86179], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.47221, -87.37637], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [43.99001, -85.8017], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [47.52317, -91.40885], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.71393, -81.24527], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [44.02204, -97.12938], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.09965, -122.75318], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.20238, -106.34484], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [47.64594, -114.08935], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.79339, -120.38747], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Lake County&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Lake County&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-22.72657, 30.0791], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Nairobi&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;South Africa&#34;, &#34;name&#34;: &#34;Nairobi&#34;, &#34;weight&#34;: 22}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-23.8, 30.35], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Kenya&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;South Africa&#34;, &#34;name&#34;: &#34;Kenya&#34;, &#34;weight&#34;: 27}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [36.33256, -88.2581], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;India&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;India&#34;, &#34;weight&#34;: 57}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.81713, -89.11116], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;India&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;India&#34;, &#34;weight&#34;: 57}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.52514, -96.6161], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;India&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;India&#34;, &#34;weight&#34;: 57}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.37646, -79.11948], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;India&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;India&#34;, &#34;weight&#34;: 57}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [37.84033, -87.07277], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Africa&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Africa&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.99568, -90.77121], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Africa&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Africa&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.18228, -82.95713], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Africa&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Africa&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-4.58333, -72.03333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Colombia&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Peru&#34;, &#34;name&#34;: &#34;Colombia&#34;, &#34;weight&#34;: 47}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-12.51667, -69.01667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Colombia&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Peru&#34;, &#34;name&#34;: &#34;Colombia&#34;, &#34;weight&#34;: 47}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-25.67378, 27.32334], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Colombia&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;South Africa&#34;, &#34;name&#34;: &#34;Colombia&#34;, &#34;weight&#34;: 47}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-6.05, 39.26667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Uganda&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Tanzania&#34;, &#34;name&#34;: &#34;Uganda&#34;, &#34;weight&#34;: 8}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-4.65, 34.33333], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Uganda&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Tanzania&#34;, &#34;name&#34;: &#34;Uganda&#34;, &#34;weight&#34;: 8}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-6.9525, 22.35662], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Democratic Republic of the Congo&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.86667, 38.3], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Kenya&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.4551, 30.0149], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Rwanda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.5438, 29.7097], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Rwanda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.5484, 29.7156], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Rwanda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.97778, 30.72556], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Rwanda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-1.4398, 30.0097], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Rwanda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [1.21667, 32.16667], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Uganda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [0.35333, 32.75528], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Uganda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [0.26667, 32.45], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Uganda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [0.16483, 32.7343], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Uganda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [-0.96216, 29.6236], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mukono&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;Uganda&#34;, &#34;name&#34;: &#34;Mukono&#34;, &#34;weight&#34;: 5}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [13.08784, 80.27847], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Chennai&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;India&#34;, &#34;name&#34;: &#34;Chennai&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [13.08891, 80.26483], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Chennai&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;India&#34;, &#34;name&#34;: &#34;Chennai&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.16706, -74.49987], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;New Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;New Jersey&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.42845, -92.31431], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.71567, -83.79879], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [38.37456, -75.60465], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [37.97429, -75.86077], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [35.73097, -80.31533], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [35.0698, -85.19273], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [38.21152, -77.13942], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.05367, -82.72323], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [46.77074, -116.18765], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jersey&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jersey&#34;, &#34;weight&#34;: 56}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.53814, -85.20523], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;New&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;New&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [38.42785, -84.8105], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;New&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;New&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.67338, -85.69859], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.41452, -82.12042], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [36.21398, -83.29489], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.04702, -81.49262], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.39642, -90.29874], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.17252, -89.06705], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [44.22719, -93.44467], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.42511, -74.25376], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.79677, -74.48154], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [44.58645, -75.64829], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.06313, -81.07427], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [44.55727, -72.62373], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.8567, -112.62323], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.65239, -120.90467], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [45.93861, -101.72319], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Morristown&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Morristown&#34;, &#34;weight&#34;: 55}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
+      
+      <h3>Text</h3>
+      Positive News: This Week in Daily Giving
+Source: http://www.huffingtonpost.com/ari-nessel/positive-news-this-week-i_b_5970076.html
+Author: Ari Nessel
+What is it like to make a financial investment in an up-and-coming social-change leader every single day of the year? Since Jan. 1, 2013, The Pollination Project has been giving daily micro grants to emerging projects and inspiring people all over the world. Now over 40 people have joined us, each of them giving at least $1 every day to our amazing grantees.
+Here are the extraordinary people and projects that our Daily Giving Community is honored to support this week.
+Aging Out of Foster Care in Florida
+When aging out of foster care at the age of 18, young adults can lose housing, financial aid, and support. Denise Burry wanted to address this issue locally and helped form Forward Paths Foundation, Inc., a housing-assistance and skill-building program for young adults in Lake County, Florida. Forward Paths provides temporary housing and financial support for youth who have aged out. The volunteer team also organizes their personal resources to provide one-to-one mentoring and group classes to teach financial management, job-search techniques, and how to navigate college and financial aid applications.
+Environmental Education in Kenya
+Born and raised in the slums of Nairobi, Kenya, Felix Okeyo is familiar with environmental neglect and social injustice in his community. He formed the Green School Project, an educational program for primary and secondary schools. The project provides environmental education, including hands-on activities such as environmental cleanups and tree planting. As part of the sustainable development focus of the Green School Project, education will be provided on HIV and health awareness, life skills, and careers that can make a long-term impact on their communities.
+Sexual Health for Women in India
+Shaheen Fatima, a sociologist and health educator, created Project Aware to teach HIV/AIDS awareness in remote villages to improve knowledge and health outcomes through education and dialogue. By conducting awareness campaigns appropriate for the levels of literacy in this remote area, Project Aware will provide education, develop partnerships with villages, and facilitate a dialogue between the women in the villages. &#34;Women will be taught how to keep confidential records of health issues and encouraged to share with their community representatives this data, who in turn will share with local government to demonstrate need for health services. Thus the project will have an activist component, and the activists will be the village women,&#34; explains Shaheen.
+Spreading Positive News in Kenya
+In response to the large breadth of media that reports solely on the negative stories coming out of Africa, Kingsley Iweka founded Africa on the Rise, an online platform focusing on positive and progressive news in Africa. Based on a belief that positive conversations are essential for growth and development, Kingsley and his team hope to rejuvenate faith and inspire hope across the African continent. With a Pay It Forward Loan from The Pollination Project, Kingsley plans to become a leader in delivering positive African-focused content online. &#34;When citizens of different nations find one of their own uniting their voice with other progressive thinkers from other parts of the continent,&#34; Kingsley says, &#34;I believe this will foster intracontinental relationships that will cut across different ethnic orientations and beliefs.&#34;
+Preserving Wiwa Culture in Colombia
+For indigenous Colombian Wiwa children, a little rain means they can&#39;t go to school. When there&#39;s no school, children can&#39;t practice their native language or learn more about their culture. When Peace Corps Volunteer Taylor Ramsey found out about a school for indigenous Wiwa citizens in rural Colombia that needed a new roof, she teamed up with the Colombian nonprofit Ribunduna Tayrona to repair this vital educational space. There are only 13,000 Wiwa left in Colombia, and only 60 percent of them speak their native language. Taylor explains, &#34;The Wiwa population is overwhelmingly young, and they really need to focus on preserving their language and culture before the rest of the elders pass away. They accomplish this in &#39;etno-educativa&#39; schools like the one in Wimake.&#34; Fix a Roof and Save a Culture was created to empower indigenous children to play a key part in protecting their community and their educational future. Taylor and Ribunduna Tayrona are working hard to raise needed funds to remodel the school and protect their community.
+A Future for Youth in Uganda
+Nicole Jackman, a Peace Corps volunteer in Mukono, Uganda, is passionate about seeing children and youth flourish. In collaboration with the Mukono Youth Center, Nicole created Youth Nights to educate and interact with youth outside school. Seventy-seven percent of Uganda&#39;s population is between the ages of 15 and 24, and the majority of them are jobless. Family planning and preventing teen pregnancy is very important to give these youth a better chance to develop careers and a livelihood. &#34;These youth haven&#39;t yet experienced the freedom of yoga, the creativity of writing poems and short stories, the wonder of the ocean&#39;s deepest creatures, the feeling of belonging, or the openness to ask questions about sex,&#34; said Nicole. The Mukono Youth Center serves as a drop-in space for teens. Youth Nights will run weekly and feature educational sessions with a rolling theme of sexual health, preventing teen pregnancy, STD/HIV prevention, and staying in school. There will also be reading and creative writing sessions.
+Sea Turtles in India
+Adhith Swaminathan has been involved in sea-turtle conservation since the age of 10, and now, after 17 years, he is one of the four trustees of the Students&#39; Sea Turtle Conservation Network (SSTCN). SSTCN is a voluntary group mainly comprising students who have been working in the beaches of Chennai in the state of Tamil Nadu, India, since 1988, trying to conserve and create awareness about the endangered Olive Ridley sea turtle. These turtles nest on the beaches at night, between December and April every year. During this season, Adhith and others patrol two 8-kilometer stretches of the coast every night, looking for sea turtle eggs, which they collect and relocate to a safe place. When the turtle hatchlings emerge 45 days later, they release them safely into the sea. Without this work, nests would be poached or destroyed, and hatchlings would be disoriented by the bright lights and not reach the sea at all. Adhith wants to engage in more outreach programs targeting school and college students through the year, to inform, interact, and facilitate discussion.
+Homeless Youth and Recreational Sports in New Jersey
+Abby Bauer is a New Jersey high-school junior and has been a volunteer at Homeless Solutions in Morristown, New Jersey, for the past four years. Homeless Solutions offers shelter, services, and supportive housing to homeless or low-income people in northern and central New Jersey. She is aware that most families at Homeless Solutions cannot register their children for sports teams because recreational sports are considered a luxury. Abby founded the Teams for Kids Foundation, Inc., a nonprofit organization that provides funding to allow homeless and low-income children within the state of New Jersey to participate in recreational sports programs. So far Abby has raised $2,000 toward recreational sports for the kids at Homeless Solutions, and her goal is to expand the geographical scope of her project through the funds raised by her foundation.
 
-      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [29.64605, -89.93979], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [29.3819, -98.54168], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.47788, -74.31293], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.52983, -74.34098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.44838, -112.07404], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 21}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.78904, -92.95766], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 23}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.78963, -95.468], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 23}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
 
+      
+      <br>
+      <br>
+      <br>
     </div>
-
   </div>
-
 
     <!-- </div> -->
     <!-- /.container -->
