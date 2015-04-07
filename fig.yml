@@ -5,19 +5,17 @@ dbdata:
         - /var/appdb:/var/lib/postgresql/data
 db:
     build: db
-    ports:
-        - "5432:5432"
     volumes_from:
         - dbdata
 web:
     build: .
-    command: python geolocator/run.py runserver -h 0.0.0.0 -p 5000
+    #command: python geolocator/run.py runserver -h 0.0.0.0 -p 5000
+    command: gunicorn app:app --chdir /code/geolocator -b 0.0.0.0:8000 --log-file=out.log
     volumes:
         - .:/code
     ports:
-        - "5000:5000"
+        - "8000:8000"
     links:
         - db
     environment:
-        DEBUG: True
         SECRET_KEY: 'you-will-never-guess'
