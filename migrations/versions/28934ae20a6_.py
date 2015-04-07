@@ -52,6 +52,7 @@ def downgrade():
     sa.Column('proj4text', sa.VARCHAR(length=2048), autoincrement=False, nullable=True),
     sa.PrimaryKeyConstraint('srid', name=u'spatial_ref_sys_pkey')
     )
-    op.drop_table('location')
-    op.drop_table('feature')
+    # pretty sure that these were a mistake. the workflow should be upgrade then import data
+    #op.drop_table('location')
+    #op.drop_table('feature')
     ### end Alembic commands ###
