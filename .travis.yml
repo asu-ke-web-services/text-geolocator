@@ -1,7 +1,5 @@
-language: python
+language: c
 
-python:
-    - "2.7"
 env:
   global:
     - "HOST_IP=$(/sbin/ifconfig venet0:0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
@@ -20,7 +18,6 @@ install:
   - sudo apt-get -qqy install lxc lxc-docker-1.2.0 slirp
   - sudo sudo usermod -aG docker "$USER"
   - git clone git://github.com/cptactionhank/sekexe
-  - sudo pip install -U fig
 
 before_script:
   - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
@@ -28,7 +25,3 @@ before_script:
 
 script:
   - docker version
-  - fig build
-  - fig up -d
-  - for f in $(find ./ -type f -not -path "*migrations/*" -name "*.py"); do pep8 --show-source --show-pep8 $f; done
-  - nosetests -w geolocator/app/tests
