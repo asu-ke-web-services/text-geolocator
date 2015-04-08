@@ -63,7 +63,6 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         """
         A4 = 'apple'
         A2 = 'peanut butter'
-        FC = '5'
         NAME = 'Joe'
         c1 = LocationAdminNames()
         c1.admin4name = A4
@@ -81,7 +80,6 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         """
         A4 = 'apple'
         A2 = 'peanut butter'
-        FC = '5'
         NAME = 'Frank'
         c1 = LocationAdminNames()
         c1.admin4name = A4
@@ -136,7 +134,7 @@ class LocationAdminCodesTestCase(unittest.TestCase):
         """
         assert isinstance(self.codes, LocationAdminCodes)
         assert self.codes.geonameid == -1
-        assert self.codes.name == None
+        assert self.codes.name is None
         assert self.codes.featurecode is None
         assert self.codes.featureclass is None
         assert self.codes.admin4code is None

@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
+"""
+Contains the following classes:
+
+    * Location
+    * Feature
+
+The models in this file serve as the interface between this application
+and the geonames database
+"""
 from app import db
 from geoalchemy2 import Geometry
 
 
 class Location(db.Model):
+    """
+    Represents a single location on a map from the geonames database.
+
+    Geonames: http://www.geonames.org/
+    """
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(Geometry('POINT'), index=True)
     geonameid = db.Column(db.Integer, nullable=False)
@@ -19,6 +33,10 @@ class Location(db.Model):
     def __init__(self, location, geonameid, name, countrycode, featureclass,
                  featurecode, featuretype, latitude, longitude,
                  initial_weight):
+        """
+        Sets all of the Location's attributes.
+        This is used when importing data from the geonames db.
+        """
         self.location = location
         self.geonameid = geonameid
         self.name = name
@@ -35,6 +53,12 @@ class Location(db.Model):
 
 
 class Feature(db.Model):
+    """
+    Represents a Feature from the geonames db.
+    A Feature is a classification attribute.
+
+    For more info, see http://www.geonames.org/
+    """
 
     id = db.Column(db.Integer, primary_key=True)
     featureclass = db.Column(db.String(80), nullable=False)
@@ -44,6 +68,10 @@ class Feature(db.Model):
     description = db.Column(db.String(500), nullable=False)
 
     def __init__(self, featureclass, featurecode, code, name, description):
+        """
+        Sets all of the Feature's attributes.
+        This is used when importing data from the geonames db.
+        """
         self.featureclass = featureclass
         self.featurecode = featurecode
         self.code = '%s.%s' % (featureclass, featurecode)
