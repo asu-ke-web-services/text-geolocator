@@ -2,5 +2,6 @@ language: python
 python:
     - "2.7"
 install: "pip install -r requirements.txt"
-before_script: for f in $(find ./ -type f -not -path "*migrations/*" -name "*.py"); do pep8 --show-source --show-pep8 $f; done
-script: nosetests -w geolocator/app/tests
+script: 
+	- "for f in $(find ./ -type f -not -path '*migrations/*'' -name '*.py'); do pep8 --show-source --show-pep8 $f; done"
+	- "nosetests -w geolocator/app/tests"
