@@ -9,7 +9,6 @@ from nlp import LocationTagger
 from geolocator import Geolocator, RetrieveLatLngs
 
 import time
-import json
 
 
 @app.route('/')
