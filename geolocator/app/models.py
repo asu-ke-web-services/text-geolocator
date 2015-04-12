@@ -3,7 +3,7 @@
 Contains the following classes:
 
     * Location
-    * Feature
+    * # Feature
 
 The models in this file serve as the interface between this application
 and the geonames database

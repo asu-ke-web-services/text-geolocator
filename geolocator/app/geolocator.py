@@ -1,44 +1,23 @@
 #!/usr/bin/python
 """
-    Example Queries:
-        * Returns all locations named Phoenix:
-          SELECT l.name
-          FROM location l
-          WHERE l.name = 'Phoenix'
-        * Returns all locations named Phoenix in the United States:
-          SELECT l.name, l.featurecode, l.featureclass,
-            l.admin4code, l.admin3code,
-            l.admin2code, l.admin1code, l.countrycode
-          FROM raw_locations l
-          WHERE l.name = 'Phoenix'
-            AND l.countrycode = 'US'
-        * Returns just Arizona (the state):
-          SELECT l.name, l.featurecode, l.featureclass,
-            l.admin4code, l.admin3code,
-            l.admin2code, l.admin1code, l.countrycode
-          FROM raw_locations l
-          WHERE l.admin1code = 'AZ'
-            AND l.featurecode = 'ADM1'
-            AND l.featureclass = 'A'
-        * Returns just Maricopa County (in Arizona):
-          SELECT l.name, l.featurecode, l.featureclass,
-            l.admin4code, l.admin3code,
-            l.admin2code, l.admin1code, l.countrycode
-          FROM raw_locations l
-          WHERE l.admin2code = '013'
-            AND l.admin1code = 'AZ'
-            AND l.featurecode = 'ADM2'
+Contains the following classes:
 
-    The above queries can be executed like this:
+    * LocationWrap
+    * LocationHits
+    * LocationHitsContainer
+    * GeoJSONer
+    * Geocoder
+    * Geolocator
+    * LatLng
 
-        result = db.engine.execute(sql)
-        hits = []
-        for row in result:
-            hits.append(row)
-        return hits
+This file converts a given list of locations into geojson.
 
-        hits will then contain all the rows of the result of the query
+At a high-level, it does the following:
 
+    * Retrieves lat/lng coordinates for each given location from
+    geonames db
+    * Applies weights (if weights is on)
+    * Creates a geojson object from locations
 """
 import geojson
 import re
@@ -64,70 +43,109 @@ POPULATED_PLACE_FEATURE_CODES = [
 
 class LocationWrap(object):
     """
-    Wrapper for an app.models.Location object. Adds needed weight attributes.
+    Wrapper for an app.models.Location object
+
+    Adds needed weight and admin names attributes
+
+    Used by geolocator and weighter
     """
+
     def __init__(self, location):
         self.location = location
         self._weight = 0
         self.adminnames = None
 
     def name(self):
+        """
+        :returns: 'name' of wrapped location
+        """
         return self.location.name
 
+    def geonameid(self):
+        """
+        :returns: 'geonameid' of wrapped location
+        """
+        return self.location.geonameid
+
     def admin1name(self):
+        """
+        :returns: 'admin1name' of wrapped location
+        """
         name = None
         if self.adminnames:
             name = self.adminnames.admin1name
         return name
 
     def admin2name(self):
+        """
+        :returns: 'admin2name' of wrapped location
+        """
         name = None
         if self.adminnames:
             name = self.adminnames.admin2name
         return name
 
     def admin3name(self):
+        """
+        :returns: 'admin3name' of wrapped location
+        """
         name = None
         if self.adminnames:
             name = self.adminnames.admin3name
         return name
 
     def admin4name(self):
+        """
+        :returns: 'admin4name' of wrapped location
+        """
         name = None
         if self.adminnames:
             name = self.adminnames.admin4name
         return name
 
     def countryname(self):
+        """
+        :returns: 'countryname' of wrapped location
+        """
         name = None
         if self.adminnames:
             name = self.adminnames.countryname
         return name
 
     def latitude(self):
+        """
+        :returns: 'latitude' of wrapped location
+        """
         return self.location.latitude
 
     def longitude(self):
+        """
+        :returns: 'longitude' of wrapped location
+        """
         return self.location.longitude
 
     def weight(self):
+        """
+        :returns: weight value of location
+        """
         return self._weight
-
-    def geonameid(self):
-        return self.location.geonameid
 
     def set_adminnames(self, location_admin_names):
         """
         :param app.weighter.LocationAdminNames location_admin_names:
         admin names
+
+        :returns: None
         """
         self.adminnames = location_admin_names
         return
 
     def increment_weight_on_match(self, location_admin_names):
         """
-        If location_admin_names matches any of this location's admin names,
-        then weight += 1
+        If location_admin_names matches any of their equivalent admin names
+        from this location's admin names
+        (i.e. if location_admin_names.admin1name ==
+            self.location.admin1name then...), then weight += 1
 
         :param app.weighter.LocationAdminNames location_admin_names: admin
         names of a location
@@ -165,8 +183,18 @@ class LocationWrap(object):
 
 class LocationHits(object):
     """
-    A wrapper for a list of app.geolocator.LocationWrap objects. Also serves as
-    an iterator.
+    A wrapper for a list of app.geolocator.LocationWrap objects
+
+    This is used as a container to store all hits for a specific Location
+    from the geonames db.
+
+    For Example:
+
+        * Location = 'Phoenix'
+        * Geonames returns 15 Phoenixes
+        * All Phoenixes will be put into a LocationHits object
+
+    Also serves as an iterator
     """
 
     def __init__(self, locations):
@@ -174,10 +202,23 @@ class LocationHits(object):
         self.locations = locations
 
     def __iter__(self):
+        """
+        This makes the LocationHits class an iterator
+        """
         self.index = -1
         return self
 
     def next(self):
+        """
+        Called when LocationHits is used as the iterator of a for loop
+
+        For example:
+
+        ` for hit in LocationHits:
+        `     # calls LocationHits.next each iterator
+
+        :returns: the location at self.index or None if iteration is complete
+        """
         if self.index >= len(self.locations)-1:
             raise StopIteration
         else:
@@ -213,6 +254,11 @@ class LocationHits(object):
             return -1
 
     def __len__(self):
+        """
+        length == number of locations within LocationHits object
+
+        :returns: int
+        """
         length = 0
         if self.locations:
             length = len(self.locations)
@@ -257,6 +303,10 @@ class LocationHitsContainer(object):
     def __len__(self):
         """
         Returns total number of contained locations
+
+        NOTE: does NOT return number of LocationHits
+
+        :returns: int
         """
         length = 0
         for h in self.hits:
@@ -368,8 +418,10 @@ class Geocoder(object):
 
 class Geolocator(object):
     """
-    Master geolocation class. Uses Geocoder and GeoJSONer and Weightifier to
-    find coordinates for and apply weights to all tagged locations.
+    Master geolocation class
+
+    Uses Geocoder and GeoJSONer and Weightifier to find coordinates for and
+    apply weights to all tagged locations.
     """
 
     def __init__(self):
@@ -427,12 +479,11 @@ class Geolocator(object):
         return "<Geolocator()>"
 
 
-# takes in geojson looks for coordinates
-# keep track of what location = what location name
-# new google.maps.Latlng(37.785, -122.443)
-# geojson points need to be switched.
-
 class LatLng():
+    """
+    A small container class that represents a Latitude/Longitude coordinate
+    pair
+    """
 
     def __init__(self, identity, lat, lng):
         self.identity = identity
@@ -445,6 +496,13 @@ class LatLng():
 
 
 def RetrieveLatLngs(feature_collection):
+    """
+    Retrieves all the LatLng coordinates from a given geojson object
+
+    By doing this with a regex, the operation of retrieving latlngs is
+    very flexible and we are not strictly limited to geojson of the
+    geojson library
+    """
     p = re.findall(
         r"\[\-*\d+\.*\d*\,\s\-*\d+\.*\d*\]",
         str(feature_collection))

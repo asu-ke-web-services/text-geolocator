@@ -140,6 +140,45 @@ class LocationAdminCodes(LocationAdminParent):
 class Query(object):
     """
     Simplifies writing code for querying the geonames database
+
+    Example Queries:
+        * Returns all locations named Phoenix:
+          SELECT l.name
+          FROM location l
+          WHERE l.name = 'Phoenix'
+        * Returns all locations named Phoenix in the United States:
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.name = 'Phoenix'
+            AND l.countrycode = 'US'
+        * Returns just Arizona (the state):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM1'
+            AND l.featureclass = 'A'
+        * Returns just Maricopa County (in Arizona):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin2code = '013'
+            AND l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM2'
+
+    The above queries can be executed like this:
+
+        result = db.engine.execute(sql)
+        hits = []
+        for row in result:
+            hits.append(row)
+        return hits
+
+        hits will then contain all the rows of the result of the query
     """
 
     def __init__(self, selects, froms, wheres=None):
