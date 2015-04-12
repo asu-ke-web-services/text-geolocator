@@ -2,8 +2,11 @@
 """
 run with: sudo fig run web nosetests geolocator/app/tests/test_weighter.py
 """
+from app.models import Location
 from app.weighter import *
+from app.geolocator import LocationWrap
 import unittest
+from sqlalchemy import text
 from nose.tools import nottest
 
 
@@ -56,6 +59,51 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         self.names.countryname = expected[4]
         actual = self.names.list()
         assert expected == actual
+
+    def test__match__admin1name(self):
+        """
+        Tests app.weighter.LocationAdminNames.match where name matches
+        admin1name
+        """
+        NAME = 'Taiwan'
+        self.names.admin1name = NAME
+        assert self.names.match(NAME)
+
+    def test__match__admin2name(self):
+        """
+        Tests app.weighter.LocationAdminNames.match where name matches
+        admin2name
+        """
+        NAME = 'Yellow'
+        self.names.admin1name = NAME
+        assert self.names.match(NAME)
+
+    def test__match__admin3name(self):
+        """
+        Tests app.weighter.LocationAdminNames.match where name matches
+        admin3name
+        """
+        NAME = 'Blue'
+        self.names.admin1name = NAME
+        assert self.names.match(NAME)
+
+    def test__match__admin4name(self):
+        """
+        Tests app.weighter.LocationAdminNames.match where name matches
+        admin4name
+        """
+        NAME = 'Red'
+        self.names.admin1name = NAME
+        assert self.names.match(NAME)
+
+    def test__match__countryname(self):
+        """
+        Tests app.weighter.LocationAdminNames.match where name matches
+        countryname
+        """
+        NAME = 'China'
+        self.names.admin1name = NAME
+        assert self.names.match(NAME)
 
     def test__eq__pass(self):
         """
@@ -195,6 +243,157 @@ class LocationAdminCodesTestCase(unittest.TestCase):
         s = self.codes.__repr__()
         assert s is not None
         assert isinstance(s, str)
+
+
+class QueryTestCase(unittest.TestCase):
+    """
+    Tests app.weighter.Query
+    """
+
+    # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        self.basic_query = self.init_basic()
+        return
+
+    def tearDown(self):
+        self.db = None
+        return
+
+    # ----------------------- Helpers ----------------------- #
+    def init_basic(self):
+        return Query(selects=[], froms=[], wheres=[])
+
+    # ----------------------- Tests ----------------------- #
+    def test__init__success(self):
+        """
+        successful initialization
+        """
+        list1 = [1, 2, 3]
+        list2 = ['fea', 'gagea', 'afeagt3']
+        # --- 1 ---
+        q = Query(selects=list1, froms=list2)
+        assert q.selects == list1
+        assert q.froms == list2
+        assert q.wheres is None
+        # --- 2 ---
+        q = Query(selects=list1, froms=list2, wheres=list1)
+        assert q.selects == list1
+        assert q.froms == list2
+        assert q.wheres == list1
+
+    def test__init__no_list(self):
+        """
+        selects should be a list
+        froms should be list
+        wheres should be None or list
+        """
+        not_a_list = 1
+        list1 = ['test list1', 'banana', 'apple']
+        list2 = ['test list2', 'orange']
+        self.assertRaises(TypeError, Query, not_a_list, list2, list1)
+        self.assertRaises(TypeError, Query, list1, not_a_list, list2)
+        self.assertRaises(TypeError, Query, list1, list2, not_a_list)
+        q = Query(selects=list1, froms=list2, wheres=None)
+        assert q.wheres is None
+
+    def test__expand_list__success(self):
+        result = self.basic_query.expand_list(['1', '2', '3', '4'])
+        assert result == '1, 2, 3, 4'
+
+    def test__expand_list__empty_list(self):
+        result = self.basic_query.expand_list([])
+        assert result == ''
+
+    def test__expand_list__none_param(self):
+        result = self.basic_query.expand_list(None)
+        assert result == ''
+
+    def test__expand_list__no_params(self):
+        self.assertRaises(TypeError, self.basic_query.expand_list)
+
+    def test__expand_list__list_of_length_1(self):
+        result = self.basic_query.expand_list('1')
+        assert result == '1'
+
+    def test__expand_list__3_params(self):
+        self.assertRaises(
+            TypeError,
+            self.basic_query.expand_list, ['1', '2'], 'param2', 'param3')
+
+    def test__expand_list__unique_separator(self):
+        result = self.basic_query.expand_list(['1', '2', '3', '4'], '--- ')
+        assert result == '1--- 2--- 3--- 4'
+
+    def test__expand_list__none_separator(self):
+        result = self.basic_query.expand_list(['1', '2', '3', '4'], None)
+        assert result == '1234'
+
+    def test__expand_list__empty_separator(self):
+        result = self.basic_query.expand_list(['1', '2', '3', '4'], '')
+        assert result == '1234'
+
+    def test__add_sql__success(self):
+        s1 = 'With a love like that'
+        s2 = 'You know should be glad!'
+        self.basic_query._add_sql(s1)
+        assert self.basic_query.sql == s1
+        self.basic_query._add_sql(s2)
+        assert self.basic_query.sql == (s1 + ' ' + s2)
+
+    def test__add_sql__empty(self):
+        s1 = ''
+        self.basic_query._add_sql(s1)
+        assert self.basic_query.sql == s1
+        self.basic_query._add_sql(s1)
+        assert self.basic_query.sql == ''
+
+    def test__add_sql__none_param(self):
+        self.assertRaises(TypeError, self.basic_query._add_sql, None)
+
+    def test__add_sql__no_params(self):
+        self.assertRaises(TypeError, self.basic_query._add_sql)
+
+    def test__add_sql__two_params(self):
+        self.assertRaises(
+            TypeError,
+            self.basic_query._add_sql, 'param1', 'param2')
+
+    def test__to_sql__success_with_wheres(self):
+        SELECTS = ['s0', 's1']
+        FROMS = ['f0', 'f1']
+        WHERES = ['w0=w1', 'w1<=2']
+        q = Query(selects=SELECTS, froms=FROMS, wheres=WHERES)
+        expected = (
+            'select %s, %s from %s, %s where %s AND %s'
+            % (SELECTS[0], SELECTS[1], FROMS[0], FROMS[1], WHERES[0],
+               WHERES[1]))
+        expected = text(expected)
+        actual = q.to_sql()
+        assert expected.text == actual.text
+
+    def test__to_sql__success_without_wheres(self):
+        SELECTS = ['s0', 's1']
+        FROMS = ['f0', 'f1']
+        q = Query(selects=SELECTS, froms=FROMS)
+        expected = (
+            'select %s, %s from %s, %s'
+            % (SELECTS[0], SELECTS[1], FROMS[0], FROMS[1]))
+        expected = text(expected)
+        actual = q.to_sql()
+        assert expected.text == actual.text
+
+    def test__repr__(self):
+        """
+        Tests Query.__repr__
+        """
+        q = Query(selects=['selects1, selects2'], froms=['from1', 'from2'])
+        try:
+            print q
+        except Exception, e:
+            print '__repr__ resulted in Exception:%s' % (str(e))
+            assert False
+        else:
+            assert True
 
 
 class AdminNameGetterTestCase(unittest.TestCase):
@@ -372,6 +571,63 @@ class AdminNameGetterTestCase(unittest.TestCase):
         print expected
         assert expected == actual
 
+    def test__admin2name__pass(self):
+        """
+        Tests AdminNameGetter._admin2name
+        """
+        # make codes
+        codes = LocationAdminCodes()
+        codes.admin4code = '8658294'
+        codes.admin3code = '8644152'
+        codes.admin2code = 'D8'
+        codes.admin1code = 'C'
+        codes.countrycode = 'UG'
+        # init getter
+        self.init(codes)
+        expected = 'Mityana District'
+        actual = self.getter._admin2name()
+        print actual
+        print expected
+        assert expected == actual
+
+    def test__admin3name__pass(self):
+        """
+        Tests AdminNameGetter._admin3name
+        """
+        # make codes
+        codes = LocationAdminCodes()
+        codes.admin4code = '8658294'
+        codes.admin3code = '8644152'
+        codes.admin2code = 'D8'
+        codes.admin1code = 'C'
+        codes.countrycode = 'UG'
+        # init getter
+        self.init(codes)
+        expected = 'Mityana'
+        actual = self.getter._admin3name()
+        print actual
+        print expected
+        assert expected == actual
+
+    def test__admin4name__pass(self):
+        """
+        Tests AdminNameGetter._admin4name
+        """
+        # make codes
+        codes = LocationAdminCodes()
+        codes.admin4code = '8658294'
+        codes.admin3code = '8644152'
+        codes.admin2code = 'D8'
+        codes.admin1code = 'C'
+        codes.countrycode = 'UG'
+        # init getter
+        self.init(codes)
+        expected = 'Mityana Town Council'
+        actual = self.getter._admin4name()
+        print actual
+        print expected
+        assert expected == actual
+
     def test__adminnames__pass_acc3(self):
         """
         Tests AdminNameGetter.adminnames with accuracy of 3
@@ -399,6 +655,53 @@ class AdminNameGetterTestCase(unittest.TestCase):
         print 'expected -> ' + str(expected)
         print 'actual -> ' + str(actual)
         assert expected == actual
+
+    def test__adminnames__pass_acc5(self):
+        """
+        Tests AdminNameGetter.adminnames with accuracy of 5
+        """
+        codes = LocationAdminCodes()
+        codes.featurecode = 'PPL'
+        codes.featureclass = 'P'
+        codes.featureclass = 'P'
+        codes.admin4code = '8658294'
+        codes.admin3code = '8644152'
+        codes.admin2code = 'D8'
+        codes.admin1code = 'C'
+        codes.countrycode = 'UG'
+        self.init(codes)
+        expected = LocationAdminNames()
+        expected.admin4name = "Mityana Town Council"
+        expected.admin3name = 'Mityana'
+        expected.admin2name = 'Mityana District'
+        expected.admin1name = 'Central Region'
+        expected.countryname = 'Uganda'
+        actual = self.getter.adminnames()
+        print 'expected -> ' + str(expected)
+        print 'actual -> ' + str(actual)
+        assert expected == actual
+
+    def test__repr__(self):
+        """
+        Tests AdminNameGetter.__repr__
+        """
+        ADM2 = '237'
+        ADM1 = 'GA'
+        COCO = 'US'
+        codes = LocationAdminCodes()
+        codes.featurecode = 'PPL'
+        codes.featureclass = 'P'
+        codes.featureclass = 'P'
+        codes.admin4code = None
+        codes.admin3code = None
+        codes.admin2code = ADM2
+        codes.admin1code = ADM1
+        codes.countrycode = COCO
+        self.init(codes)
+        # test if any exceptions fire
+        s = self.getter.__repr__()
+        assert s is not None
+        assert isinstance(s, str)
 
 
 class WeightifierTestCase(unittest.TestCase):
@@ -446,6 +749,82 @@ class WeightifierTestCase(unittest.TestCase):
         Ensures that the weighter.Weightifier successfully initializes
         """
         assert isinstance(self.weightifier, Weightifier)
+
+    def test__make_sql__pass(self):
+        """
+        Tests Weightifier._make_sql
+        """
+        selects = "o.orange, a.apple, b.banana"
+        fromm = "FROM orange o, apple a, banana b"
+        where = "o.orange == a.apple"
+        expected = text(selects + '\n' + fromm + '\n' + where)
+        actual = self._make_sql(selects, fromm, where)
+        assert expected.text == actual.text
+
+    def test__make_admin_codes_query__acc1(self):
+        """
+        Tests Weightifier._make_admin_codes_query with accuracy of 1
+        """
+        geonameid = 9001
+        query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
+                 "l.countrycode, "
+                 "\nFROM raw_locations l\n"
+                 "WHERE l.geonameid = '%s'" % str(geonameid))
+        expected = text(query)
+        actual = self._make_admin_codes_query(geonameid, 1)
+        assert expected.text == actual.text
+
+    def test__make_admin_codes_query__acc2(self):
+        """
+        Tests Weightifier._make_admin_codes_query with accuracy of 2
+        """
+        geonameid = 9001
+        query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
+                 "l.countrycode, l.admin1code, "
+                 "\nFROM raw_locations l\n"
+                 "WHERE l.geonameid = '%s'" % str(geonameid))
+        expected = text(query)
+        actual = self._make_admin_codes_query(geonameid, 2)
+        assert expected.text == actual.text
+
+    def test__make_admin_codes_query__acc3(self):
+        """
+        Tests Weightifier._make_admin_codes_query with accuracy of 3
+        """
+        geonameid = 9001
+        query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
+                 "l.countrycode, l.admin1code, l.admin2code, "
+                 "\nFROM raw_locations l\n"
+                 "WHERE l.geonameid = '%s'" % str(geonameid))
+        expected = text(query)
+        actual = self._make_admin_codes_query(geonameid, 3)
+        assert expected.text == actual.text
+
+    def test__make_admin_codes_query__acc4(self):
+        """
+        Tests Weightifier._make_admin_codes_query with accuracy of 4
+        """
+        geonameid = 9001
+        query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
+                 "l.countrycode, l.admin1code, l.admin2code, l.admin3code, "
+                 "\nFROM raw_locations l\n"
+                 "WHERE l.geonameid = '%s'" % str(geonameid))
+        expected = text(query)
+        actual = self._make_admin_codes_query(geonameid, 4)
+        assert expected.text == actual.text
+
+    def test__make_admin_codes_query__acc5(self):
+        """
+        Tests Weightifier._make_admin_codes_query with accuracy of 5
+        """
+        geonameid = 9001
+        query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
+                 "l.countrycode, l.admin1code, l.admin2code, l.admin3code, "
+                 "l.admin4code\nFROM raw_locations l\n"
+                 "WHERE l.geonameid = '%s'" % str(geonameid))
+        expected = text(query)
+        actual = self._make_admin_codes_query(geonameid, 5)
+        assert expected.text == actual.text
 
     def test__make_admin_codes__pass_0(self):
         """
@@ -508,12 +887,78 @@ class WeightifierTestCase(unittest.TestCase):
 
     def test__get_admin_codes__pass(self):
         """
+        Tests weighter.Weightifier._get_admin_codes with accuracy of 5
+        """
+        expected = LocationAdminCodes()
+        expected.geonameid = '8658294'
+        expected.name = 'Mityana Town Council'
+        expected.featurecode = 'ADM4'
+        expected.featureclass = 'A'
+        expected.admin4code = '8658294'
+        expected.admin3code = '8644152'
+        expected.admin2code = 'D8'
+        expected.admin1code = 'C'
+        expected.countrycode = 'UG'
+        actual = self.weightifier._get_admin_codes(8658294, 5)
+        print expected
+        print actual
+        assert expected == actual
+
+    def test__get_admin_names__pass(self):
+        """
+        Tests weighter.Weightifier._get_admin_names with accuracy of 5
+        """
+        codes = LocationAdminCodes()
+        codes.admin4code = '8658294'
+        codes.admin3code = '8644152'
+        codes.admin2code = 'D8'
+        codes.admin1code = 'C'
+        codes.countrycode = 'UG'
+        expected = LocationAdminNames()
+        expected.admin4name = "Mityana Town Council"
+        expected.admin3name = 'Mityana'
+        expected.admin2name = 'Mityana District'
+        expected.admin1name = 'Central Region'
+        expected.countryname = 'Uganda'
+        actual = self.weightifier._get_admin_names(codes)
+        assert expected == actual
+
+    def test__gather_all_names__pass(self):
+        """
+        Tests weighter.Weightifier._gather_all_names with accuracy of 5
         """
         return
 
     def test__weightify(self):
         """
         """
-        container = None
-        accuracy = None
         return
+
+
+# def test_admin4named_locations():
+#     """
+#     Returns a giant list of all locations in geonames that have
+#     a populated admin4name field
+#     """
+#     accuracy = 7
+#     select = ('SELECT l.geonameid, l.name, l.featurecode, l.featureclass')
+#     if accuracy > 0:
+#         select += ', l.countrycode'
+#     if accuracy > 1:
+#         select += ', l.admin1code'
+#     if accuracy > 2:
+#         select += ', l.admin2code'
+#     if accuracy > 3:
+#         select += ', l.admin3code'
+#     if accuracy > 4:
+#         select += ', l.admin4code'
+#     fromm = 'FROM raw_locations l'
+#     where = 'WHERE NOT l.admin4code = \'\''
+#     sql = text('%s\n%s\n%s' % (select, fromm, where))
+#     # should return only 1
+#     result = db.engine.execute(sql)
+#     admincodes = []
+#     for row in result:
+#         admincodes.append(row)
+#     print admincodes
+#     assert False

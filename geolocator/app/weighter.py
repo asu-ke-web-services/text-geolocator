@@ -130,7 +130,7 @@ class LocationAdminCodes(LocationAdminParent):
     def __repr__(self):
         return ("<LocationAdminCodes(geonameid=%s, name=%s, featurecode=%s, "
                 "featureclass=%s, admin4code=%s, admin3code=%s, "
-                "admin2code=%s, admin2code=%s, countrycode=%s)>" % (
+                "admin2code=%s, admin1code=%s, countrycode=%s)>" % (
                     str(self.geonameid), str(self.name), str(self.featurecode),
                     str(self.featureclass), str(self.admin4code),
                     str(self.admin3code), str(self.admin2code),
@@ -433,7 +433,7 @@ class AdminNameGetter(object):
         return names
 
     def __repr__(self):
-        return "<AdminNameGetter()>"
+        return "<AdminNameGetter(codes=%s)>" % (str(self.codes))
 
 
 class Weightifier(object):
@@ -518,7 +518,7 @@ class Weightifier(object):
             admincodes.admin4code = query_result[index]
         return admincodes
 
-    def _get_admin_codes(self, location, accuracy):
+    def _get_admin_codes(self, geonameid, accuracy):
         """
         Finds the codes for each administration level for the given location
 
@@ -532,7 +532,7 @@ class Weightifier(object):
 
         This function finds the codes for each for use in weighting
 
-        :param app.geolocator.LocationWrap: location to find admin codes for
+        :param str|int geonameid: location to find admin codes for
         :param int accuracy: level of accuracy when assigning weights (see
         app.geolocator.Geolocator.geolocate for information on accuracy
         settings)
@@ -540,7 +540,7 @@ class Weightifier(object):
         :returns: app.geolocator.LocationAdminCodes
         """
         # get admin data from raw_locations table
-        sql = self._make_admin_codes_query(location.geonameid(), accuracy)
+        sql = self._make_admin_codes_query(geonameid, accuracy)
         # should return only 1
         result = db.engine.execute(sql)
         admincodes = None
@@ -574,7 +574,7 @@ class Weightifier(object):
         """
         for hits in container.hits:
             for l in hits:
-                codes = self._get_admin_codes(l, accuracy)
+                codes = self._get_admin_codes(l.geonameid(), accuracy)
                 names = self._get_admin_names(codes)
                 l.set_adminnames(names)
         return container

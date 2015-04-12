@@ -11,7 +11,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import views
-from app import services
 from app import models
 
 manager = Manager(app)
