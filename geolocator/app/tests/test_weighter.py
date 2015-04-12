@@ -510,3 +510,10 @@ class WeightifierTestCase(unittest.TestCase):
         """
         """
         return
+
+    def test__weightify(self):
+        """
+        """
+        container = None
+        accuracy = None
+        return

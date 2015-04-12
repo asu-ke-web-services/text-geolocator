@@ -34,16 +34,9 @@ class LocationTests(unittest.TestCase):
         Shortcut Helper Function
         Initializes self.Loc and sets all of its attributes.
         """
-        self.Loc.location = location
-        self.Loc.geonameid = geonameid
-        self.Loc.name = name
-        self.Loc.countrycode = countrycode
-        self.Loc.featureclass = featureclass
-        self.Loc.featurecode = featurecode
-        self.Loc.featuretype = featuretype
-        self.Loc.latitude = latitude
-        self.Loc.longitude = longitude
-        self.Loc.initial_weight = initial_weight
+        self.Loc = Location(location, geonameid, name, countrycode,
+                            featureclass, featurecode, featuretype, latitude,
+                            longitude, initial_weight)
 
     # ----------------------- Tests ----------------------- #
     def test__init__success(self):
@@ -56,11 +49,13 @@ class LocationTests(unittest.TestCase):
         countrycode = 'Banana Tree'
         featureclass = 'Fruit'
         featurecode = 'FT'
+        featuretype = 'Food'
         latitude = -9
         longitude = 89
         initial_weight = 25135431
         self.init(location, geonameid, name, countrycode, featureclass,
-                  featurecode, latitude, longitude, initial_weight)
+                  featurecode, featuretype, latitude, longitude,
+                  initial_weight)
         assert isinstance(self.Loc, Location)
         assert self.Loc.location == location
         assert self.Loc.geonameid == geonameid
@@ -83,6 +78,7 @@ class LocationTests(unittest.TestCase):
             countrycode='Tatooine',
             featureclass='dangerous',
             featurecode='dg',
+            featuretype='City',
             latitude=43,
             longitude=34,
             initial_weight=1)
