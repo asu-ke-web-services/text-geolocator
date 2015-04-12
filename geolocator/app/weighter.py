@@ -557,13 +557,14 @@ class Weightifier(object):
         # -------------
         # iterate over all names and increments all location wraps
         # that either have the same name or matches their admin names
-        names_attempted = list()
+        # names_attempted = list()
         for hits in container.hits:
             for loc_wrap in hits:
-                names = loc_wrap.names_list()
-                for name in names:
-                    names_attempted.append(name)
-                    container.increment_weight_on_match(name)
+                container.increment_weight_on_match(loc_wrap.adminnames)
+                # names = loc_wrap.names_list()
+                # for name in names:
+                #     names_attempted.append(name)
+                #     container.increment_weight_on_match(name)
         # -------------
         # iterate over all hits remove all location wraps that are
         # less than the max weight for those wraps

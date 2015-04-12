@@ -124,17 +124,25 @@ class LocationWrap(object):
         self.adminnames = location_admin_names
         return
 
-    def increment_weight_on_match(self, location_name):
+    def increment_weight_on_match(self, location_admin_names):
         """
-        If location_name matches either this location's name or any of this
-        location's admin names, then weight += 1
+        If location_admin_names matches any of this location's admin names,
+        then weight += 1
 
-        :param str location_name: a name of a location
+        :param app.weighter.LocationAdminNames location_admin_names: admin
+        names of a location
 
         :returns: None
         """
-        if (self.location.name == location_name or
-                self.adminnames.match(location_name)):
+        if self.admin1name() == location_admin_names.admin1name:
+            self._weight += 1
+        if self.admin2name() == location_admin_names.admin2name:
+            self._weight += 1
+        if self.admin3name() == location_admin_names.admin3name:
+            self._weight += 1
+        if self.admin4name() == location_admin_names.admin4name:
+            self._weight += 1
+        if self.countryname() == location_admin_names.countrycode:
             self._weight += 1
         return
 
@@ -176,17 +184,18 @@ class LocationHits(object):
             self.index += 1
             return self.locations[self.index]
 
-    def increment_weight_on_match(self, location_name):
+    def increment_weight_on_match(self, location_admin_names):
         """
-        Checks each location to see if it or any of its admin names matches
-        location_name. If it does, then it increments its weight.
+        Checks each location to see if any of its admin names matches
+        location_admin_names. If it does, then it increments its weight.
 
-        :param str location_name: name of a location
+        :param app.weighter.LocationAdminNames location_admin_names: admin
+        names of a location
 
         :returns: None
         """
         for l in self.locations:
-            l.increment_weight_on_match(location_name)
+            l.increment_weight_on_match(location_admin_names)
         return
 
     def max_weight(self):
@@ -231,17 +240,18 @@ class LocationHitsContainer(object):
         """
         self.hits.append(location_hits)
 
-    def increment_weight_on_match(self, location_name):
+    def increment_weight_on_match(self, location_admin_names):
         """
         Checks each location to see if it or any of its admin names matches
         location_name. If it does, then it increments its weight.
 
-        :param str location_name: name of a location
+        :param app.weighter.LocationAdminNames location_admin_names: admin
+        names of a location
 
         :returns: None
         """
         for hits in self.hits:
-            hits.increment_weight_on_match(location_name)
+            hits.increment_weight_on_match(location_admin_names)
         return
 
     def __len__(self):

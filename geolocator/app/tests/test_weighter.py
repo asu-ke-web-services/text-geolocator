@@ -99,7 +99,7 @@ class LocationAdminNamesTestCase(unittest.TestCase):
         self.names.countryname = 'United States'
         self.names.admin3name = 'Apple'
         # test if any exceptions fire
-        s = self.codes.__repr__()
+        s = self.names.__repr__()
         assert s is not None
         assert isinstance(s, str)
 
