@@ -579,6 +579,70 @@ class Weightifier(object):
                 l.set_adminnames(names)
         return container
 
+    def _back_weight(self, hits, tagged_location, matched_location):
+        """
+        This function increments the weight of the location in hits that
+        is likely to be the location that triggered the match for
+        matched_location
+
+        For example,
+
+            If tagged_location is "Arizona", then any locations with "Arizona"
+            in their admin names will be a match.
+
+            So, this function would be called for each of those matches.
+
+            One such match might be "Phoenix" which has an admin2 of "Maricopa
+            County", an admin1 as "Arizona", and a countryname of
+            "United States".
+
+            Based on this information, it can be deduced that the admin1 of
+            this Phoenix also has a countryname of "United States".
+
+            So, we must iterate through 'hits' and increment each hit with
+            an admin1 of "Arizona" and a countryname of "United States".
+
+        :param app.geolocator.LocationHits hits: locations retrieved from
+        geonames database when searching for tagged_location
+        :param str tagged_location: name of the locations in hits
+        :param app.geolocator.LocationWrap matched_location: location that
+        has been matched with tagged_location
+
+        :returns: None
+        """
+        # find the admin number that caused the match in matched_location
+        #   countryname = 0
+        #   admin1name = 1
+        #   so on and so forth...
+        adminNum = matched_location.index_of_admin_name(tagged_location)
+        # Search for a LocationWrap in 'hits' that match the admin name at
+        #   adminNum and those above
+        for wrap in hits:
+            match = False
+            # check countryname
+            if adminNum >= 0:
+                match = (wrap.countryname() == matched_location.countryname())
+                # check admin1name
+                if match and adminNum >= 1:
+                    match = (
+                        wrap.admin1name() == matched_location.admin1name())
+                    # check admin2name
+                    if match and adminNum >= 2:
+                        match = (
+                            wrap.admin2name() == matched_location.admin2name())
+                        # check admin3name
+                        if match and adminNum >= 3:
+                            match = (
+                                wrap.admin3name() ==
+                                matched_location.admin3name())
+                            # check admin4name
+                            if match and adminNum >= 4:
+                                match = (
+                                    wrap.admin4name() ==
+                                    matched_location.admin4name())
+            # if a match has been made, then increment weight
+            wrap.weight += 1 if match else 0
+
     def weightify(self, container, accuracy):
         """
         Assigns a weight value to each LocationWrap within the container
@@ -594,16 +658,23 @@ class Weightifier(object):
         container = self._gather_all_names(container, accuracy)
         # TODO - room for OO and performance improvement here
         # -------------
-        # iterate over all names and increments all location wraps
-        # that either have the same name or matches their admin names
-        # names_attempted = list()
-        for hits in container.hits:
-            for loc_wrap in hits:
-                container.increment_weight_on_match(loc_wrap.adminnames)
-                # names = loc_wrap.names_list()
-                # for name in names:
-                #     names_attempted.append(name)
-                #     container.increment_weight_on_match(name)
+        # iterate through tagged locations
+        #   and increment every geonames hit who has any admin names that match
+        #   the tagged location
+        for outer_hits in container.hits:
+            # grab target name
+            tagged_location = outer_hits.name
+            for inner_hits in container.hits:
+                # make sure that you are not comparing tagged_location's name
+                #   to it's own hits container
+                if tagged_location != inner_hits.name:
+                    # increment weights on match -- returns matches
+                    matched = inner_hits.increment_weight_on_match(
+                        tagged_location)
+                    # if there are matches, then back increment the matches
+                    if matched:
+                        for m in matched:
+                            self._back_weight(outer_hits, tagged_location, m)
         # -------------
         # iterate over all hits remove all location wraps that are
         # less than the max weight for those wraps

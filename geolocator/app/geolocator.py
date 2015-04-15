@@ -140,29 +140,52 @@ class LocationWrap(object):
         self.adminnames = location_admin_names
         return
 
-    def increment_weight_on_match(self, location_admin_names):
+    def index_of_admin_name(self, admin_name):
         """
-        If location_admin_names matches any of their equivalent admin names
-        from this location's admin names
-        (i.e. if location_admin_names.admin1name ==
-            self.location.admin1name then...), then weight += 1
+        :param str admin_name: a name of a Location
 
-        :param app.weighter.LocationAdminNames location_admin_names: admin
-        names of a location
-
-        :returns: None
+        :returns: the index of the admin name that matches admin_name;
+        otherwise -1
         """
-        if self.admin1name() == location_admin_names.admin1name:
+        adminNum = -1
+        if self.admin4name():
+            adminNum = 4
+        elif self.admin3name():
+            adminNum = 3
+        elif self.admin2name():
+            adminNum = 2
+        elif self.admin1name():
+            adminNum = 1
+        elif self.countryname():
+            adminNum = 0
+        return adminNum
+
+    def increment_weight_on_match(self, location_name):
+        """
+        If location_name matches any of this location's admin names,
+        then weight += 1
+
+        :param str location_name: name of a location
+
+        :returns: bool -- True if match; otherwise False
+        """
+        matched = False
+        if self.admin1name() == location_name:
             self._weight += 1
-        if self.admin2name() == location_admin_names.admin2name:
+            matched = True
+        if self.admin2name() == location_name:
             self._weight += 1
-        if self.admin3name() == location_admin_names.admin3name:
+            matched = True
+        if self.admin3name() == location_name:
             self._weight += 1
-        if self.admin4name() == location_admin_names.admin4name:
+            matched = True
+        if self.admin4name() == location_name:
             self._weight += 1
-        if self.countryname() == location_admin_names.countrycode:
+            matched = True
+        if self.countryname() == location_name:
             self._weight += 1
-        return
+            matched = True
+        return matched
 
     def names_list(self):
         """
@@ -197,8 +220,9 @@ class LocationHits(object):
     Also serves as an iterator
     """
 
-    def __init__(self, locations):
+    def __init__(self, name, locations):
         self.index = -1
+        self.name = name
         self.locations = locations
 
     def __iter__(self):
@@ -225,19 +249,21 @@ class LocationHits(object):
             self.index += 1
             return self.locations[self.index]
 
-    def increment_weight_on_match(self, location_admin_names):
+    def increment_weight_on_match(self, location_name):
         """
         Checks each location to see if any of its admin names matches
-        location_admin_names. If it does, then it increments its weight.
+        location_name. If it does, then it increments its weight.
 
-        :param app.weighter.LocationAdminNames location_admin_names: admin
-        names of a location
+        :param str location_name: name of a location
 
-        :returns: None
+        :returns: list of LocationWraps that match location_name
         """
+        matched_locations = []
         for l in self.locations:
-            l.increment_weight_on_match(location_admin_names)
-        return
+            matched = l.increment_weight_on_match(location_name)
+            if matched:
+                matched_locations.append(l)
+        return matched_locations
 
     def max_weight(self):
         """
@@ -410,7 +436,7 @@ class Geocoder(object):
         matches = Location.query.filter_by(
             name=location).order_by('id').all()
         matches = map(self._wrap_location, matches)
-        return LocationHits(matches)
+        return LocationHits(location, matches)
 
     def __repr__(self):
         return "<Geocoder()>"

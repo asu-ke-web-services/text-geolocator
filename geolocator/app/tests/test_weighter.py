@@ -2,9 +2,8 @@
 """
 run with: sudo fig run web nosetests geolocator/app/tests/test_weighter.py
 """
-from app.models import Location
 from app.weighter import *
-from app.geolocator import LocationWrap
+from app.geolocator import Geocoder, LocationHitsContainer
 import unittest
 from sqlalchemy import text
 from nose.tools import nottest
@@ -932,7 +931,12 @@ class WeightifierTestCase(unittest.TestCase):
     def test__weightify(self):
         """
         """
-        return
+        container = LocationHitsContainer()
+        geocoder = Geocoder()
+        locations = ['Phoenix', 'Arizona']
+        for l in locations:
+            container.append(geocoder.geocode(l))
+        assert False
 
 
 # def test_admin4named_locations():
