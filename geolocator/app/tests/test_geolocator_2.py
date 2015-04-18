@@ -6,6 +6,7 @@ from app.geolocator import *
 from app.models import Location
 import unittest
 from nose.tools import nottest
+import geojson
 
 
 
@@ -71,9 +72,6 @@ class validCoordinateTestCase(unittest.TestCase):
 
 
         return
-
-
-            
 
 class GeoJsonSyntaxTestCase(unittest.TestCase):
     """
@@ -169,6 +167,124 @@ class GeoJsonSyntaxTestCase(unittest.TestCase):
         print list1
         print self.GeoJSONer.features
         assert list1 == self.GeoJSONer.features
+
+
+    def test_geojson(self):
+        """
+        Checks if the result is in geojson format
+        """
+        #assert self.GeoJSONer.geojson == geojson()
+        #assert isinstance(self.geojson,geojson)
+
+class GeocoderTestCase(unittest.TestCase):
+    """
+    Tests for app.geolocator.GeoCoder
+    """
+
+     # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        """
+        Executed at the start of every test
+        """
+        self.Geocoder = Geocoder()
+        return
+
+    def tearDown(self):
+        """
+        Executed at the end of every test
+        """
+        self.Geocoder = None
+        return
+
+    # -----------------------------Helpers ------------------------- #
+
+    def geocoder_helper(self,name,lat,lng):
+        l = Location(name, "hello", name, "hello", "hello",
+                 "hello", "hello", lat, lng,
+                 "hello")
+        location = LocationWrap(l)
+        return location
+
+
+    def init(self):
+        self.GeoCoder = GeoCoder(self)
+        return
+
+    def test__init__pass(self):
+        """
+        Ensures that the GeoCoder object successfully initializes
+        """
+        assert isinstance(self.Geocoder, Geocoder)
+        return
+
+    def test_wrap_location(self):
+        """
+        Tests the location wrap
+        """
+        expected = self.geocoder_helper("location1", 1.0, -2.0)
+        actual = LocationWrap("location1", 1.0,-2.0)
+        assert expected == actual
+
+
+    def test_geocode(self):
+        """
+        needs to be implemented
+        """
+        return
+
+    def test_repr(self):
+        """
+        needs to be implemented
+        """
+        return
+
+class GeoLocatorTestCase(unittest.TestCase):
+    """
+    Tests for app.geolocator.GeoLocator
+    """
+
+     # ----------------------- Before/After ----------------------- #
+    def setUp(self):
+        """
+        Executed at the start of every test
+        """
+        self.Geolocator = Geolocator()
+        return
+
+    def tearDown(self):
+        """
+        Executed at the end of every test
+        """
+        self.Geolocator = None
+        return
+
+     # ----------------------- Helpers ----------------------- #
+    def init(self):
+        """
+        needs to be implemented
+        """
+        return
+
+    # ----------------------- Tests ----------------------- #
+    def test__init__pass(self):
+        """
+        Ensures that the GeoLocator successfully initializes
+        """
+        #assert self.Geocoder == Geocoder()
+        #assert self.GeoJSONer == GeoJSONer()
+        #assert self.weightifier == Weightifier()
+
+    def test_geoLocate(self):
+        """
+        needs to be implemented
+        """
+
+
+
+
+
+
+
 
 
 
