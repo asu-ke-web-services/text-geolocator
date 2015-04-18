@@ -3,6 +3,7 @@
 Contains the following classes:
 
     * StanfordNerTagger
+    * MultiWordLocationStitcher
     * LocationTagger
 
 This file manages all NLP operations within this application
@@ -56,6 +57,10 @@ class StanfordNerTagger():
 
 
 class MultiWordLocationStitcher(object):
+    """
+    Used to combine multi-word locations that have been separated by the
+    Stanford NER Tagger (i.e 'Sun City' is tagged as 'Sun', 'City')
+    """
 
     def _IsLocation(self, loc_tuple):
         """
@@ -185,6 +190,9 @@ class LocationTagger():
     Uses the StanfordNerTagger to find all locations within a given str.
     """
     def __init__(self):
+        """
+        Initializes the LocationTagger's StanfordNerTagger instance
+        """
         self.Tagger = StanfordNerTagger()
 
     def _RemovePunctuations(self, text):
@@ -284,7 +292,9 @@ class LocationTagger():
         """
         Removes all duplicates from the given list
 
-        :param list l: a list of strings
+        :param list strings: a list of strings
+
+        :returns: 'strings' list without duplicates
         """
         # Unicode to string, assuming there will be no characters that lie
         # outside of ascii range
@@ -294,6 +304,17 @@ class LocationTagger():
         [noduplicate_array.append(item) for item in stringlist if item
          not in noduplicate_array]
         return noduplicate_array
+
+    def CountWords(self, text):
+        """
+        Given some text, split it and return the number of tokens
+
+        :param str text: text to analyze
+
+        :returns: int -- number of words in text
+        """
+        split = text.split(' ')
+        return len(split)
 
     def TagLocations(self, text):
         """

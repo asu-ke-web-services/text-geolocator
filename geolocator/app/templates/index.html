@@ -8,7 +8,20 @@
         <h2>Upload new File</h2>
         <form action="/upload" method="post" enctype="multipart/form-data">
           <div>
-            <input class="input_file" type="file" name="file"><br>
+            <div>
+              <input class="input_file" type="file" name="file">
+            </div><br><br>
+            <div class="index_option_div">
+              <p>Weighting Level</p>
+              <select type="weight" name="weight">
+                <option value="0">0 &#45; no weighting</option>
+                <option value="1">1 &#45; weights will be found for all matches to countrycode</option>
+                <option value="2">2 &#45; weights will be found for all matches to the above and admin1code</option>
+                <option value="3">3 &#45; weights will be found for all matches to the above and admin2code</option>
+                <option value="4">4 &#45; weights will be found for all matches to the above and admin3code</option>
+                <option value="5">5 &#45; weights will be found for all matches to the above and admin4code</option>
+              </select>
+            </div><br>
             <input class="input_file" type="submit" value="Upload">
           </div>
         </form>

@@ -5,9 +5,12 @@ run with: sudo fig run web nosetests geolocator/app/tests/test_1.py
 from app.geolocator import *
 from app.models import Location
 import unittest
+<<<<<<< HEAD
 from nose.tools import nottest
 import geojson
 
+=======
+>>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 
 
 class validCoordinateTestCase(unittest.TestCase):
@@ -32,8 +35,7 @@ class validCoordinateTestCase(unittest.TestCase):
 
     # ----------------------- Helpers ----------------------- #
     def init(self, identity, lat, lng):
-        
-        self.LatLng = LatLng(identity,lat,lng)
+        self.LatLng = LatLng(identity, lat, lng)
         return
 
     # ----------------------- Tests ----------------------- #
@@ -44,12 +46,11 @@ class validCoordinateTestCase(unittest.TestCase):
         IDENTITY = 'Phoenix'
         LAT = '82.546'
         LNG = '36.111'
-        self.init(IDENTITY,LAT,LNG) 
+        self.init(IDENTITY, LAT, LNG)
 
         assert self.LatLng.identity == IDENTITY
         assert self.LatLng.lat == LAT
         assert self.LatLng.lng == LNG
-
 
         return
 
@@ -66,19 +67,22 @@ class validCoordinateTestCase(unittest.TestCase):
         IDENTITY = " "
         LAT = " "
         LNG = " "
-        self.init(IDENTITY,LAT,LNG)
+        self.init(IDENTITY, LAT, LNG)
         actual = self.LatLng.__repr__()
         assert isinstance(actual, str)
 
-
         return
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 class GeoJsonSyntaxTestCase(unittest.TestCase):
     """
     Tests for app.geolocator.GeoJSONer
     """
 
-     # ----------------------- Before/After ----------------------- #
+    # ----------------------- Before/After ----------------------- #
     def setUp(self):
         """
         Executed at the start of every test
@@ -94,20 +98,20 @@ class GeoJsonSyntaxTestCase(unittest.TestCase):
         return
 
     def init(self):
-        self.GeoJSONer = GeoJSONer(self,features)
+        self.GeoJSONer = GeoJSONer(self, features)
         return
-
 
     def test__init__pass(self):
         """
         Ensures that the GeoJSON object successfully initializes
         """
         assert self.GeoJSONer.features == []
-        assert isinstance(self.GeoJSONer,GeoJSONer)
+        assert isinstance(self.GeoJSONer, GeoJSONer)
         return
 
     def test_convert_to_feature(self):
-        l = Location("Phoenix", "a", "Phoenix", "a", 'a', 'a', 'a', 5.0, -10.0, 0)
+        l = Location(
+            "Phoenix", "a", "Phoenix", "a", 'a', 'a', 'a', 5.0, -10.0, 0)
         location = LocationWrap(l)
         geometry = {
             'type': 'Point',
@@ -124,31 +128,15 @@ class GeoJsonSyntaxTestCase(unittest.TestCase):
         expected = geojson.Feature(location.name(), geometry, properties)
         actual = self.GeoJSONer._convert_to_feature(location)
         assert expected == actual
-        return
-
-        #test statements to check for correct syntax:
-        #assert that geometry = a test point and test coordinates?
-        #assert that properties = weight and name
-        assert geometry ==  {
-            'type': 'Point',
-            'coordinates': [82.546,36.111]
-        }
-
-        assert properties == {
-            'weight': 1,
-            'name': 'Phoenix'
-        }
-
 
         return feature
 
-    def append_helper(self,name,lat,lng):
+    def append_helper(self, name, lat, lng):
         l = Location(name, "hello", name, "hello", "hello",
-                 "hello", "hello", lat, lng,
-                 "hello")
+                     "hello", "hello", lat, lng,
+                     "hello")
         location = LocationWrap(l)
         return location
-
 
     def test_append_(self):
 
@@ -163,12 +151,12 @@ class GeoJsonSyntaxTestCase(unittest.TestCase):
         self.GeoJSONer.append(f1)
         self.GeoJSONer.append(f2)
         self.GeoJSONer.append(f3)
-        
         print list1
         print self.GeoJSONer.features
         assert list1 == self.GeoJSONer.features
 
 
+<<<<<<< HEAD
     def test_geojson(self):
         """
         Checks if the result is in geojson format
@@ -288,6 +276,8 @@ class GeoLocatorTestCase(unittest.TestCase):
 
 
 
+=======
+>>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 # class locationHitsTestCase(unittest.TestCase):
 #     """
 #     Tests for app.geolocator.LocationHits
@@ -323,7 +313,7 @@ class GeoLocatorTestCase(unittest.TestCase):
 #         assert self.hits.index == -1
 #         assert self.hits.locations == LOCATIONS
 
-#     def test__len__pass(self): 
+#     def test__len__pass(self):
 #         """
 #         Tests :func:`app.geolocator.LocationHits.__len__`
 #         """

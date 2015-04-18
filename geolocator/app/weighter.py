@@ -1,4 +1,16 @@
 #!/usr/bin/python
+"""
+Contains the following classes:
+
+    * LocationAdminParent
+    * LocationAdminNames
+    * LocationAdminCodes
+    * Query
+    * AdminNameGetter
+    * Weightifier
+
+This file manages all weighting operations within this application
+"""
 from sqlalchemy import text
 from app import db
 
@@ -14,6 +26,10 @@ class LocationAdminParent(object):
 
 
 class LocationAdminNames(LocationAdminParent):
+    """
+    Container object for a location's admin names
+    Inherits from LocationAdminParent
+    """
 
     def __init__(self):
         super(LocationAdminNames, self).__init__()
@@ -25,6 +41,11 @@ class LocationAdminNames(LocationAdminParent):
         return
 
     def list(self):
+        """
+        Returns all names combined in a list
+
+        :returns: list -- all names
+        """
         l = []
         if self.admin4name:
             l.append(self.admin4name)
@@ -70,6 +91,10 @@ class LocationAdminNames(LocationAdminParent):
 
 
 class LocationAdminCodes(LocationAdminParent):
+    """
+    Container object for a location's admin codes
+    Inherits from LocationAdminParent
+    """
 
     def __init__(self):
         super(LocationAdminCodes, self).__init__()
@@ -105,7 +130,7 @@ class LocationAdminCodes(LocationAdminParent):
     def __repr__(self):
         return ("<LocationAdminCodes(geonameid=%s, name=%s, featurecode=%s, "
                 "featureclass=%s, admin4code=%s, admin3code=%s, "
-                "admin2code=%s, admin2code=%s, countrycode=%s)>" % (
+                "admin2code=%s, admin1code=%s, countrycode=%s)>" % (
                     str(self.geonameid), str(self.name), str(self.featurecode),
                     str(self.featureclass), str(self.admin4code),
                     str(self.admin3code), str(self.admin2code),
@@ -113,6 +138,48 @@ class LocationAdminCodes(LocationAdminParent):
 
 
 class Query(object):
+    """
+    Simplifies writing code for querying the geonames database
+
+    Example Queries:
+        * Returns all locations named Phoenix:
+          SELECT l.name
+          FROM location l
+          WHERE l.name = 'Phoenix'
+        * Returns all locations named Phoenix in the United States:
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.name = 'Phoenix'
+            AND l.countrycode = 'US'
+        * Returns just Arizona (the state):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM1'
+            AND l.featureclass = 'A'
+        * Returns just Maricopa County (in Arizona):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin2code = '013'
+            AND l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM2'
+
+    The above queries can be executed like this:
+
+        result = db.engine.execute(sql)
+        hits = []
+        for row in result:
+            hits.append(row)
+        return hits
+
+        hits will then contain all the rows of the result of the query
+    """
 
     def __init__(self, selects, froms, wheres=None):
         if not isinstance(selects, list):
@@ -170,7 +237,8 @@ class Query(object):
 
 class AdminNameGetter(object):
     """
-    Gets the names of locations according to given admin codes
+    Gets the names of locations according to given admin codes from the
+    geonames db
     """
 
     ADMIN_FEATURE_CODES = [
@@ -184,10 +252,22 @@ class AdminNameGetter(object):
     FROM = 'raw_locations l'
 
     def __init__(self, admincodes):
+        """
+        :param LocationAdminCodes admincodes: codes will be used when
+        querying for names
+        """
         self.codes = admincodes
         return
 
     def _query_one(self, sql):
+        """
+        Returns a single hit from the geonames database from the query
+        defined in sql
+
+        :param str sql: query to execute
+
+        :returns: a 'hit' whatever that might be from the given query
+        """
         result = db.engine.execute(sql)
         hit = None
         for row in result:
@@ -195,21 +275,39 @@ class AdminNameGetter(object):
         return hit
 
     def _sql_admin4code(self):
+        """
+        Formats part of an sql query statement for matching the admin4code
+        """
         return "l.admin4code = '%s'" % str(self.codes.admin4code)
 
     def _sql_admin3code(self):
+        """
+        Formats part of an sql query statement for matching the admin3code
+        """
         return "l.admin3code = '%s'" % str(self.codes.admin3code)
 
     def _sql_admin2code(self):
+        """
+        Formats part of an sql query statement for matching the admin2code
+        """
         return "l.admin2code = '%s'" % str(self.codes.admin2code)
 
     def _sql_admin1code(self):
+        """
+        Formats part of an sql query statement for matching the admin1code
+        """
         return "l.admin1code = '%s'" % str(self.codes.admin1code)
 
     def _sql_countrycode(self):
+        """
+        Formats part of an sql query statement for matching the countrycode
+        """
         return "l.countrycode = '%s'" % str(self.codes.countrycode)
 
     def _sql_featurecode(self, index):
+        """
+        Formats part of an sql query statement for matching the featurecode
+        """
         return "l.featurecode = '%s'" % str(self.ADMIN_FEATURE_CODES[index])
 
     def _admin4name(self):
@@ -335,7 +433,7 @@ class AdminNameGetter(object):
         return names
 
     def __repr__(self):
-        return "<AdminNameGetter()>"
+        return "<AdminNameGetter(codes=%s)>" % (str(self.codes))
 
 
 class Weightifier(object):
@@ -420,7 +518,7 @@ class Weightifier(object):
             admincodes.admin4code = query_result[index]
         return admincodes
 
-    def _get_admin_codes(self, location, accuracy):
+    def _get_admin_codes(self, geonameid, accuracy):
         """
         Finds the codes for each administration level for the given location
 
@@ -434,7 +532,7 @@ class Weightifier(object):
 
         This function finds the codes for each for use in weighting
 
-        :param app.geolocator.LocationWrap: location to find admin codes for
+        :param str|int geonameid: location to find admin codes for
         :param int accuracy: level of accuracy when assigning weights (see
         app.geolocator.Geolocator.geolocate for information on accuracy
         settings)
@@ -442,7 +540,7 @@ class Weightifier(object):
         :returns: app.geolocator.LocationAdminCodes
         """
         # get admin data from raw_locations table
-        sql = self._make_admin_codes_query(location.geonameid(), accuracy)
+        sql = self._make_admin_codes_query(geonameid, accuracy)
         # should return only 1
         result = db.engine.execute(sql)
         admincodes = None
@@ -476,7 +574,7 @@ class Weightifier(object):
         """
         for hits in container.hits:
             for l in hits:
-                codes = self._get_admin_codes(l, accuracy)
+                codes = self._get_admin_codes(l.geonameid(), accuracy)
                 names = self._get_admin_names(codes)
                 l.set_adminnames(names)
         return container
@@ -498,24 +596,26 @@ class Weightifier(object):
         # -------------
         # iterate over all names and increments all location wraps
         # that either have the same name or matches their admin names
-        names_attempted = list()
+        # names_attempted = list()
         for hits in container.hits:
             for loc_wrap in hits:
-                names = loc_wrap.names_list()
-                for name in names:
-                    names_attempted.append(name)
-                    container.increment_weight_on_match(name)
+                container.increment_weight_on_match(loc_wrap.adminnames)
+                # names = loc_wrap.names_list()
+                # for name in names:
+                #     names_attempted.append(name)
+                #     container.increment_weight_on_match(name)
         # -------------
         # iterate over all hits remove all location wraps that are
         # less than the max weight for those wraps
         for i, hits in enumerate(container.hits):
             max_weight = hits.max_weight()
-            removes = list()
-            for l in hits:
-                if l.weight() < max_weight:
-                    removes.append(l)
-            for l in removes:
-                container.hits[i].locations.remove(l)
+            if max_weight > -1:
+                removes = list()
+                for l in hits:
+                    if l.weight() < max_weight:
+                        removes.append(l)
+                for l in removes:
+                    container.hits[i].locations.remove(l)
         return container
 
     def __repr__(self):
