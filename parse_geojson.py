@@ -14,42 +14,46 @@ locations = dict()
 
 djson = json.loads(GEOJSON)
 for location in djson['features']:
-    lat = unicode(location['geometry']['coordinates'][0])
-    lon = unicode(location['geometry']['coordinates'][1])
-    name = unicode(location['properties']['name'])
-    countryname = unicode(location['properties']['countryname'])
-    admin1name = unicode(location['properties']['admin1name'])
-    admin2name = unicode(location['properties']['admin2name'])
-    admin3name = unicode(location['properties']['admin3name'])
-    admin4name = unicode(location['properties']['admin4name'])
+    lat = location['geometry']['coordinates'][0]
+    lon = location['geometry']['coordinates'][1]
+    name = location['properties']['name']
+    countryname = location['properties']['countryname']
+    admin1name = location['properties']['admin1name']
+    admin2name = location['properties']['admin2name']
+    admin3name = location['properties']['admin3name']
+    admin4name = location['properties']['admin4name']
 
+    adminnames = unicode(
+        "LocationAdminNames(\n\t\t\tcountryname='%s',"
+        "\n\t\t\tadmin1name='%s',"
+        "\n\t\t\tadmin2name='%s',\n\t\t\tadmin3name='%s',"
+        "\n\t\t\tadmin4name='%s')" % (
+            unicode(countryname), unicode(admin1name), unicode(admin2name),
+            unicode(admin3name), unicode(admin4name)))
     location = unicode(
         '\n\tLocationWrap(\n'
-        '\t\tLocation(\n\t\t\t%s, \n\t\t\t-1, \n\t\t\t%s, \n\t\t\t%s, '
-        '\n\t\t\t%s, \n\t\t\t%s, \n\t\t\t%s, \n\t\t\t%s, \n\t\t\t%s, '
-        '\n\t\t\t0))' % (
-            name, name, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, lat, lon))
-    location += unicode(
-        "LocationAdminNames(countryname='%s', admin1name='%s', "
-        "admin2name='%s', admin3name='%s', admin4name='%s')" % (
-            countryname, admin1name, admin2name, admin3name,
-            admin4name))
-    print location
+        '\t\tLocation(\n\t\t\t%s,\n\t\t\t-1,\n\t\t\t%s,\n\t\t\t%s,'
+        '\n\t\t\t%s,\n\t\t\t%s,\n\t\t\t%s,\n\t\t\t%s,\n\t\t\t%s,'
+        '\n\t\t\t0),\n\t\tadminnames=%s),' % (
+            unicode(name), unicode(name), UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN,
+            unicode(lat), unicode(lon), unicode(adminnames))).encode(
+        'ascii', 'ignore')
+    # print location
 
     if name not in locations.keys():
-        locations[name] = list()
-    locations[name].append(location)
+        locations[name] = ''
+    locations[name] += location
 
 hits = list()
 
 for key, value in locations.iteritems():
     hits.append(
         unicode(
-            'LocationHits(%s, %s)\n' % (key, value)))
+            "LocationHits('%s', [%s])\n" % (unicode(key), value)))
 
 output = unicode('container = LocationHitsContainer()\n')
 for hit in hits:
-    output += unicode('container.append(%s)\n') % hit
+    output += unicode('container.append(%s)\n') % unicode(hit)
 
 with open('parsed_geojson.txt', 'w') as f:
     f.write(output.encode('UTF-8'))

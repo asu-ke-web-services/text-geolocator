@@ -50,9 +50,9 @@ class LocationWrap(object):
     Used by geolocator and weighter
     """
 
-    def __init__(self, location, adminnames=None):
+    def __init__(self, location, weight=0, adminnames=None):
         self.location = location
-        self._weight = 0
+        self._weight = weight
         self.adminnames = adminnames
 
     def name(self):
@@ -199,6 +199,19 @@ class LocationWrap(object):
         names.extend(self.adminnames.list())
         return names
 
+    def __eq__(self, other):
+        """
+        Compares two LocationWraps
+
+        :param LocationWrap other: other LocationWrap
+
+        :returns: True if equal; otherwise False
+        """
+        return (isinstance(other, LocationWrap) and
+                self.location == other.location and
+                self._weight == other.weight and
+                self.adminnames == other.adminnames)
+
     def __repr__(self):
         return "<LocationWrap(location=%s, weight=%s)" % (
             str(self.location.name), str(self._weight))
@@ -290,6 +303,18 @@ class LocationHits(object):
             length = len(self.locations)
         return length
 
+    def __eq__(self, other):
+        """
+        Compares two LocationHits
+
+        :param LocationHits other: other LocationHits
+
+        :returns: True if equal; otherwise False
+        """
+        return (isinstance(other, LocationHits) and
+                self.name == other.name and
+                self.locations == other.locations)
+
     def __repr__(self):
         return "<LocationHits(len(locations)=%s, locations=%s)" % (
             str(len(self.locations)), str(self.locations))
@@ -338,6 +363,17 @@ class LocationHitsContainer(object):
         for h in self.hits:
             length += len(h)
         return length
+
+    def __eq__(self, other):
+        """
+        Compares two LocationHitsContainer objects
+
+        :param LocationHitsContainer other: other LocationHitsContainer
+
+        :returns: True if equal; otherwise False
+        """
+        return (isinstance(other, LocationHitsContainer) and
+                self.hits == other.hits)
 
     def __repr__(self):
         return "<LocationHitsContainer(len(hits)=%s)>" % (str(len(self.hits)))
