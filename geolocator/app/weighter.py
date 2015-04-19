@@ -31,13 +31,14 @@ class LocationAdminNames(LocationAdminParent):
     Inherits from LocationAdminParent
     """
 
-    def __init__(self):
+    def __init__(self, countryname=None, admin1name=None, admin2name=None,
+                 admin3name=None, admin4name=None):
         super(LocationAdminNames, self).__init__()
-        self.admin4name = None
-        self.admin3name = None
-        self.admin2name = None
-        self.admin1name = None
-        self.countryname = None
+        self.admin4name = admin4name
+        self.admin3name = admin3name
+        self.admin2name = admin2name
+        self.admin1name = admin1name
+        self.countryname = countryname
         return
 
     def list(self):
@@ -641,7 +642,28 @@ class Weightifier(object):
                                     wrap.admin4name() ==
                                     matched_location.admin4name())
             # if a match has been made, then increment weight
-            wrap.weight += 1 if match else 0
+            wrap._weight += 1 if match else 0
+
+    def _filter_by_weight(self, container):
+        """
+        Iterates through hits in container and removes all locations that
+        are less than the max weight for that hit.
+
+        :param app.geolocator.LocationHitsContainer container: container to
+        filter
+
+        :returns: filtered container
+        """
+        for i, hits in enumerate(container.hits):
+            max_weight = hits.max_weight()
+            if max_weight > -1:
+                removes = list()
+                for l in hits:
+                    if l.weight() < max_weight:
+                        removes.append(l)
+                for l in removes:
+                    container.hits[i].locations.remove(l)
+        return container
 
     def weightify(self, container, accuracy):
         """
@@ -678,15 +700,7 @@ class Weightifier(object):
         # -------------
         # iterate over all hits remove all location wraps that are
         # less than the max weight for those wraps
-        for i, hits in enumerate(container.hits):
-            max_weight = hits.max_weight()
-            if max_weight > -1:
-                removes = list()
-                for l in hits:
-                    if l.weight() < max_weight:
-                        removes.append(l)
-                for l in removes:
-                    container.hits[i].locations.remove(l)
+        container = self._filter_by_weight(container)
         return container
 
     def __repr__(self):

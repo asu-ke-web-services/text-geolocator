@@ -50,10 +50,10 @@ class LocationWrap(object):
     Used by geolocator and weighter
     """
 
-    def __init__(self, location):
+    def __init__(self, location, adminnames=None):
         self.location = location
         self._weight = 0
-        self.adminnames = None
+        self.adminnames = adminnames
 
     def name(self):
         """
