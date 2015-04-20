@@ -148,15 +148,15 @@ class LocationWrap(object):
         otherwise -1
         """
         adminNum = -1
-        if self.admin4name():
+        if self.admin4name() == admin_name:
             adminNum = 4
-        elif self.admin3name():
+        elif self.admin3name() == admin_name:
             adminNum = 3
-        elif self.admin2name():
+        elif self.admin2name() == admin_name:
             adminNum = 2
-        elif self.admin1name():
+        elif self.admin1name() == admin_name:
             adminNum = 1
-        elif self.countryname():
+        elif self.countryname() == admin_name:
             adminNum = 0
         return adminNum
 
@@ -209,7 +209,7 @@ class LocationWrap(object):
         """
         return (isinstance(other, LocationWrap) and
                 self.location == other.location and
-                self._weight == other.weight and
+                self._weight == other._weight and
                 self.adminnames == other.adminnames)
 
     def __repr__(self):
@@ -492,6 +492,51 @@ class Geolocator(object):
         self.weightifier = Weightifier()
         return
 
+    def _build_container(self, locations):
+        """
+        Builds a LocationHitsContainer from the given locations
+
+        :param list locations: list of app.models.Location objects to geolocate
+
+        :returns: LocationHitsContainer
+        """
+        container = LocationHitsContainer()
+        for l in locations:
+            container.append(self.geocoder.geocode(l))
+        return container
+
+    def _apply_weights(self, container, weights, accuracy):
+        """
+        Uses the Weightifier to apply weights to the container
+
+        :param LocationHitsContainer container: container of locations
+        :param bool weights: flag indicating if weights should be calculated or
+        not
+        :param int accuracy: level of accuracy to use when calculating weights
+        (must be greater than 0 and less than or equal to 5)
+
+        :returns: modified container
+        """
+        if weights:
+            if accuracy > 5:
+                accuracy = 5
+            container = self.weightifier.gather_all_names(container, accuracy)
+            container = self.weightifier.weightify(container)
+        return container
+
+    def _build_geojson(self, container):
+        """
+        Iterates through locations in container and builds GeoJSON file
+
+        :param LocationHitsContainer container: container of locations
+
+        :returns: None
+        """
+        for hits in container.hits:
+            for l in hits:
+                self.geojsoner.append(l)
+        return
+
     def geolocate(self, locations, weights=True, accuracy=1):
         """
         Given a list of tagged locations from the NLP tagger, this will convert
@@ -515,18 +560,12 @@ class Geolocator(object):
 
         :returns: None
         """
-        container = LocationHitsContainer()
-        for l in locations:
-            container.append(self.geocoder.geocode(l))
-
-        if weights:
-            if accuracy > 5:
-                accuracy = 5
-            container = self.weightifier.weightify(container, accuracy)
-
-        for hits in container.hits:
-            for l in hits:
-                self.geojsoner.append(l)
+        # build the container
+        container = self._build_container(locations)
+        # apply weights
+        container = self._apply_weights(container, weights, accuracy)
+        # build the geojson
+        self._build_geojson(container)
         return
 
     def geojson(self):

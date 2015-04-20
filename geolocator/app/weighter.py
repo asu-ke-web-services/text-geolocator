@@ -561,25 +561,6 @@ class Weightifier(object):
         namegetter = AdminNameGetter(admincodes)
         return namegetter.adminnames()
 
-    def _gather_all_names(self, container, accuracy):
-        """
-        Iterates through all locations in container, finds their admin names,
-        and sets the names in their location wrap
-
-        :param app.geolocator.LocationHitsContainer: contains the locations
-        :param int accuracy: level of accuracy when assigning weights (see
-        app.geolocator.Geolocator.geolocate for information on accuracy
-        settings)
-
-        :returns: app.geolocator.LocationHitsContainer with admin names
-        """
-        for hits in container.hits:
-            for l in hits:
-                codes = self._get_admin_codes(l.geonameid(), accuracy)
-                names = self._get_admin_names(codes)
-                l.set_adminnames(names)
-        return container
-
     def _back_weight(self, hits, tagged_location, matched_location):
         """
         This function increments the weight of the location in hits that
@@ -609,7 +590,7 @@ class Weightifier(object):
         :param app.geolocator.LocationWrap matched_location: location that
         has been matched with tagged_location
 
-        :returns: None
+        :returns: names of LocationWraps whose weight was incremented
         """
         # find the admin number that caused the match in matched_location
         #   countryname = 0
@@ -618,6 +599,7 @@ class Weightifier(object):
         adminNum = matched_location.index_of_admin_name(tagged_location)
         # Search for a LocationWrap in 'hits' that match the admin name at
         #   adminNum and those above
+        wrap_names_incremented = list()
         for wrap in hits:
             match = False
             # check countryname
@@ -642,7 +624,12 @@ class Weightifier(object):
                                     wrap.admin4name() ==
                                     matched_location.admin4name())
             # if a match has been made, then increment weight
-            wrap._weight += 1 if match else 0
+            if match:
+                # print 'incrementing %s (%s, %s)' % (
+                #    wrap.location.name, wrap.countryname(), wrap.admin1name())
+                wrap._weight += 1
+                wrap_names_incremented.append(wrap.location.name)
+        return wrap_names_incremented
 
     def _filter_by_weight(self, container):
         """
@@ -665,19 +652,36 @@ class Weightifier(object):
                     container.hits[i].locations.remove(l)
         return container
 
-    def weightify(self, container, accuracy):
+    def gather_all_names(self, container, accuracy):
         """
-        Assigns a weight value to each LocationWrap within the container
+        Iterates through all locations in container, finds their admin names,
+        and sets the names in their location wrap
 
-        :param app.geolocator.LocationHitsContainer container: container
-        containing locations to weight
+        :param app.geolocator.LocationHitsContainer: contains the locations
         :param int accuracy: level of accuracy when assigning weights (see
         app.geolocator.Geolocator.geolocate for information on accuracy
         settings)
 
+        :returns: app.geolocator.LocationHitsContainer with admin names
+        """
+        for hits in container.hits:
+            for l in hits:
+                codes = self._get_admin_codes(l.geonameid(), accuracy)
+                names = self._get_admin_names(codes)
+                l.set_adminnames(names)
+        return container
+
+    def weightify(self, container):
+        """
+        Assigns a weight value to each LocationWrap within the container
+
+        NOTE: gather_all_names must be called first
+
+        :param app.geolocator.LocationHitsContainer container: container
+        containing locations to weight
+
         :returns: app.geolocator.LocationHitsContainer with weighted locations
         """
-        container = self._gather_all_names(container, accuracy)
         # TODO - room for OO and performance improvement here
         # -------------
         # iterate through tagged locations
@@ -695,6 +699,7 @@ class Weightifier(object):
                         tagged_location)
                     # if there are matches, then back increment the matches
                     if matched:
+                        # print 'matched %s' % inner_hits.name
                         for m in matched:
                             self._back_weight(outer_hits, tagged_location, m)
         # -------------
