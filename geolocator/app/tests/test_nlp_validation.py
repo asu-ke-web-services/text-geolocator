@@ -67,7 +67,8 @@ class TaggerValidationTests(unittest.TestCase):
         with open(path, 'rb') as f:
             reader = csv.reader(f)
             for row in reader:
-                locations.append(row[0])
+                if row[1] == '1':
+                    locations.append(row[0])
         return locations
 
     def getAllLocations(self, text):
@@ -76,7 +77,6 @@ class TaggerValidationTests(unittest.TestCase):
         """
         text = self.Tagger._PreProcessText(text)
         tagged = self.Tagger.Tagger.Tag(text)
-        # print tagged
         tagged = self.Tagger._ReuniteSeparatedLocations(text, tagged)
         locations = self.Tagger._IsolateLocations(tagged)
         return locations
@@ -93,6 +93,28 @@ class TaggerValidationTests(unittest.TestCase):
         """
         return s + '.csv'
 
+    def doesPass(self, expected, actual):
+        """
+        Helper function to determine if results are above pass rate
+        of 80 percent (pass rate determined by Ivan)
+
+        :param list expected: expected test results
+        :param list actual: actual test results
+
+        :returns: True or False
+        """
+        print 'expected -> %s\n' % str(expected)
+        print 'actual -> %s\n' % str(actual)
+        missed = []
+        for e in expected:
+            if not (e in actual):
+                missed.append(e)
+        print 'missed -> %s\n' % str(missed)
+        # assert len(missed) == 0
+        percent_hit = float(1 - (float(len(missed)) / float(len(expected))))
+        print 'percent_hit = %s' % str(percent_hit)
+        assert percent_hit >= 0.80
+
     @nottest
     def runTestForFilesWithName(self, name):
         """
@@ -107,14 +129,7 @@ class TaggerValidationTests(unittest.TestCase):
         text = self.getInputText(input_txt)
         expected = self.getOutputList(output_csv)
         actual = self.getAllLocations(text)
-        print 'expected -> %s\n' % str(expected)
-        print 'actual -> %s\n' % str(actual)
-        missed = []
-        for e in expected:
-            if not (e in actual):
-                missed.append(e)
-        print 'missed -> %s\n' % str(missed)
-        assert len(missed) == 0
+        self.doesPass(expected, actual)
 
     # ----------------------- Tests ----------------------- #
     def test__Agric_Hum_Values(self):
