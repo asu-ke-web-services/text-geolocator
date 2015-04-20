@@ -742,6 +742,29 @@ class WeightifierTestCase(unittest.TestCase):
             row.append(admin4code)
         return row
 
+    def _make_wrap(self, name, lat=0, lon=0, weight=0, countryname='None',
+                   admin1name='None', admin2name='None', admin3name='None',
+                   admin4name='None'):
+        return LocationWrap(
+            Location(
+                name,
+                -1,
+                name,
+                '???',
+                '???',
+                '???',
+                '???',
+                lat,
+                lon,
+                0),
+            weight=weight,
+            adminnames=LocationAdminNames(
+                countryname=countryname,
+                admin1name=admin1name,
+                admin2name=admin2name,
+                admin3name=admin3name,
+                admin4name=admin4name))
+
     # ----------------------- Tests ----------------------- #
     def test__init__pass(self):
         """
@@ -2793,29 +2816,6 @@ class WeightifierTestCase(unittest.TestCase):
         print actual
         assert expected == actual
 
-    def _make_wrap(self, name, lat=0, lon=0, weight=0, countryname='None',
-                   admin1name='None', admin2name='None', admin3name='None',
-                   admin4name='None'):
-        return LocationWrap(
-            Location(
-                name,
-                -1,
-                name,
-                '???',
-                '???',
-                '???',
-                '???',
-                lat,
-                lon,
-                0),
-            weight=weight,
-            adminnames=LocationAdminNames(
-                countryname=countryname,
-                admin1name=admin1name,
-                admin2name=admin2name,
-                admin3name=admin3name,
-                admin4name=admin4name))
-
     def test__weightify(self):
         """
         Tests weighter.weightify
@@ -2927,8 +2927,8 @@ class WeightifierTestCase(unittest.TestCase):
 
         actual = self.weightifier.weightify(container)
 
-        print expected.hits
-        print actual.hits
+        print expected
+        print actual
         assert expected == actual
 
 
