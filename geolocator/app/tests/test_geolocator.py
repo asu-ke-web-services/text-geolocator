@@ -238,6 +238,38 @@ class LocationHitsTestCase(unittest.TestCase):
         actual = len(self.hits)
         assert expected == actual
 
+    def test__eq__fail_on_hits(self):
+        """
+        Tests __eq__ - fails on isinstance(other, LocationHits)
+        """
+        hits1 = LocationHits(name='hits1', locations=['l1', 'l2'])
+        hits2 = 'not a LocationHits'
+        assert hits1 != hits2
+
+    def test__eq__fail_on_name(self):
+        """
+        Tests __eq__ - fails on name
+        """
+        hits1 = LocationHits(name='hits1', locations=['l1', 'l2'])
+        hits2 = LocationHits(name='not hits1', locations=['l1', 'l2'])
+        assert hits1 != hits2
+
+    def test__eq__fail_on_locations(self):
+        """
+        Tests __eq__ - fails on locations
+        """
+        hits1 = LocationHits(name='hits1', locations=['l1', 'l2'])
+        hits2 = LocationHits(name='hits1', locations=['l1', 'not l2'])
+        assert hits1 != hits2
+
+    def test__eq__pass(self):
+        """
+        Tests __eq__ expected to pass
+        """
+        hits1 = LocationHits(name='hits1', locations=['l1', 'l2'])
+        hits2 = LocationHits(name='hits1', locations=['l1', 'l2'])
+        assert hits1 == hits2
+
     def test__repr__pass(self):
         """
         Tests :func:`app.geolocator.LocationHits.__repr__`
@@ -285,3 +317,31 @@ class LocationHitsContainerTestCase(unittest.TestCase):
         # assert isinstance(self.hits, LocationHits)
         # assert self.hits.index == -1
         # assert self.hits.locations == LOCATIONS
+
+    def test__eq__fail_on_container(self):
+        """
+        Test __eq__ - fails on isinstance(other, LocationHitsContainer)
+        """
+        c1 = LocationHitsContainer()
+        c2 = "not a container"
+        assert c1 != c2
+
+    def test__eq__fail_on_hits(self):
+        """
+        Test __eq__ - fails on hits
+        """
+        c1 = LocationHitsContainer()
+        c1.hits = 'yes'
+        c2 = LocationHitsContainer()
+        c2.hits = 'no'
+        assert c1 != c2
+
+    def test__eq__pass(self):
+        """
+        Test __eq__ - fails on isinstance(other, LocationHitsContainer)
+        """
+        c1 = LocationHitsContainer()
+        c1.hits = [1, 2, 3]
+        c2 = LocationHitsContainer()
+        c2.hits = [1, 2, 3]
+        assert c1 == c2
