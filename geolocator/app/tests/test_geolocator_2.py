@@ -5,12 +5,7 @@ run with: sudo fig run web nosetests geolocator/app/tests/test_1.py
 from app.geolocator import *
 from app.models import Location
 import unittest
-<<<<<<< HEAD
-from nose.tools import nottest
 import geojson
-
-=======
->>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 
 
 class validCoordinateTestCase(unittest.TestCase):
@@ -73,10 +68,7 @@ class validCoordinateTestCase(unittest.TestCase):
 
         return
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 class GeoJsonSyntaxTestCase(unittest.TestCase):
     """
     Tests for app.geolocator.GeoJSONer
@@ -156,20 +148,20 @@ class GeoJsonSyntaxTestCase(unittest.TestCase):
         assert list1 == self.GeoJSONer.features
 
 
-<<<<<<< HEAD
-    def test_geojson(self):
+def test_geojson(self):
         """
         Checks if the result is in geojson format
         """
-        #assert self.GeoJSONer.geojson == geojson()
-        #assert isinstance(self.geojson,geojson)
+        # assert self.GeoJSONer.geojson == geojson()
+        # assert isinstance(self.geojson,geojson)
+
 
 class GeocoderTestCase(unittest.TestCase):
     """
     Tests for app.geolocator.GeoCoder
     """
 
-     # ----------------------- Before/After ----------------------- #
+    # ----------------------- Before/After ----------------------- #
     def setUp(self):
         """
         Executed at the start of every test
@@ -186,13 +178,12 @@ class GeocoderTestCase(unittest.TestCase):
 
     # -----------------------------Helpers ------------------------- #
 
-    def geocoder_helper(self,name,lat,lng):
+    def geocoder_helper(self, name, lat, lng):
         l = Location(name, "hello", name, "hello", "hello",
-                 "hello", "hello", lat, lng,
-                 "hello")
+                     "hello", "hello", lat, lng,
+                     "hello")
         location = LocationWrap(l)
         return location
-
 
     def init(self):
         self.GeoCoder = GeoCoder(self)
@@ -210,9 +201,8 @@ class GeocoderTestCase(unittest.TestCase):
         Tests the location wrap
         """
         expected = self.geocoder_helper("location1", 1.0, -2.0)
-        actual = LocationWrap("location1", 1.0,-2.0)
+        actual = LocationWrap("location1", 1.0, -2.0)
         assert expected == actual
-
 
     def test_geocode(self):
         """
@@ -226,12 +216,13 @@ class GeocoderTestCase(unittest.TestCase):
         """
         return
 
+
 class GeoLocatorTestCase(unittest.TestCase):
     """
     Tests for app.geolocator.GeoLocator
     """
 
-     # ----------------------- Before/After ----------------------- #
+    # ----------------------- Before/After ----------------------- #
     def setUp(self):
         """
         Executed at the start of every test
@@ -246,7 +237,7 @@ class GeoLocatorTestCase(unittest.TestCase):
         self.Geolocator = None
         return
 
-     # ----------------------- Helpers ----------------------- #
+    # ----------------------- Helpers ----------------------- #
     def init(self):
         """
         needs to be implemented
@@ -258,26 +249,15 @@ class GeoLocatorTestCase(unittest.TestCase):
         """
         Ensures that the GeoLocator successfully initializes
         """
-        #assert self.Geocoder == Geocoder()
-        #assert self.GeoJSONer == GeoJSONer()
-        #assert self.weightifier == Weightifier()
+        # assert self.Geocoder == Geocoder()
+        # assert self.GeoJSONer == GeoJSONer()
+        # assert self.weightifier == Weightifier()
 
     def test_geoLocate(self):
         """
         needs to be implemented
         """
 
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 0096484dc33ffa00404f73697f0670f0e8650d6e
 # class locationHitsTestCase(unittest.TestCase):
 #     """
 #     Tests for app.geolocator.LocationHits
