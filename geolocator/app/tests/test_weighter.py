@@ -386,13 +386,9 @@ class QueryTestCase(unittest.TestCase):
         Tests Query.__repr__
         """
         q = Query(selects=['selects1, selects2'], froms=['from1', 'from2'])
-        try:
-            print q
-        except Exception, e:
-            print '__repr__ resulted in Exception:%s' % (str(e))
-            assert False
-        else:
-            assert True
+        s = q.__repr__()
+        # test will fail out on error from __repr__ call if Exception is hit
+        assert isinstance(s, str)
 
 
 class AdminNameGetterTestCase(unittest.TestCase):
@@ -766,13 +762,13 @@ class WeightifierTestCase(unittest.TestCase):
                 admin4name=admin4name))
 
     # ----------------------- Tests ----------------------- #
-    def test__init__pass(self):
+    def test__init(self):
         """
         Ensures that the weighter.Weightifier successfully initializes
         """
         assert isinstance(self.weightifier, Weightifier)
 
-    def test__make_sql__pass(self):
+    def test__make_sql(self):
         """
         Tests Weightifier._make_sql
         """
@@ -780,7 +776,7 @@ class WeightifierTestCase(unittest.TestCase):
         fromm = "FROM orange o, apple a, banana b"
         where = "o.orange == a.apple"
         expected = text(selects + '\n' + fromm + '\n' + where)
-        actual = self._make_sql(selects, fromm, where)
+        actual = self.weightifier._make_sql(selects, fromm, where)
         assert expected.text == actual.text
 
     def test__make_admin_codes_query__acc1(self):
@@ -789,11 +785,13 @@ class WeightifierTestCase(unittest.TestCase):
         """
         geonameid = 9001
         query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
-                 "l.countrycode, "
+                 "l.countrycode"
                  "\nFROM raw_locations l\n"
                  "WHERE l.geonameid = '%s'" % str(geonameid))
         expected = text(query)
-        actual = self._make_admin_codes_query(geonameid, 1)
+        actual = self.weightifier._make_admin_codes_query(geonameid, 1)
+        print expected.text
+        print actual.text
         assert expected.text == actual.text
 
     def test__make_admin_codes_query__acc2(self):
@@ -802,11 +800,11 @@ class WeightifierTestCase(unittest.TestCase):
         """
         geonameid = 9001
         query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
-                 "l.countrycode, l.admin1code, "
+                 "l.countrycode, l.admin1code"
                  "\nFROM raw_locations l\n"
                  "WHERE l.geonameid = '%s'" % str(geonameid))
         expected = text(query)
-        actual = self._make_admin_codes_query(geonameid, 2)
+        actual = self.weightifier._make_admin_codes_query(geonameid, 2)
         assert expected.text == actual.text
 
     def test__make_admin_codes_query__acc3(self):
@@ -815,11 +813,11 @@ class WeightifierTestCase(unittest.TestCase):
         """
         geonameid = 9001
         query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
-                 "l.countrycode, l.admin1code, l.admin2code, "
+                 "l.countrycode, l.admin1code, l.admin2code"
                  "\nFROM raw_locations l\n"
                  "WHERE l.geonameid = '%s'" % str(geonameid))
         expected = text(query)
-        actual = self._make_admin_codes_query(geonameid, 3)
+        actual = self.weightifier._make_admin_codes_query(geonameid, 3)
         assert expected.text == actual.text
 
     def test__make_admin_codes_query__acc4(self):
@@ -828,11 +826,11 @@ class WeightifierTestCase(unittest.TestCase):
         """
         geonameid = 9001
         query = ("SELECT l.geonameid, l.name, l.featurecode, l.featureclass, "
-                 "l.countrycode, l.admin1code, l.admin2code, l.admin3code, "
+                 "l.countrycode, l.admin1code, l.admin2code, l.admin3code"
                  "\nFROM raw_locations l\n"
                  "WHERE l.geonameid = '%s'" % str(geonameid))
         expected = text(query)
-        actual = self._make_admin_codes_query(geonameid, 4)
+        actual = self.weightifier._make_admin_codes_query(geonameid, 4)
         assert expected.text == actual.text
 
     def test__make_admin_codes_query__acc5(self):
@@ -845,7 +843,9 @@ class WeightifierTestCase(unittest.TestCase):
                  "l.admin4code\nFROM raw_locations l\n"
                  "WHERE l.geonameid = '%s'" % str(geonameid))
         expected = text(query)
-        actual = self._make_admin_codes_query(geonameid, 5)
+        actual = self.weightifier._make_admin_codes_query(geonameid, 5)
+        print expected.text
+        print actual.text
         assert expected.text == actual.text
 
     def test__make_admin_codes__pass_0(self):
@@ -950,950 +950,10 @@ class WeightifierTestCase(unittest.TestCase):
         Tests weighter._gather_all_names with accuracy of 4
         """
         geolocator = Geolocator()
-        # container = geolocator._build_container(['Phoenix', 'Arizona'])
         container = geolocator._build_container(['Phoenix'])
         # expected has expected admin names (of accuracy 4)
         #   with locations "Arizona" and "Phoenix"
         expected = LocationHitsContainer()
-        # expected.append(LocationHits('Arizona', [
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -35.72259,
-        #             -65.31972,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Argentina',
-        #             admin1name='Provincia de San Luis',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -23.11667,
-        #             149.2,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Queensland',
-        #             admin2name='Central Highlands',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -21.66667,
-        #             141.55,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Queensland',
-        #             admin2name='McKinlay',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -19.53333,
-        #             141.35001,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Queensland',
-        #             admin2name='McKinlay',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -30.48236,
-        #             116.867,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Western Australia',
-        #             admin2name='Dalwallinu',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -34.53529,
-        #             117.88443,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Western Australia',
-        #             admin2name='Plantagenet Shire',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -33.30794,
-        #             118.66646,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of Western Australia',
-        #             admin2name='Lake Grace',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -32.49089,
-        #             151.40037,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of New South Wales',
-        #             admin2name='Singleton',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -35.0347,
-        #             146.52509,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Australia',
-        #             admin1name='State of New South Wales',
-        #             admin2name='Urana',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -8.66667,
-        #             -40.95,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Pernambuco',
-        #             admin2name='Afrnio',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -6.45,
-        #             -41.58333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Piau',
-        #             admin2name='Lagoa do Stio',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -5.56667,
-        #             -35.78333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Rio Grande do Norte',
-        #             admin2name='Joo Cmara',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -5.28333,
-        #             -35.7,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Rio Grande do Norte',
-        #             admin2name='Touros',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -16.21667,
-        #             -40.06667,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Minas Gerais',
-        #             admin2name='Salto da Divisa',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -12.8,
-        #             -40.93333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Bahia',
-        #             admin2name='Boa Vista do Tupim',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -8.68222,
-        #             -40.96139,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Pernambuco',
-        #             admin2name='Afrnio',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -8.75436,
-        #             -40.91927,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Brazil',
-        #             admin1name='Pernambuco',
-        #             admin2name='Afrnio',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             49.82832,
-        #             -99.02859,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Canada',
-        #             admin1name='Manitoba',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -24.58333,
-        #             -70.0,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Chile',
-        #             admin1name='Antofagasta',
-        #             admin2name='Provincia de Antofagasta',
-        #             admin3name='Antofagasta',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -30.4,
-        #             -70.16667,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Chile',
-        #             admin1name='Coquimbo',
-        #             admin2name='Provincia de Elqui',
-        #             admin3name='Paihuano',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             10.57197,
-        #             -74.13696,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Magdalena',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             10.48333,
-        #             -75.43333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento de Bolvar',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             4.04375,
-        #             -72.96845,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Meta',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             2.72084,
-        #             -72.28228,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Guaviare',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             6.81806,
-        #             -70.76,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento de Arauca',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             5.97167,
-        #             -71.81694,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento de Casanare',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             5.93889,
-        #             -70.97944,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento de Casanare',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             2.17809,
-        #             -74.5573,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Meta',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             3.32008,
-        #             -73.50162,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Meta',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             10.36374,
-        #             -73.48162,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Colombia',
-        #             admin1name='Departamento del Cesar',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             10.19707,
-        #             -84.95201,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Costa Rica',
-        #             admin1name='Provincia de Guanacaste',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             27.79,
-        #             -15.7,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Spain',
-        #             admin1name='Canary Islands',
-        #             admin2name='Provincia de Las Palmas',
-        #             admin3name='Mogn',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             13.95806,
-        #             -90.82028,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Guatemala',
-        #             admin1name='Departamento de Escuintla',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             15.63333,
-        #             -87.31667,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Honduras',
-        #             admin1name='Departamento de Atlntida',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             15.68333,
-        #             -87.33333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Honduras',
-        #             admin1name='Departamento de Atlntida',
-        #             admin2name='Arizona',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             44.13157,
-        #             12.48532,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Italy',
-        #             admin1name='Emilia-Romagna',
-        #             admin2name='Provincia di Rimini',
-        #             admin3name='Bellaria-Igea Marina',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             20.91744,
-        #             -87.46447,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Quintana Roo',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             30.45639,
-        #             -109.46373,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Sonora',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             22.9128,
-        #             -99.11055,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Tamaulipas',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             17.03278,
-        #             -92.34472,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Chiapas',
-        #             admin2name='Sital',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             15.62028,
-        #             -93.18833,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Chiapas',
-        #             admin2name='Pijijiapan',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             21.42886,
-        #             -87.70516,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Mexico',
-        #             admin1name='Estado de Yucatn',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -23.2,
-        #             16.03333,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Namibia',
-        #             admin1name='Khomas',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -27.73333,
-        #             19.8,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Namibia',
-        #             admin1name='Karas',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             32.78904,
-        #             -92.95766,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='United States',
-        #             admin1name='Louisiana',
-        #             admin2name='Claiborne Parish',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             30.78963,
-        #             -95.468,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='United States',
-        #             admin1name='Texas',
-        #             admin2name='Walker County',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             41.81443,
-        #             -96.13363,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='United States',
-        #             admin1name='Nebraska',
-        #             admin2name='Burt County',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             34.5003,
-        #             -111.50098,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='United States',
-        #             admin1name='Arizona',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -25.92325,
-        #             22.79326,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='South Africa',
-        #             admin1name='Province of North West',
-        #             admin2name='Dr Ruth Segomotsi Mompati District'
-        #                        ' Municipality',
-        #             admin3name='Kagisano/Molopo',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -19.21667,
-        #             29.61667,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Zimbabwe',
-        #             admin1name='None',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -18.19478,
-        #             31.63905,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Zimbabwe',
-        #             admin1name='Mashonaland East Province',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None')),
-        #     LocationWrap(
-        #         Location(
-        #             'Arizona',
-        #             -1,
-        #             'Arizona',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             '???',
-        #             -17.85918,
-        #             31.98619,
-        #             0),
-        #         adminnames=LocationAdminNames(
-        #             countryname='Zimbabwe',
-        #             admin1name='Mashonaland East Province',
-        #             admin2name='None',
-        #             admin3name='None',
-        #             admin4name='None'))])
-        # )
         expected.append(LocationHits('Phoenix', [
             LocationWrap(
                 Location(
@@ -1911,8 +971,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='Australia',
                     admin1name='State of South Australia',
                     admin2name='Mid Murray',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -1928,9 +988,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Canada',
                     admin1name='British Columbia',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -1948,7 +1008,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin1name='Ionian Islands',
                     admin2name='Noms Zaknthou',
                     admin3name='Dimos Zakynthos',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -1964,9 +1024,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Guyana',
                     admin1name='Essequibo Islands-West Demerara Region',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -1982,9 +1042,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Guyana',
                     admin1name='Mahaica-Berbice Region',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2000,9 +1060,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Indonesia',
                     admin1name='Daerah Istimewa Yogyakarta',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2018,9 +1078,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Jamaica',
                     admin1name='Parish of Trelawny',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2036,9 +1096,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Jamaica',
                     admin1name='Parish of Hanover',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2054,9 +1114,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='South Korea',
                     admin1name='Busan',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2072,9 +1132,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Mauritius',
                     admin1name='Plaines Wilhems District',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2090,9 +1150,9 @@ class WeightifierTestCase(unittest.TestCase):
                 adminnames=LocationAdminNames(
                     countryname='Romania',
                     admin1name='Arad',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2107,10 +1167,10 @@ class WeightifierTestCase(unittest.TestCase):
                     0),
                 adminnames=LocationAdminNames(
                     countryname='Singapore',
-                    admin1name='None',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin1name=None,
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2127,8 +1187,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Georgia',
                     admin2name='Putnam County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2145,8 +1205,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Louisiana',
                     admin2name='Plaquemines Parish',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2163,8 +1223,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Maryland',
                     admin2name='Baltimore County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2181,8 +1241,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Mississippi',
                     admin2name='Yazoo County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2199,8 +1259,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='North Carolina',
                     admin2name='Brunswick County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2217,8 +1277,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='South Carolina',
                     admin2name='Greenwood County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2235,8 +1295,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Texas',
                     admin2name='Bexar County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2253,8 +1313,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Illinois',
                     admin2name='Cook County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2271,8 +1331,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Michigan',
                     admin2name='Keweenaw County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2289,8 +1349,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='New Jersey',
                     admin2name='Middlesex County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2307,8 +1367,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='New Jersey',
                     admin2name='Middlesex County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2325,8 +1385,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='New York',
                     admin2name='Oswego County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2343,8 +1403,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Arizona',
                     admin2name='Maricopa County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2361,8 +1421,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Utah',
                     admin2name='Juab County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2379,8 +1439,8 @@ class WeightifierTestCase(unittest.TestCase):
                     countryname='United States',
                     admin1name='Oregon',
                     admin2name='Jackson County',
-                    admin3name='None',
-                    admin4name='None')),
+                    admin3name=None,
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2398,7 +1458,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin1name='Province of KwaZulu-Natal',
                     admin2name='eThekwini Metropolitan Municipality',
                     admin3name='Ethekwini',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2416,7 +1476,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin1name='Province of KwaZulu-Natal',
                     admin2name='eThekwini Metropolitan Municipality',
                     admin3name='Ethekwini',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2434,7 +1494,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin1name='Mpumalanga',
                     admin2name='Nkangala District Municipality',
                     admin3name='Emalahleni',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2452,7 +1512,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin1name='Free State',
                     admin2name='Lejweleputswa District Municipality',
                     admin3name='Masilonyana',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2471,7 +1531,7 @@ class WeightifierTestCase(unittest.TestCase):
                     admin2name='Dr Ruth Segomotsi Mompati District'
                                ' Municipality',
                     admin3name='Kagisano/Molopo',
-                    admin4name='None')),
+                    admin4name=None)),
             LocationWrap(
                 Location(
                     'Phoenix',
@@ -2486,20 +1546,47 @@ class WeightifierTestCase(unittest.TestCase):
                     0),
                 adminnames=LocationAdminNames(
                     countryname='Zimbabwe',
-                    admin1name='None',
-                    admin2name='None',
-                    admin3name='None',
-                    admin4name='None'))])
-        )
+                    admin1name=None,
+                    admin2name=None,
+                    admin3name=None,
+                    admin4name=None))]))
         # actual is application-generated admin names
-        actual = self.weightifier._gather_all_names(container, 4)
-        print 'expected -----------------------'
-        for l in expected.hits:
-            print l
-        print 'actual -----------------------'
-        for l in actual.hits:
-            print l
-        assert expected == actual
+        actual = self.weightifier.gather_all_names(container, 4)
+
+        # only one location ("Phoenix") so only one hits
+        assert len(expected.hits[0]) == len(actual.hits[0])
+
+        # we can't do a straight expected to actual comparison because
+        # the _build_container method will populate all of the
+        # LocationWrap.Location fields which is data that we don't have
+        # so, we compare the important data that we do have - the adminnames
+
+        for i in xrange(len(expected.hits[0])):
+            print i
+            # debug
+            try:
+                print 'expected -----------------------'
+                print expected.hits[0].locations[i].location.name
+                print expected.hits[0].locations[i]._weight
+                print expected.hits[0].locations[i].adminnames
+                print 'actual -------------------------'
+                print actual.hits[0].locations[i].location.name
+                print actual.hits[0].locations[i]._weight
+                print actual.hits[0].locations[i].adminnames
+            except UnicodeEncodeError:
+                print ('Unicode error for %s' %
+                       expected.hits[0].locations[i].location.name)
+
+            # check name
+            assert (expected.hits[0].locations[i].location.name ==
+                    actual.hits[0].locations[i].location.name)
+            # check weight
+            assert (expected.hits[0].locations[i]._weight ==
+                    actual.hits[0].locations[i]._weight)
+            # check adminnames
+            assert (expected.hits[0].locations[i].adminnames ==
+                    actual.hits[0].locations[i].adminnames)
+        return
 
     def test__filter_by_weight(self):
         """
@@ -2620,7 +1707,7 @@ class WeightifierTestCase(unittest.TestCase):
 
     def test__back_weight1(self):
         """
-        Tests weighter.back_weight
+        Tests weighter.back_weight (1)
         """
         tagged_location = 'Camelot'
         L2_NAME = 'A funny place'
@@ -2643,7 +1730,7 @@ class WeightifierTestCase(unittest.TestCase):
             adminnames=LocationAdminNames(
                 countryname=COUNTRYNAME,
                 admin1name=A1,
-                admin2name='None',
+                admin2name=tagged_location,
                 admin3name='None',
                 admin4name='None'))
         hits = LocationHits(Hits1, [
@@ -2717,7 +1804,7 @@ class WeightifierTestCase(unittest.TestCase):
 
     def test__back_weight2(self):
         """
-        Tests weighter.back_weight
+        Tests weighter.back_weight (2)
         """
         tagged_location = 'Camelot'
         L2_NAME = 'A funny place'
@@ -2742,7 +1829,7 @@ class WeightifierTestCase(unittest.TestCase):
             adminnames=LocationAdminNames(
                 countryname=COUNTRYNAME,
                 admin1name=A1,
-                admin2name='None',
+                admin2name=tagged_location,
                 admin3name='None',
                 admin4name='None'))
         L3 = LocationWrap(
@@ -2807,7 +1894,113 @@ class WeightifierTestCase(unittest.TestCase):
                 admin2name=tagged_location,
                 admin3name='None',
                 admin4name='None'))
-        expected = [L2_NAME, L3_NAME]
+        expected = [L2_NAME]
+        actual = self.weightifier._back_weight(
+            hits,
+            tagged_location,
+            matched_location)
+        print expected
+        print actual
+        assert expected == actual
+
+    def test__back_weight__acc5(self):
+        """
+        Tests weighter.back_weight with accuracy of 5
+        """
+        L2_NAME = 'A funny place'
+        L3_NAME = 'some random name'
+        COUNTRYNAME = 'England'
+        A1 = 'Some Province'
+        A2 = "King Arthur's Castle"
+        A3 = 'The Round Table'
+        Hits1 = 'Hits1'
+        tagged_location = A3
+
+        # this is the location that will be back weighted
+        L2 = LocationWrap(
+            Location(
+                A3,
+                -1,
+                L2_NAME,
+                '???',
+                '???',
+                '???',
+                '???',
+                -35.72259,
+                -65.31972,
+                0),
+            weight=16,
+            adminnames=LocationAdminNames(
+                countryname=COUNTRYNAME,
+                admin1name=A1,
+                admin2name=A2,
+                admin3name=A3,
+                admin4name='None'))
+        L3 = LocationWrap(
+            Location(
+                tagged_location,
+                -1,
+                L3_NAME,
+                '???',
+                '???',
+                '???',
+                '???',
+                -35.72259,
+                -65.31972,
+                0),
+            weight=3,
+            adminnames=LocationAdminNames(
+                countryname=COUNTRYNAME,
+                admin1name=A1,
+                admin2name='some random A2',
+                admin3name='None',
+                admin4name='None'))
+        # these are the hits that were all retrieved for The Round Table
+        hits = LocationHits(Hits1, [
+            LocationWrap(
+                Location(
+                    tagged_location,
+                    -1,
+                    tagged_location,
+                    '???',
+                    '???',
+                    '???',
+                    '???',
+                    -35.72259,
+                    -65.31972,
+                    0),
+                weight=7,
+                adminnames=LocationAdminNames(
+                    countryname=COUNTRYNAME,
+                    admin1name='not A funny place',
+                    admin2name='None',
+                    admin3name='None',
+                    admin4name='None')),
+            L2,
+            L3])
+
+        # this is the location that contains a reference to The Round Table
+        matched_location_name = "King Arthur's Chair"
+        matched_location = LocationWrap(
+            Location(
+                matched_location_name,
+                -1,
+                matched_location_name,
+                '???',
+                '???',
+                '???',
+                '???',
+                -35.72259,
+                -65.31972,
+                0),
+            weight=16,
+            adminnames=LocationAdminNames(
+                countryname=COUNTRYNAME,
+                admin1name=A1,
+                admin2name=A2,
+                admin3name=A3,
+                admin4name=matched_location_name))
+        expected = [L2_NAME]
         actual = self.weightifier._back_weight(
             hits,
             tagged_location,
@@ -2931,6 +2124,14 @@ class WeightifierTestCase(unittest.TestCase):
         print actual
         assert expected == actual
 
+    def test__repr(self):
+        """
+        Tests weighter.Weightifier.__repr__ to ensure that a str is returned
+        and that no errors are generated
+        """
+        s = self.weightifier.__repr__()
+        # this test will fail by error at __repr__ call if errors are generated
+        assert isinstance(s, str)
 
 # def test_admin4named_locations():
 #     """

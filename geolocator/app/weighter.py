@@ -618,11 +618,9 @@ class Weightifier(object):
                             match = (
                                 wrap.admin3name() ==
                                 matched_location.admin3name())
-                            # check admin4name
-                            if match and adminNum >= 4:
-                                match = (
-                                    wrap.admin4name() ==
-                                    matched_location.admin4name())
+                            # admin4name does not need to be checked as it is
+                            # the lowest possible admin level so a back weight
+                            # will never lead to it
             # if a match has been made, then increment weight
             if match:
                 # print 'incrementing %s (%s, %s)' % (

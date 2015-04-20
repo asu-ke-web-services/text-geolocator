@@ -605,6 +605,15 @@ class LocationTaggerTests(unittest.TestCase):
         print 'actual -> %s' % str(actual)
         assert expected == actual
 
+    def test_CountWords(self):
+        """
+        Tests LocationTagger.CountWords
+        """
+        text = "This sentence has five words"
+        expected = 5
+        actual = self.Tagger.CountWords(text)
+        assert expected == actual
+
     def test_TagLocations(self):
         """
         Tests the TagLocations function which utilizes and also tests the
