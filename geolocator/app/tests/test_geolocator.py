@@ -3,7 +3,7 @@
 run with: sudo fig run web nosetests geolocator/app/tests/test_weighter.py
 """
 from app.geolocator import LocationWrap, LocationHits, LocationHitsContainer
-# from app.models import Location
+from app.weighter import LocationAdminNames
 import unittest
 
 
@@ -13,20 +13,6 @@ class Location(object):
         self.longitude = longitude
         self.latitude = latitude
         self.geonameid = geonameid
-
-
-class admin(object):
-    def __init__(self, s1, s2):
-        l1 = []
-        l1.extend(s1)
-        l1.extend(s2)
-        self.adminnames = l1
-
-    def list(self):
-        return self.adminnames
-
-    def match(self, something):
-        return True
 
 
 class LocationWrapTestCase(unittest.TestCase):
@@ -64,7 +50,7 @@ class LocationWrapTestCase(unittest.TestCase):
         assert isinstance(self.wrap, LocationWrap)
         assert self.wrap.location == LOCATION
         assert self.wrap._weight == 0
-        assert self.wrap.adminnames == []
+        assert self.wrap.adminnames is None
 
     def test_LocationItems(self):
         """
@@ -72,19 +58,90 @@ class LocationWrapTestCase(unittest.TestCase):
         """
         loc = Location('Phoenix', 82.546, 36.111, 'phx')
         locwrap = LocationWrap(loc)
-        locwrap.increment_weight_on_match('Phoenix')
-        # l1 = ['Jang', 'Bob']
-        l1 = admin('Jang', 'Bob')
+        COUNTRY = 'Jang'
+        A1 = 'Bob'
+        A2 = '1'
+        A3 = '2'
+        A4 = '3'
+        l1 = LocationAdminNames(
+            countryname='Jang',
+            admin1name='Bob',
+            admin2name='1',
+            admin3name='2',
+            admin4name='3')
         locwrap.set_adminnames(l1)
-        # names = locwrap.names_list()
+        locwrap._weight = 1
 
         assert locwrap.name() == 'Phoenix'
         assert locwrap.longitude() == 82.546
         assert locwrap.latitude() == 36.111
         assert locwrap.geonameid() == 'phx'
         assert locwrap.weight() == 1
+        assert locwrap.countryname() == COUNTRY
+        assert locwrap.admin1name() == A1
+        assert locwrap.admin2name() == A2
+        assert locwrap.admin3name() == A3
+        assert locwrap.admin4name() == A4
 
         return
+
+    def test__eq__fail_on_wrap(self):
+        """
+        Tests LocationWrap.__eq__ with two unequal wraps
+        """
+        l1 = LocationWrap('equal')
+        l2 = 'i am a string and not a wrap'
+        l1._weight = 8374
+        l1.adminnames = [1, 2, 3, 4]
+        assert l1 != l2
+
+    def test__eq__fail_on_location(self):
+        """
+        Tests LocationWrap.__eq__ with two unequal wraps
+        """
+        l1 = LocationWrap('equal')
+        l2 = LocationWrap('not equal')
+        l1._weight = 8374
+        l2._weight = 8374
+        l1.adminnames = [1, 2, 3, 4]
+        l2.adminnames = [1, 2, 3, 4]
+        assert l1 != l2
+
+    def test__eq__fail_on_weight(self):
+        """
+        Tests LocationWrap.__eq__ with two unequal wraps
+        """
+        l1 = LocationWrap('equal')
+        l2 = LocationWrap('equal')
+        l1._weight = 8374
+        l2._weight = -8374
+        l1.adminnames = [1, 2, 3, 4]
+        l2.adminnames = [1, 2, 3, 4]
+        assert l1 != l2
+
+    def test__eq__fail_on_adminnames(self):
+        """
+        Tests LocationWrap.__eq__ with two unequal wraps
+        """
+        l1 = LocationWrap('equal')
+        l2 = LocationWrap('equal')
+        l1._weight = 8374
+        l2._weight = 8374
+        l1.adminnames = [1, 2, 3, 4]
+        l2.adminnames = [1, 'not 2', 3, 4]
+        assert l1 != l2
+
+    def test__eq__pass(self):
+        """
+        Tests LocationWrap.__eq__ with two unequal wraps
+        """
+        l1 = LocationWrap('equal')
+        l2 = LocationWrap('equal')
+        l1._weight = 8374
+        l2._weight = 8374
+        l1.adminnames = [1, 2, 3, 4]
+        l2.adminnames = [1, 2, 3, 4]
+        assert l1 == l2
 
 
 class LocationHitsTestCase(unittest.TestCase):
@@ -109,7 +166,7 @@ class LocationHitsTestCase(unittest.TestCase):
 
     # ----------------------- Helpers ----------------------- #
     def init(self, locations=[]):
-        self.hits = LocationHits(locations)
+        self.hits = LocationHits(name='testHits', locations=locations)
         return
 
     # ----------------------- Tests ----------------------- #
@@ -153,11 +210,16 @@ class LocationHitsTestCase(unittest.TestCase):
         """
         loc = Location('Phoenix', 82.546, 36.111, 'phx')
         locwrap = LocationWrap(loc)
-        s1 = admin('Jang', 'Bob')
+        s1 = LocationAdminNames(
+            countryname='Jang',
+            admin1name='Bob',
+            admin2name=None,
+            admin3name=None,
+            admin4name=None)
         locwrap.set_adminnames(s1)
         loc2 = Location('Denver', 18.546, 44.111, 'den')
         locwrap2 = LocationWrap(loc2)
-        s2 = admin('Jang', 'Bob')
+        s2 = s1
         locwrap2.set_adminnames(s2)
         l1 = [locwrap, locwrap2]
         self.init(l1)

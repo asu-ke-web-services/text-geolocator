@@ -73,6 +73,8 @@ class LocationWrap(object):
         """
         name = None
         if self.adminnames:
+            print self
+            print self.adminnames
             name = self.adminnames.admin1name
         return name
 
