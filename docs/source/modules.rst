@@ -7,3 +7,4 @@ geolocator
    app
    config
    run
+   test_config
