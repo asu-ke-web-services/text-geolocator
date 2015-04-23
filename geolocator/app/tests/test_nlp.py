@@ -51,9 +51,9 @@ class StanfordNerTaggerTests(unittest.TestCase):
 
         :raises: TypeError if list1 and list2 are not of equal length
         """
-        if len(list1) != len(list2):
-            raise TypeError('list1 (%s) and list2 (%s) must be of equal'
-                            'length' % (str(len(list1)), str(len(list2))))
+        # if len(list1) != len(list2):
+        #     raise TypeError('list1 (%s) and list2 (%s) must be of equal'
+        #                     'length' % (str(len(list1)), str(len(list2))))
         return zip(list1, list2)
 
     def tokenize(self, words):
@@ -603,6 +603,15 @@ class LocationTaggerTests(unittest.TestCase):
         actual = self.Tagger._ReuniteSeparatedLocations(originals, tagged)
         print 'expected -> %s' % str(expected)
         print 'actual -> %s' % str(actual)
+        assert expected == actual
+
+    def test_CountWords(self):
+        """
+        Tests LocationTagger.CountWords
+        """
+        text = "This sentence has five words"
+        expected = 5
+        actual = self.Tagger.CountWords(text)
         assert expected == actual
 
     def test_TagLocations(self):

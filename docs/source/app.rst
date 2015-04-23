@@ -16,7 +16,6 @@ Submodules
    app.geolocator
    app.models
    app.nlp
-   app.services
    app.views
    app.weighter
 

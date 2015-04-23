@@ -31,13 +31,14 @@ class LocationAdminNames(LocationAdminParent):
     Inherits from LocationAdminParent
     """
 
-    def __init__(self):
+    def __init__(self, countryname=None, admin1name=None, admin2name=None,
+                 admin3name=None, admin4name=None):
         super(LocationAdminNames, self).__init__()
-        self.admin4name = None
-        self.admin3name = None
-        self.admin2name = None
-        self.admin1name = None
-        self.countryname = None
+        self.admin4name = admin4name
+        self.admin3name = admin3name
+        self.admin2name = admin2name
+        self.admin1name = admin1name
+        self.countryname = countryname
         return
 
     def list(self):
@@ -130,7 +131,7 @@ class LocationAdminCodes(LocationAdminParent):
     def __repr__(self):
         return ("<LocationAdminCodes(geonameid=%s, name=%s, featurecode=%s, "
                 "featureclass=%s, admin4code=%s, admin3code=%s, "
-                "admin2code=%s, admin2code=%s, countrycode=%s)>" % (
+                "admin2code=%s, admin1code=%s, countrycode=%s)>" % (
                     str(self.geonameid), str(self.name), str(self.featurecode),
                     str(self.featureclass), str(self.admin4code),
                     str(self.admin3code), str(self.admin2code),
@@ -140,6 +141,45 @@ class LocationAdminCodes(LocationAdminParent):
 class Query(object):
     """
     Simplifies writing code for querying the geonames database
+
+    Example Queries:
+        * Returns all locations named Phoenix:
+          SELECT l.name
+          FROM location l
+          WHERE l.name = 'Phoenix'
+        * Returns all locations named Phoenix in the United States:
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.name = 'Phoenix'
+            AND l.countrycode = 'US'
+        * Returns just Arizona (the state):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM1'
+            AND l.featureclass = 'A'
+        * Returns just Maricopa County (in Arizona):
+          SELECT l.name, l.featurecode, l.featureclass,
+            l.admin4code, l.admin3code,
+            l.admin2code, l.admin1code, l.countrycode
+          FROM raw_locations l
+          WHERE l.admin2code = '013'
+            AND l.admin1code = 'AZ'
+            AND l.featurecode = 'ADM2'
+
+    The above queries can be executed like this:
+
+        result = db.engine.execute(sql)
+        hits = []
+        for row in result:
+            hits.append(row)
+        return hits
+
+        hits will then contain all the rows of the result of the query
     """
 
     def __init__(self, selects, froms, wheres=None):
@@ -394,7 +434,7 @@ class AdminNameGetter(object):
         return names
 
     def __repr__(self):
-        return "<AdminNameGetter()>"
+        return "<AdminNameGetter(codes=%s)>" % (str(self.codes))
 
 
 class Weightifier(object):
@@ -479,7 +519,7 @@ class Weightifier(object):
             admincodes.admin4code = query_result[index]
         return admincodes
 
-    def _get_admin_codes(self, location, accuracy):
+    def _get_admin_codes(self, geonameid, accuracy):
         """
         Finds the codes for each administration level for the given location
 
@@ -493,7 +533,7 @@ class Weightifier(object):
 
         This function finds the codes for each for use in weighting
 
-        :param app.geolocator.LocationWrap: location to find admin codes for
+        :param str|int geonameid: location to find admin codes for
         :param int accuracy: level of accuracy when assigning weights (see
         app.geolocator.Geolocator.geolocate for information on accuracy
         settings)
@@ -501,7 +541,7 @@ class Weightifier(object):
         :returns: app.geolocator.LocationAdminCodes
         """
         # get admin data from raw_locations table
-        sql = self._make_admin_codes_query(location.geonameid(), accuracy)
+        sql = self._make_admin_codes_query(geonameid, accuracy)
         # should return only 1
         result = db.engine.execute(sql)
         admincodes = None
@@ -521,7 +561,96 @@ class Weightifier(object):
         namegetter = AdminNameGetter(admincodes)
         return namegetter.adminnames()
 
-    def _gather_all_names(self, container, accuracy):
+    def _back_weight(self, hits, tagged_location, matched_location):
+        """
+        This function increments the weight of the location in hits that
+        is likely to be the location that triggered the match for
+        matched_location
+
+        For example,
+
+            If tagged_location is "Arizona", then any locations with "Arizona"
+            in their admin names will be a match.
+
+            So, this function would be called for each of those matches.
+
+            One such match might be "Phoenix" which has an admin2 of "Maricopa
+            County", an admin1 as "Arizona", and a countryname of
+            "United States".
+
+            Based on this information, it can be deduced that the admin1 of
+            this Phoenix also has a countryname of "United States".
+
+            So, we must iterate through 'hits' and increment each hit with
+            an admin1 of "Arizona" and a countryname of "United States".
+
+        :param app.geolocator.LocationHits hits: locations retrieved from
+        geonames database when searching for tagged_location
+        :param str tagged_location: name of the locations in hits
+        :param app.geolocator.LocationWrap matched_location: location that
+        has been matched with tagged_location
+
+        :returns: names of LocationWraps whose weight was incremented
+        """
+        # find the admin number that caused the match in matched_location
+        #   countryname = 0
+        #   admin1name = 1
+        #   so on and so forth...
+        adminNum = matched_location.index_of_admin_name(tagged_location)
+        # Search for a LocationWrap in 'hits' that match the admin name at
+        #   adminNum and those above
+        wrap_names_incremented = list()
+        for wrap in hits:
+            match = False
+            # check countryname
+            if adminNum >= 0:
+                match = (wrap.countryname() == matched_location.countryname())
+                # check admin1name
+                if match and adminNum >= 1:
+                    match = (
+                        wrap.admin1name() == matched_location.admin1name())
+                    # check admin2name
+                    if match and adminNum >= 2:
+                        match = (
+                            wrap.admin2name() == matched_location.admin2name())
+                        # check admin3name
+                        if match and adminNum >= 3:
+                            match = (
+                                wrap.admin3name() ==
+                                matched_location.admin3name())
+                            # admin4name does not need to be checked as it is
+                            # the lowest possible admin level so a back weight
+                            # will never lead to it
+            # if a match has been made, then increment weight
+            if match:
+                # print 'incrementing %s (%s, %s)' % (
+                #    wrap.location.name, wrap.countryname(), wrap.admin1name())
+                wrap._weight += 1
+                wrap_names_incremented.append(wrap.location.name)
+        return wrap_names_incremented
+
+    def _filter_by_weight(self, container):
+        """
+        Iterates through hits in container and removes all locations that
+        are less than the max weight for that hit.
+
+        :param app.geolocator.LocationHitsContainer container: container to
+        filter
+
+        :returns: filtered container
+        """
+        for i, hits in enumerate(container.hits):
+            max_weight = hits.max_weight()
+            if max_weight > -1:
+                removes = list()
+                for l in hits:
+                    if l.weight() < max_weight:
+                        removes.append(l)
+                for l in removes:
+                    container.hits[i].locations.remove(l)
+        return container
+
+    def gather_all_names(self, container, accuracy):
         """
         Iterates through all locations in container, finds their admin names,
         and sets the names in their location wrap
@@ -535,47 +664,46 @@ class Weightifier(object):
         """
         for hits in container.hits:
             for l in hits:
-                codes = self._get_admin_codes(l, accuracy)
+                codes = self._get_admin_codes(l.geonameid(), accuracy)
                 names = self._get_admin_names(codes)
                 l.set_adminnames(names)
         return container
 
-    def weightify(self, container, accuracy):
+    def weightify(self, container):
         """
         Assigns a weight value to each LocationWrap within the container
 
+        NOTE: gather_all_names must be called first
+
         :param app.geolocator.LocationHitsContainer container: container
         containing locations to weight
-        :param int accuracy: level of accuracy when assigning weights (see
-        app.geolocator.Geolocator.geolocate for information on accuracy
-        settings)
 
         :returns: app.geolocator.LocationHitsContainer with weighted locations
         """
-        container = self._gather_all_names(container, accuracy)
         # TODO - room for OO and performance improvement here
         # -------------
-        # iterate over all names and increments all location wraps
-        # that either have the same name or matches their admin names
-        names_attempted = list()
-        for hits in container.hits:
-            for loc_wrap in hits:
-                names = loc_wrap.names_list()
-                for name in names:
-                    names_attempted.append(name)
-                    container.increment_weight_on_match(name)
+        # iterate through tagged locations
+        #   and increment every geonames hit who has any admin names that match
+        #   the tagged location
+        for outer_hits in container.hits:
+            # grab target name
+            tagged_location = outer_hits.name
+            for inner_hits in container.hits:
+                # make sure that you are not comparing tagged_location's name
+                #   to it's own hits container
+                if tagged_location != inner_hits.name:
+                    # increment weights on match -- returns matches
+                    matched = inner_hits.increment_weight_on_match(
+                        tagged_location)
+                    # if there are matches, then back increment the matches
+                    if matched:
+                        # print 'matched %s' % inner_hits.name
+                        for m in matched:
+                            self._back_weight(outer_hits, tagged_location, m)
         # -------------
         # iterate over all hits remove all location wraps that are
         # less than the max weight for those wraps
-        for i, hits in enumerate(container.hits):
-            max_weight = hits.max_weight()
-            if max_weight > -1:
-                removes = list()
-                for l in hits:
-                    if l.weight() < max_weight:
-                        removes.append(l)
-                for l in removes:
-                    container.hits[i].locations.remove(l)
+        container = self._filter_by_weight(container)
         return container
 
     def __repr__(self):
