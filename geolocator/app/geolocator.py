@@ -614,7 +614,7 @@ def RetrieveLatLngs(feature_collection):
         coordinates_set.append(m)
         # push n to
     # now can access elements in coordinates_set as a set.
-    print coordinates_set
+    # print coordinates_set
     latlngs = []
     for i, n in enumerate(coordinates_set):
         latlngs.append(LatLng(i, n[0], n[1]))
