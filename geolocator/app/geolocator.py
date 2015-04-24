@@ -195,8 +195,11 @@ class LocationWrap(object):
         :returns: list of names
         """
         names = []
-        # names.append(self.location.name)
-        names.extend(self.adminnames.list())
+        if self.adminnames:
+            try:
+                names.extend(self.adminnames.list())
+            except AttributeError:
+                pass
         return names
 
     def __eq__(self, other):

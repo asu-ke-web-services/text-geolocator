@@ -131,6 +131,183 @@ class LocationWrapTestCase(unittest.TestCase):
         l2.adminnames = [1, 'not 2', 3, 4]
         assert l1 != l2
 
+    def test__index_of_admin_name__4(self):
+        """
+        Tests LocationWrap.index_of_admin_name for admin4name
+        """
+        NAME = 'fruit'
+        names = LocationAdminNames(countryname='banana', admin4name=NAME)
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = 4
+        actual = wrap.index_of_admin_name(NAME)
+        assert expected == actual
+
+    def test__index_of_admin_name__3(self):
+        """
+        Tests LocationWrap.index_of_admin_name for admin3name
+        """
+        NAME = 'fruit'
+        names = LocationAdminNames(countryname='banana', admin3name=NAME)
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = 3
+        actual = wrap.index_of_admin_name(NAME)
+        assert expected == actual
+
+    def test__index_of_admin_name__2(self):
+        """
+        Tests LocationWrap.index_of_admin_name for admin2name
+        """
+        NAME = 'fruit'
+        names = LocationAdminNames(countryname='banana', admin2name=NAME)
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = 2
+        actual = wrap.index_of_admin_name(NAME)
+        assert expected == actual
+
+    def test__index_of_admin_name__1(self):
+        """
+        Tests LocationWrap.index_of_admin_name for admin1name
+        """
+        NAME = 'fruit'
+        names = LocationAdminNames(countryname='banana', admin1name=NAME)
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = 1
+        actual = wrap.index_of_admin_name(NAME)
+        assert expected == actual
+
+    def test__index_of_admin_name__0(self):
+        """
+        Tests LocationWrap.index_of_admin_name for countryname
+        """
+        NAME = 'banana'
+        names = LocationAdminNames(countryname=NAME, admin4name='no')
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = 0
+        actual = wrap.index_of_admin_name(NAME)
+        assert expected == actual
+
+    def test__increment_weight_on_match__1(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with admin1 match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(countryname='not orange', admin4name=NAME)
+        wrap = LocationWrap(location=None, weight=3, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert actual is True
+        expected_weight = 4
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__increment_weight_on_match__2(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with admin2 match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(countryname='not orange', admin2name=NAME)
+        wrap = LocationWrap(location=None, weight=3, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert actual
+        expected_weight = 4
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__increment_weight_on_match__3(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with admin3 match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(countryname='not orange', admin3name=NAME)
+        wrap = LocationWrap(location=None, weight=3, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert actual
+        expected_weight = 4
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__increment_weight_on_match__4(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with admin4 match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(countryname='not orange', admin4name=NAME)
+        wrap = LocationWrap(location=None, weight=3, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert actual
+        expected_weight = 4
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__increment_weight_on_match__no_match(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with no match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(
+            countryname='not orange',
+            admin1name='banana',
+            admin2name='strawberry',
+            admin3name='carrot',
+            admin4name='apple')
+        wrap = LocationWrap(location=None, weight=3, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert not actual
+        expected_weight = 3
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__increment_weight_on_match__0(self):
+        """
+        Tests LocationWrap.increment_weight_on_match with country match
+        """
+        NAME = 'orange'
+        names = LocationAdminNames(countryname=NAME, admin4name='not')
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        actual = wrap.increment_weight_on_match(NAME)
+        assert actual
+        expected_weight = 1
+        actual_weight = wrap._weight
+        assert expected_weight == actual_weight
+
+    def test__names_list__pass(self):
+        """
+        Tests LocationWrap.names_list with a populated adminnames
+        """
+        A1 = 'orange'
+        A2 = 'banana'
+        A3 = 'cranberry'
+        A4 = 'peach'
+        CO = 'carrot'
+        names = LocationAdminNames(
+            countryname=CO,
+            admin1name=A1,
+            admin2name=A2,
+            admin3name=A3,
+            admin4name=A4)
+        wrap = LocationWrap(location=None, weight=0, adminnames=names)
+        expected = [A4, A3, A2, A1, CO]
+        actual = wrap.names_list()
+        assert expected == actual
+
+    def test__names_list__empty(self):
+        """
+        Tests LocationWrap.names_list with an empty adminnames
+        """
+        wrap = LocationWrap(location=None, weight=0, adminnames=None)
+        expected = []
+        actual = wrap.names_list()
+        assert expected == actual
+
+    def test__names_list__not_adminnames(self):
+        """
+        Tests LocationWrap.names_list with an adminnames that is not the right
+        type
+        """
+        wrap = LocationWrap(location=None, weight=0, adminnames=1)
+        expected = []
+        actual = wrap.names_list()
+        assert expected == actual
+
     def test__eq__pass(self):
         """
         Tests LocationWrap.__eq__ with two unequal wraps
@@ -270,6 +447,15 @@ class LocationHitsTestCase(unittest.TestCase):
         hits2 = LocationHits(name='hits1', locations=['l1', 'l2'])
         assert hits1 == hits2
 
+    def test__max_weight__empty(self):
+        """
+        Tests max_weight with an empty LocationHits
+        """
+        hits = LocationHits(name='hits', locations=[])
+        expected = -1
+        actual = hits.max_weight()
+        assert expected == actual
+
     def test__repr__pass(self):
         """
         Tests :func:`app.geolocator.LocationHits.__repr__`
@@ -345,3 +531,16 @@ class LocationHitsContainerTestCase(unittest.TestCase):
         c2 = LocationHitsContainer()
         c2.hits = [1, 2, 3]
         assert c1 == c2
+
+    def __len__(self):
+        """
+        Tests __len__
+        """
+        hits1 = LocationHits(name='hits1', locations=[1, 2])
+        hits2 = LocationHits(name='hits2', locations=[1, 2, 3])
+        container = LocationHitsContainer()
+        container.append(hits1)
+        container.append(hits2)
+        expected = len(hits1) + len(hits2)
+        actual = len(container)
+        assert expected == actual

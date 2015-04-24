@@ -29,15 +29,39 @@ class Location(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     initial_weight = db.Column(db.Float, default=0.0, nullable=False)
-    admin1code = db.Column(db.String(80), index=True)
-    admin2code = db.Column(db.String(80), index=True)
-    admin3code = db.Column(db.String(80))
-    admin4code = db.Column(db.String(80))
-    countryname = db.Column(db.String(80), index=True)
+    # admin1code = db.Column(db.String(80), index=True)
+    # admin2code = db.Column(db.String(80), index=True)
+    # admin3code = db.Column(db.String(80))
+    # admin4code = db.Column(db.String(80))
+    # countryname = db.Column(db.String(80), index=True)
+
+    # def __init__(self, location, geonameid, name, countrycode, featureclass,
+    #              featurecode, featuretype, latitude, longitude,
+    #              initial_weight, admin1code, admin2code, admin3code,
+    #              admin4code, countryname):
+    #     """
+    #     Sets all of the Location's attributes.
+    #     This is used when importing data from the geonames db.
+    #     """
+    #     self.location = location
+    #     self.geonameid = geonameid
+    #     self.name = name
+    #     self.countrycode = countrycode
+    #     self.featureclass = featureclass
+    #     self.featurecode = featurecode
+    #     self.featuretype = featuretype
+    #     self.latitude = latitude
+    #     self.longitude = longitude
+    #     self.initial_weight = initial_weight
+    #     self.admin1code = admin1code
+    #     self.admin2code = admin2code
+    #     self.admin3code = admin3code
+    #     self.admin4code = admin4code
+    #     self.countryname = countryname
 
     def __init__(self, location, geonameid, name, countrycode, featureclass,
                  featurecode, featuretype, latitude, longitude,
-                 initial_weight, admin1code, admin2code, admin3code, admin4code, countryname):
+                 initial_weight):
         """
         Sets all of the Location's attributes.
         This is used when importing data from the geonames db.
@@ -52,11 +76,6 @@ class Location(db.Model):
         self.latitude = latitude
         self.longitude = longitude
         self.initial_weight = initial_weight
-        self.admin1code = admin1code
-        self.admin2code = admin2code
-        self.admin3code = admin3code
-        self.admin4code = admin4code
-        self.countryname = countryname
 
     def __eq__(self, other):
         """
