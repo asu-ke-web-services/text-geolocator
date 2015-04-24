@@ -19,7 +19,7 @@
         // How zoomed in you want the map to start at (always required)
         zoom: 2,
         // The latitude and longitude to center the map (always required)
-        center: new google.maps.LatLng(33.44838, -112.07404),
+        center: new google.maps.LatLng(39.76, -98.5),
         // How you would like to style the map. 
         // This is where you would paste any style found on Snazzy Maps.
         styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
@@ -31,16 +31,60 @@
       var map = new google.maps.Map(mapElement, mapOptions);
       var mapData = [
         
+          new google.maps.LatLng(39.76, -98.5),
+        
+          new google.maps.LatLng(32.75041, -89.75036),
+        
+          new google.maps.LatLng(32.75041, -86.75026),
+        
+          new google.maps.LatLng(32.58125, -90.56287),
+        
           new google.maps.LatLng(33.44838, -112.07404),
         
+          new google.maps.LatLng(41.81443, -96.13363),
+        
           new google.maps.LatLng(34.5003, -111.50098),
+        
+          new google.maps.LatLng(34.95148, -90.23065),
+        
+          new google.maps.LatLng(42.02834, -97.417),
+        
+          new google.maps.LatLng(42.03417, -97.41339),
+        
+          new google.maps.LatLng(41.50028, -99.75067),
+        
+          new google.maps.LatLng(33.81371, -85.76135),
+        
+          new google.maps.LatLng(30.33218, -81.65565),
+        
+          new google.maps.LatLng(28.75054, -82.5001),
+        
+          new google.maps.LatLng(48.13743, 11.57549),
+        
+          new google.maps.LatLng(48.66917, -98.83263),
+        
+          new google.maps.LatLng(34.89593, -83.46655),
+        
+          new google.maps.LatLng(39.00285, -82.90545),
+        
+          new google.maps.LatLng(31.4399, -95.35078),
+        
+          new google.maps.LatLng(38.46229, -85.54274),
+        
+          new google.maps.LatLng(40.42035, -79.1167),
+        
+          new google.maps.LatLng(34.08618, -107.19642),
+        
+          new google.maps.LatLng(31.29767, -87.08775),
+        
+          new google.maps.LatLng(32.2732, -86.05024),
         
       ];
       var infoWindow = new google.maps.InfoWindow(); /*info window*/
       var circles = [
         
           new google.maps.Circle({
-            center : new google.maps.LatLng(33.44838, -112.07404),
+            center : new google.maps.LatLng(39.76, -98.5),
             clickable: true,
             strokeColor: '#FF0000',
             strokeOpacity: 0,
@@ -53,7 +97,7 @@
           }),
           
           new google.maps.Circle({
-            center : new google.maps.LatLng(34.5003, -111.50098),
+            center : new google.maps.LatLng(32.75041, -89.75036),
             clickable: true,
             strokeColor: '#FF0000',
             strokeOpacity: 0,
@@ -63,6 +107,292 @@
             radius: 20000,
             map:map,
             id: 1 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.75041, -86.75026),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 2 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.58125, -90.56287),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 3 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(33.44838, -112.07404),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 4 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(41.81443, -96.13363),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 5 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.5003, -111.50098),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 6 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.95148, -90.23065),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 7 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(42.02834, -97.417),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 8 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(42.03417, -97.41339),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 9 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(41.50028, -99.75067),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 10 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(33.81371, -85.76135),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 11 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(30.33218, -81.65565),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 12 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(28.75054, -82.5001),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 13 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(48.13743, 11.57549),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 14 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(48.66917, -98.83263),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 15 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.89593, -83.46655),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 16 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(39.00285, -82.90545),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 17 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(31.4399, -95.35078),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 18 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(38.46229, -85.54274),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 19 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(40.42035, -79.1167),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 20 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(34.08618, -107.19642),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 21 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(31.29767, -87.08775),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 22 /*need to change latlng to distribute id num (int) */
+          }),
+          
+          new google.maps.Circle({
+            center : new google.maps.LatLng(32.2732, -86.05024),
+            clickable: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0,
+            radius: 20000,
+            map:map,
+            id: 23 /*need to change latlng to distribute id num (int) */
           }),
           
 /*          var infowindow = new google.maps.infowindow({
@@ -152,14 +482,14 @@
     <!-- <div id="content"> -->
     
   <div class="container">
-    <h1>test_for_sam.txt</h1>
+    <h1>chickens.txt</h1>
     
     <ul>
-      <li>Words&#58; 9</li>
-      <li>Tagged Locations&#58; 2</li>
-      <li>Distinct Locations&#58; 2</li>
+      <li>Words&#58; 98</li>
+      <li>Tagged Locations&#58; 14</li>
+      <li>Distinct Locations&#58; 24</li>
       <li>Accuracy&#58; 5</li>
-      <li>Elapsed Time&#58; 11.5222706517 minutes</li>
+      <li>Elapsed Time&#58; 52.6379775842 minutes</li>
     </ul>
     
   </div>
@@ -184,15 +514,15 @@
       <!-- Event listener to download geojson -->
       <script>
         document.getElementById("download_geojson").addEventListener("click", function(){
-          var geojson_file = '{"features": [{"geometry": {"coordinates": [33.44838, -112.07404], "type": "Point"}, "id": "Phoenix", "properties": {"admin1name": "Arizona", "admin2name": "Maricopa County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Phoenix", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [34.5003, -111.50098], "type": "Point"}, "id": "Arizona", "properties": {"admin1name": "Arizona", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Arizona", "weight": 1}, "type": "Feature"}], "type": "FeatureCollection"}';
-            download(geojson_file, "test_for_sam.txt_acc-5.geojson", "text/plain");
+          var geojson_file = '{"features": [{"geometry": {"coordinates": [39.76, -98.5], "type": "Point"}, "id": "United States", "properties": {"admin1name": null, "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "United States", "weight": 114}, "type": "Feature"}, {"geometry": {"coordinates": [32.75041, -89.75036], "type": "Point"}, "id": "Mississippi", "properties": {"admin1name": "Mississippi", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Mississippi", "weight": 3}, "type": "Feature"}, {"geometry": {"coordinates": [32.75041, -86.75026], "type": "Point"}, "id": "Alabama", "properties": {"admin1name": "Alabama", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Alabama", "weight": 4}, "type": "Feature"}, {"geometry": {"coordinates": [32.58125, -90.56287], "type": "Point"}, "id": "Phoenix", "properties": {"admin1name": "Mississippi", "admin2name": "Yazoo County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Phoenix", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [33.44838, -112.07404], "type": "Point"}, "id": "Phoenix", "properties": {"admin1name": "Arizona", "admin2name": "Maricopa County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Phoenix", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [41.81443, -96.13363], "type": "Point"}, "id": "Arizona", "properties": {"admin1name": "Nebraska", "admin2name": "Burt County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Arizona", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [34.5003, -111.50098], "type": "Point"}, "id": "Arizona", "properties": {"admin1name": "Arizona", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Arizona", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [34.95148, -90.23065], "type": "Point"}, "id": "Norfolk", "properties": {"admin1name": "Mississippi", "admin2name": "De Soto County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Norfolk", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [42.02834, -97.417], "type": "Point"}, "id": "Norfolk", "properties": {"admin1name": "Nebraska", "admin2name": "Madison County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Norfolk", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [42.03417, -97.41339], "type": "Point"}, "id": "Norfolk", "properties": {"admin1name": "Nebraska", "admin2name": "Madison County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Norfolk", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [41.50028, -99.75067], "type": "Point"}, "id": "Nebraska", "properties": {"admin1name": "Nebraska", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Nebraska", "weight": 4}, "type": "Feature"}, {"geometry": {"coordinates": [33.81371, -85.76135], "type": "Point"}, "id": "Jacksonville", "properties": {"admin1name": "Alabama", "admin2name": "Calhoun County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jacksonville", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [30.33218, -81.65565], "type": "Point"}, "id": "Jacksonville", "properties": {"admin1name": "Florida", "admin2name": "Duval County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Jacksonville", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [28.75054, -82.5001], "type": "Point"}, "id": "Florida", "properties": {"admin1name": "Florida", "admin2name": null, "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Florida", "weight": 3}, "type": "Feature"}, {"geometry": {"coordinates": [48.13743, 11.57549], "type": "Point"}, "id": "Munich", "properties": {"admin1name": "Bavaria", "admin2name": "Upper Bavaria", "admin3name": "Kreisfreie Stadt M\u00fcnchen", "admin4name": "M\u00fcnchen, Landeshauptstadt", "countryname": "Germany", "name": "Munich", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [48.66917, -98.83263], "type": "Point"}, "id": "Munich", "properties": {"admin1name": "North Dakota", "admin2name": "Cavalier County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Munich", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [34.89593, -83.46655], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "Georgia", "admin2name": "Rabun County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [39.00285, -82.90545], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "Ohio", "admin2name": "Pike County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [31.4399, -95.35078], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "Texas", "admin2name": "Houston County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [38.46229, -85.54274], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "Indiana", "admin2name": "Clark County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [40.42035, -79.1167], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "Pennsylvania", "admin2name": "Indiana County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [34.08618, -107.19642], "type": "Point"}, "id": "Germany", "properties": {"admin1name": "New Mexico", "admin2name": "Socorro County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "Germany", "weight": 1}, "type": "Feature"}, {"geometry": {"coordinates": [31.29767, -87.08775], "type": "Point"}, "id": "London", "properties": {"admin1name": "Alabama", "admin2name": "Conecuh County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "London", "weight": 2}, "type": "Feature"}, {"geometry": {"coordinates": [32.2732, -86.05024], "type": "Point"}, "id": "London", "properties": {"admin1name": "Alabama", "admin2name": "Montgomery County", "admin3name": null, "admin4name": null, "countryname": "United States", "name": "London", "weight": 2}, "type": "Feature"}], "type": "FeatureCollection"}';
+            download(geojson_file, "chickens.txt_acc-5.geojson", "text/plain");
         });
       </script>
       <h3>Locations</h3>
-      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [33.44838, -112.07404], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Arizona&#34;, &#34;admin2name&#34;: &#34;Maricopa County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.5003, -111.50098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Arizona&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
+      {&#34;features&#34;: [{&#34;geometry&#34;: {&#34;coordinates&#34;: [39.76, -98.5], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;United States&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: null, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;United States&#34;, &#34;weight&#34;: 114}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.75041, -89.75036], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Mississippi&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Mississippi&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Mississippi&#34;, &#34;weight&#34;: 3}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.75041, -86.75026], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Alabama&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Alabama&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Alabama&#34;, &#34;weight&#34;: 4}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.58125, -90.56287], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Mississippi&#34;, &#34;admin2name&#34;: &#34;Yazoo County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.44838, -112.07404], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Phoenix&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Arizona&#34;, &#34;admin2name&#34;: &#34;Maricopa County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Phoenix&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.81443, -96.13363], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Nebraska&#34;, &#34;admin2name&#34;: &#34;Burt County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.5003, -111.50098], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Arizona&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Arizona&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Arizona&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.95148, -90.23065], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Norfolk&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Mississippi&#34;, &#34;admin2name&#34;: &#34;De Soto County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Norfolk&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.02834, -97.417], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Norfolk&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Nebraska&#34;, &#34;admin2name&#34;: &#34;Madison County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Norfolk&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [42.03417, -97.41339], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Norfolk&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Nebraska&#34;, &#34;admin2name&#34;: &#34;Madison County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Norfolk&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [41.50028, -99.75067], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Nebraska&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Nebraska&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Nebraska&#34;, &#34;weight&#34;: 4}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [33.81371, -85.76135], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jacksonville&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Alabama&#34;, &#34;admin2name&#34;: &#34;Calhoun County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jacksonville&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [30.33218, -81.65565], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Jacksonville&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Florida&#34;, &#34;admin2name&#34;: &#34;Duval County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Jacksonville&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [28.75054, -82.5001], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Florida&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Florida&#34;, &#34;admin2name&#34;: null, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Florida&#34;, &#34;weight&#34;: 3}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [48.13743, 11.57549], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Munich&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Bavaria&#34;, &#34;admin2name&#34;: &#34;Upper Bavaria&#34;, &#34;admin3name&#34;: &#34;Kreisfreie Stadt M\u00fcnchen&#34;, &#34;admin4name&#34;: &#34;M\u00fcnchen, Landeshauptstadt&#34;, &#34;countryname&#34;: &#34;Germany&#34;, &#34;name&#34;: &#34;Munich&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [48.66917, -98.83263], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Munich&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;North Dakota&#34;, &#34;admin2name&#34;: &#34;Cavalier County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Munich&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.89593, -83.46655], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Georgia&#34;, &#34;admin2name&#34;: &#34;Rabun County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#3#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [39.00285, -82.90545], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Ohio&#34;, &#34;admin2name&#34;: &#34;Pike County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [31.4399, -95.35078], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Texas&#34;, &#34;admin2name&#34;: &#34;Houston County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [38.46229, -85.54274], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Indiana&#34;, &#34;admin2name&#34;: &#34;Clark County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [40.42035, -79.1167], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Pennsylvania&#34;, &#34;admin2name&#34;: &#34;Indiana County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [34.08618, -107.19642], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;Germany&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;New Mexico&#34;, &#34;admin2name&#34;: &#34;Socorro County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;Germany&#34;, &#34;weight&#34;: 1}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [31.29767, -87.08775], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;London&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Alabama&#34;, &#34;admin2name&#34;: &#34;Conecuh County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;London&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}, {&#34;geometry&#34;: {&#34;coordinates&#34;: [32.2732, -86.05024], &#34;type&#34;: &#34;Point&#34;}, &#34;id&#34;: &#34;London&#34;, &#34;properties&#34;: {&#34;admin1name&#34;: &#34;Alabama&#34;, &#34;admin2name&#34;: &#34;Montgomery County&#34;, &#34;admin3name&#34;: null, &#34;admin4name&#34;: null, &#34;countryname&#34;: &#34;United States&#34;, &#34;name&#34;: &#34;London&#34;, &#34;weight&#34;: 2}, &#34;type&#34;: &#34;Feature&#34;}], &#34;type&#34;: &#34;FeatureCollection&#34;}
       
       <h3>Text</h3>
-      I am Jack and I live in Phoenix, Arizona.
+      A product that could be an excellent export to the United States would be chickens. Everyone loves chickens. Wiggins, Mississippi has chickens.  People love visiting Wiggins, Mississippi. Sometimes Montgomery, Alabama has chickens too.  The thing I like most about chickens.  Phoenix, Arizona has also abundant amount of chickens.  Sometimes these chickens lay eggs which makes more chicken.   Norfolk, Nebraska is very interesting.  They have alligators.  Jacksonville, Florida also has alligators. We love to export from Munich, Germany.  They have chocolate.  We also love London from the United Kingdom.
       
       <br>
       <br>
